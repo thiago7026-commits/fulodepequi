@@ -1,0 +1,12 @@
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+.hero{height:100vh}
+.topo{height:90px;background:#2f3b2a;display:flex;justify-content:space-between;align-items:center;padding:0 40px}
+.menu{display:flex;gap:30px;list-style:none}
+.menu a{color:#fff;text-decoration:none}
+.hero-imagens{display:grid;grid-template-columns:repeat(3,1fr);height:calc(100vh - 90px)}
+.hero-imagens img{width:100%;height:100%;object-fit:cover}
+.chale{text-align:center;padding:100px 20px}
+.btn-reserva{background:#2f3b2a;color:#fff;padding:14px 40px;text-decoration:none}
+.galeria{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:1200px;margin:40px auto}
+.galeria img{height:220px;object-fit:cover;width:100%}
+.rodape{background:#2f3b2a;color:#fff;text-align:center;padding:30px}
