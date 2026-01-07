@@ -7,156 +7,167 @@
 
 <style>
 /* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
 }
 
 /* ================= TOPO ================= */
-.topo {
-  height: 90px;
-  background: #2f3b2a;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
+.topo{
+  height:90px;
+  background:#2f3b2a;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
 }
 
-.logo {
-  height: 60px;
-  display: flex;
-  align-items: center;
+.logo{
+  height:60px;
+  display:flex;
+  align-items:center;
 }
 
-.logo img {
-  max-height: 100%;
-  max-width: 180px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
+.logo img{
+  max-height:100%;
+  max-width:180px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
 }
 
-.menu {
-  list-style: none;
-  display: flex;
-  gap: 30px;
+.menu{
+  list-style:none;
+  display:flex;
+  gap:30px;
 }
 
-.menu a {
-  color: #fff;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 14px;
+.menu a{
+  color:#fff;
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:14px;
 }
 
 /* ================= HERO ================= */
-.hero {
-  width: 100%;
+.hero-imagens{
+  height:calc(100vh - 90px);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
 }
 
-.hero-imagens {
-  height: calc(100vh - 90px);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.hero-imagens img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.hero-imagens img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 /* ================= CHALÉ ================= */
-.chale {
-  padding: 140px 20px 100px;
-  text-align: center;
-  background: #ffffff;
+.chale{
+  padding:140px 20px 100px;
+  text-align:center;
+  background:#fff;
 }
 
-.btn-reserva {
-  display: inline-block;
-  margin-bottom: 30px;
-  padding: 14px 40px;
-  background: #2f3b2a;
-  color: #fff;
-  text-decoration: none;
-  letter-spacing: 2px;
+.btn-reserva{
+  display:inline-block;
+  margin-bottom:30px;
+  padding:14px 40px;
+  background:#2f3b2a;
+  color:#fff;
+  text-decoration:none;
+  letter-spacing:2px;
 }
 
-.chale h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
+.chale h1{
+  font-size:42px;
+  margin-bottom:10px;
 }
 
-.chale p {
-  max-width: 800px;
-  margin: 0 auto 60px;
-  font-size: 16px;
-  color: #555;
-  line-height: 1.6;
+.chale p{
+  max-width:800px;
+  margin:0 auto 60px;
+  font-size:16px;
+  color:#555;
+  line-height:1.6;
 }
 
-/* ================= GALERIA ================= */
-.galeria {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+/* ================= SLIDER AUTOMÁTICO ================= */
+.slider-wrapper{
+  max-width:1200px;
+  margin:auto;
+  overflow:hidden;
 }
 
-.galeria img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 2px;
+.slider{
+  display:flex;
+  width:calc(100% * 12);
+  animation:slide 32s linear infinite;
 }
 
-/* ================= FOOTER ================= */
-.rodape {
-  background: #2f3b2a;
-  color: #fff;
-  text-align: center;
-  padding: 30px;
-  margin-top: 100px;
+.slider img{
+  width:12.5%;
+  height:260px;
+  object-fit:cover;
+}
+
+@keyframes slide{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+
+/* ================= RODAPÉ ================= */
+.rodape{
+  background:#f2c300; /* amarelo */
+  color:#000;
+  padding:60px 20px;
+  text-align:center;
+}
+
+.rodape h3{
+  font-size:22px;
+  margin-bottom:10px;
+}
+
+.rodape p{
+  font-size:15px;
+  margin:5px 0;
 }
 
 /* ================= RESPONSIVO ================= */
-@media (max-width: 900px) {
+@media(max-width:900px){
 
-  .menu {
-    display: none;
+  .menu{
+    display:none;
   }
 
-  .hero-imagens {
-    grid-template-columns: 1fr;
-    height: auto;
+  .hero-imagens{
+    grid-template-columns:1fr;
+    height:auto;
   }
 
-  .hero-imagens img {
-    height: 300px;
+  .hero-imagens img{
+    height:300px;
   }
 
-  .galeria {
-    grid-template-columns: repeat(2, 1fr);
+  .slider img{
+    height:200px;
   }
 
 }
 </style>
-
 </head>
+
 <body>
 
-<header class="hero">
-
+<header>
   <nav class="topo">
     <div class="logo">
       <img src="assets/logo.png" alt="Fulo de Pequi">
     </div>
-
     <ul class="menu">
       <li><a href="#">Início</a></li>
       <li><a href="#">Quem Somos</a></li>
@@ -171,31 +182,40 @@
     <img src="assets/hero-2.jpg">
     <img src="assets/hero-3.jpg">
   </section>
-
 </header>
 
 <section class="chale">
   <a href="#" class="btn-reserva">RESERVAR</a>
-
   <h1>Chalé Fulo de Pequi</h1>
   <p>
     Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.
   </p>
 
-  <div class="galeria">
-    <img src="assets/gallery/g1.jpg">
-    <img src="assets/gallery/g2.jpg">
-    <img src="assets/gallery/g3.jpg">
-    <img src="assets/gallery/g4.jpg">
-    <img src="assets/gallery/g5.jpg">
-    <img src="assets/gallery/g6.jpg">
-    <img src="assets/gallery/g7.jpg">
-    <img src="assets/gallery/g8.jpg">
+  <div class="slider-wrapper">
+    <div class="slider">
+      <img src="assets/gallery/g1.jpg">
+      <img src="assets/gallery/g2.jpg">
+      <img src="assets/gallery/g3.jpg">
+      <img src="assets/gallery/g4.jpg">
+      <img src="assets/gallery/g5.jpg">
+      <img src="assets/gallery/g6.jpg">
+      <img src="assets/gallery/g7.jpg">
+      <img src="assets/gallery/g8.jpg">
+
+      <!-- duplicadas para loop -->
+      <img src="assets/gallery/g1.jpg">
+      <img src="assets/gallery/g2.jpg">
+      <img src="assets/gallery/g3.jpg">
+      <img src="assets/gallery/g4.jpg">
+    </div>
   </div>
 </section>
 
 <footer class="rodape">
-  <p>© 2026 Fulo de Pequi</p>
+  <h3>Fulo de Pequi</h3>
+  <p>📍 Localização: inserir endereço aqui</p>
+  <p>📞 Telefone: (00) 00000-0000</p>
+  <p>© 2026 • Todos os direitos reservados</p>
 </footer>
 
 </body>
