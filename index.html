@@ -135,46 +135,50 @@
 /* ================= RODAPÉ ================= */
 .rodape{
   background:#C2C1BB;
-  padding:80px 40px;
+  padding:40px 20px 30px;
 }
 
 .rodape-container{
   max-width:1200px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
+  grid-template-columns:1fr 1.2fr;
+  gap:30px;
 }
 
 .rodape-logo img{
-  max-width:180px;
-  margin-bottom:20px;
+  max-width:140px;
+  margin-bottom:12px;
 }
 
 .rodape-texto{
-  font-size:15px;
-  line-height:1.7;
+  font-size:14px;
+  line-height:1.6;
   color:#333;
 }
 
-.rodape-contato h3{
-  font-size:26px;
-  margin-bottom:20px;
-  color:#2f3b2a;
+.rodape-contato{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
 }
 
 .rodape-item{
   display:flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:16px;
-  font-size:16px;
+  align-items:flex-start;
+  gap:10px;
+  font-size:15px;
+  color:#000;
 }
 
 .rodape-item svg{
-  width:26px;
-  height:26px;
-  fill:#2f3b2a;
+  width:28px;
+  height:28px;
+  stroke:#2f3b2a;
+  stroke-width:2;
+  fill:none;
+  flex-shrink:0;
+  margin-top:2px;
 }
 
 .rodape-item a{
@@ -188,8 +192,8 @@
 
 .rodape-copy{
   text-align:center;
-  margin-top:60px;
-  font-size:14px;
+  margin-top:25px;
+  font-size:13px;
   color:#333;
 }
 
@@ -201,10 +205,6 @@
   .video-full{height:400px;}
   .rodape-container{
     grid-template-columns:1fr;
-    text-align:center;
-  }
-  .rodape-item{
-    justify-content:center;
   }
 }
 </style>
@@ -214,7 +214,9 @@
 
 <header>
   <nav class="topo">
-    <div class="logo"><img src="assets/logo.png" alt="Fulo de Pequi"></div>
+    <div class="logo">
+      <img src="assets/logo.png" alt="Fulo de Pequi">
+    </div>
     <ul class="menu">
       <li><a href="#">Início</a></li>
       <li><a href="#">Quem Somos</a></li>
@@ -266,34 +268,45 @@
       <img src="assets/logo.png" alt="Fulo de Pequi">
       <div class="rodape-texto">
         Chalé Fulo de Pequi<br>
-        Hospedagem integrada à natureza,<br>
-        conforto e tranquilidade.
+        Hospedagem integrada à natureza.
       </div>
     </div>
 
     <div class="rodape-contato">
-      <h3>CONTATO</h3>
 
+      <!-- LOCALIZAÇÃO -->
       <div class="rodape-item">
-        <!-- WhatsApp -->
         <svg viewBox="0 0 24 24">
-          <path d="M16.7 13.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.5-1.6z"/>
+          <path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        <span>Vila Morro Encantado, Cavalcante – GO</span>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="rodape-item">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 12a9 9 0 1 1-16.5 5.2L3 21l3.9-1.4A9 9 0 0 1 21 12z"/>
+          <path d="M8.5 9.5c.4 1 1.5 2.1 2.5 2.5l1-.5 1 1-.5 1c-2 0-5-3-5-5l1-.5 1 1-.5 1z"/>
         </svg>
         <a href="https://wa.me/5562999350693" target="_blank">(62) 99935-0693</a>
       </div>
 
+      <!-- EMAIL -->
       <div class="rodape-item">
-        <!-- Email -->
         <svg viewBox="0 0 24 24">
-          <path d="M20 4H4v16h16V4zm0 4-8 5-8-5"/>
+          <rect x="3" y="5" width="18" height="14" rx="2"/>
+          <path d="M3 7l9 6 9-6"/>
         </svg>
         <a href="mailto:contato@fulodpequi.com">contato@fulodpequi.com</a>
       </div>
 
+      <!-- INSTAGRAM -->
       <div class="rodape-item">
-        <!-- Instagram .ajeitar roda pe devido esquecer de deixar a localizacao que tinha anteriormente  -->
         <svg viewBox="0 0 24 24">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17" cy="7" r="1"/>
         </svg>
         <a href="https://www.instagram.com/fulodpequi/" target="_blank">@fulodpequi</a>
       </div>
