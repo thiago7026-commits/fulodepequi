@@ -67,9 +67,13 @@
 
 /* ================= CHALÉ ================= */
 .chale{
-  padding:140px 20px 100px;
+  padding:140px 0 0;
   text-align:center;
   background:#fff;
+}
+
+.chale-conteudo{
+  padding:0 20px 80px;
 }
 
 .btn-reserva{
@@ -87,18 +91,38 @@
   margin-bottom:10px;
 }
 
+.chale h2{
+  font-size:18px;
+  font-weight:normal;
+  color:#777;
+  margin-bottom:30px;
+}
+
 .chale p{
   max-width:800px;
-  margin:0 auto 60px;
+  margin:0 auto;
   font-size:16px;
   color:#555;
   line-height:1.6;
 }
 
-/* ================= SLIDER AUTOMÁTICO ================= */
+/* ================= BANNER FULL ================= */
+.banner-full{
+  width:100%;
+  height:854px;
+  margin:80px 0;
+}
+
+.banner-full img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ================= SLIDER ================= */
 .slider-wrapper{
   max-width:1200px;
-  margin:auto;
+  margin:60px auto 0;
   overflow:hidden;
 }
 
@@ -121,7 +145,7 @@
 
 /* ================= RODAPÉ ================= */
 .rodape{
-  background:#C2C1BB; /* cinza */
+  background:#C2C1BB;
   color:#000;
   padding:60px 20px;
   text-align:center;
@@ -153,10 +177,13 @@
     height:300px;
   }
 
+  .banner-full{
+    height:400px;
+  }
+
   .slider img{
     height:200px;
   }
-
 }
 </style>
 </head>
@@ -185,12 +212,28 @@
 </header>
 
 <section class="chale">
-  <a href="#" class="btn-reserva">RESERVAR</a>
-  <h1>Chalé Fulo de Pequi</h1>
-  <p>
-    Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.
-  </p>
 
+  <div class="chale-conteudo">
+    <a href="#" class="btn-reserva">RESERVAR</a>
+    <h1>Chalé Fulo de Pequi</h1>
+    <h2>Conforto, natureza e tranquilidade</h2>
+    <p>
+      Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.
+    </p>
+  </div>
+
+  <!-- BANNER FULL WIDTH -->
+  <div class="banner-full">
+    <img src="assets/banner-full.jpg" alt="Banner Fulo de Pequi">
+  </div>
+
+  <!-- TITULO ENTRE BANNER E SLIDER -->
+  <div class="chale-conteudo">
+    <h1>Ambientes e Experiência</h1>
+    <h2>Detalhes que fazem a diferença</h2>
+  </div>
+
+  <!-- SLIDER -->
   <div class="slider-wrapper">
     <div class="slider">
       <img src="assets/gallery/g1.jpg">
@@ -209,12 +252,13 @@
       <img src="assets/gallery/g4.jpg">
     </div>
   </div>
+
 </section>
 
 <footer class="rodape">
   <h3>Fulo de Pequi</h3>
-  <p>📍 Localização: R. 241, qd 01 - LT 06 - Vila morro encantado, Cavalcante - GO, 73790-000</p>
-  <p>📞 Telefone: (62) 99935-0693</p>
+  <p>📍 R. 241, qd 01 - LT 06 - Vila morro encantado, Cavalcante - GO</p>
+  <p>📞 (62) 99935-0693</p>
   <p>© 2026 • Todos os direitos reservados</p>
 </footer>
 
