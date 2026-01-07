@@ -71,18 +71,19 @@
 .chale-centro{
   max-width:860px;
   margin:0 auto;
-  padding:0 20px 70px;
+  padding:0 20px 60px;
   text-align:center;
 }
 
 .btn-reserva{
   display:inline-block;
   margin-bottom:30px;
-  padding:14px 40px;
+  padding:14px 46px;
   background:#2f3b2a;
   color:#fff;
   text-decoration:none;
   letter-spacing:2px;
+  font-size:14px;
 }
 
 .chale-centro h1{
@@ -102,39 +103,51 @@
   color:#555;
 }
 
+/* ================= BOTÃO ACOMODAÇÕES ================= */
+.btn-acomodacoes{
+  display:block;
+  width:fit-content;
+  margin:0 auto 30px;
+  padding:12px 36px;
+  background:#9e9f94;
+  color:#fff;
+  text-decoration:none;
+  letter-spacing:2px;
+  font-size:13px;
+}
+
 /* ================= BANNER ESTILO MACOÃ ================= */
 .banner-destaque{
   width:100%;
-  max-width:1200px;
   height:420px;
-  margin:80px auto 0;
-  padding:0 20px;
+  overflow:hidden;
 }
 
 .banner-destaque img{
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center center; /* ajuste fino da harmonia */
   display:block;
 }
 
 /* ================= RODAPÉ ================= */
 .rodape{
   background:#C2C1BB;
-  padding:40px 20px 30px;
+  padding:60px 40px 40px;
 }
 
 .rodape-container{
   max-width:1200px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:30px;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
 }
 
 .rodape-logo img{
-  max-width:140px;
-  margin-bottom:12px;
+  max-width:160px;
+  margin-bottom:14px;
 }
 
 .rodape-texto{
@@ -143,28 +156,25 @@
   color:#333;
 }
 
-.rodape-contato{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
+.rodape-contato h3{
+  font-size:22px;
+  margin-bottom:16px;
+  color:#2f3b2a;
 }
 
 .rodape-item{
   display:flex;
-  align-items:flex-start;
-  gap:10px;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
   font-size:15px;
-  color:#000;
 }
 
 .rodape-item svg{
-  width:28px;
-  height:28px;
+  width:24px;
+  height:24px;
   stroke:#2f3b2a;
-  stroke-width:2;
   fill:none;
-  flex-shrink:0;
-  margin-top:2px;
 }
 
 .rodape-item a{
@@ -172,38 +182,25 @@
   text-decoration:none;
 }
 
-.rodape-item a:hover{
-  text-decoration:underline;
-}
-
 .rodape-copy{
   text-align:center;
-  margin-top:25px;
+  margin-top:30px;
   font-size:13px;
   color:#333;
 }
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-
   .menu{display:none;}
-
-  .hero-imagens{
-    grid-template-columns:1fr;
-    height:auto;
-  }
-
-  .hero-imagens img{
-    height:300px;
-  }
-
-  .banner-destaque{
-    height:260px;
-    margin-top:50px;
-  }
-
+  .hero-imagens{grid-template-columns:1fr;}
+  .hero-imagens img{height:300px;}
+  .banner-destaque{height:260px;}
   .rodape-container{
     grid-template-columns:1fr;
+    text-align:center;
+  }
+  .rodape-item{
+    justify-content:center;
   }
 }
 </style>
@@ -213,9 +210,7 @@
 
 <header>
   <nav class="topo">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Fulo de Pequi">
-    </div>
+    <div class="logo"><img src="assets/logo.png" alt="Fulo de Pequi"></div>
     <ul class="menu">
       <li><a href="#">Início</a></li>
       <li><a href="#">Quem Somos</a></li>
@@ -247,9 +242,12 @@
     </p>
   </div>
 
-  <!-- BANNER ESTÁTICO -->
+  <!-- BOTÃO ACOMODAÇÕES -->
+  <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
+
+  <!-- BANNER ESTILO MACOÃ -->
   <div class="banner-destaque">
-    <img src="assets/banner-destaque.jpg" alt="Chalé Fulo de Pequi">
+    <img src="assets/banner-destaque.jpg" alt="Fulo de Pequi">
   </div>
 
 </section>
@@ -258,50 +256,29 @@
 
   <div class="rodape-container">
 
-    <div class="rodape-logo">
-      <img src="assets/logo.png" alt="Fulo de Pequi">
+    <div>
+      <img src="assets/logo.png" alt="Fulo de Pequi" class="rodape-logo">
       <div class="rodape-texto">
         Chalé Fulo de Pequi<br>
-        Hospedagem integrada à natureza.
+        Estrada do Vale Dourado – Cavalcante/GO
       </div>
     </div>
 
     <div class="rodape-contato">
+      <h3>CONTATO</h3>
 
-      <!-- LOCALIZAÇÃO -->
       <div class="rodape-item">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/>
-          <circle cx="12" cy="9" r="2.5"/>
-        </svg>
-        <span>Vila Morro Encantado, Cavalcante – GO</span>
+        <span>📍</span>
+        <span>Cavalcante – GO</span>
       </div>
 
-      <!-- WHATSAPP -->
       <div class="rodape-item">
-        <svg viewBox="0 0 24 24">
-          <path d="M21 12a9 9 0 1 1-16.5 5.2L3 21l3.9-1.4A9 9 0 0 1 21 12z"/>
-          <path d="M8.5 9.5c.4 1 1.5 2.1 2.5 2.5l1-.5 1 1-.5 1c-2 0-5-3-5-5l1-.5 1 1-.5 1z"/>
-        </svg>
+        <span>📞</span>
         <a href="https://wa.me/5562999350693" target="_blank">(62) 99935-0693</a>
       </div>
 
-      <!-- EMAIL -->
       <div class="rodape-item">
-        <svg viewBox="0 0 24 24">
-          <rect x="3" y="5" width="18" height="14" rx="2"/>
-          <path d="M3 7l9 6 9-6"/>
-        </svg>
-        <a href="mailto:contato@fulodpequi.com">contato@fulodpequi.com</a>
-      </div>
-
-      <!-- INSTAGRAM -->
-      <div class="rodape-item">
-        <svg viewBox="0 0 24 24">
-          <rect x="2" y="2" width="20" height="20" rx="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17" cy="7" r="1"/>
-        </svg>
+        <span>📷</span>
         <a href="https://www.instagram.com/fulodpequi/" target="_blank">@fulodpequi</a>
       </div>
 
