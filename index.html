@@ -23,16 +23,8 @@
   padding:0 40px;
 }
 
-.logo{
-  height:90px;
-  display:flex;
-  align-items:center;
-}
-
 .logo img{
-  max-height:100%;
-  max-width:180px;
-  object-fit:contain;
+  max-height:80px;
 }
 
 .menu{
@@ -64,14 +56,13 @@
 
 /* ================= CHALÉ ================= */
 .chale{
-  padding:200px 0 0;
-  background:#fff;
+  padding:180px 0 0;
 }
 
 .chale-centro{
   max-width:860px;
   margin:0 auto;
-  padding:0 20px 70px;
+  padding:0 20px 60px;
   text-align:center;
 }
 
@@ -88,13 +79,12 @@
 
 .chale-centro h1{
   font-size:42px;
-  margin-bottom:10px;
 }
 
 .chale-centro h2{
   font-size:18px;
   color:#777;
-  margin-bottom:30px;
+  margin:20px 0 30px;
 }
 
 .chale-centro p{
@@ -103,7 +93,7 @@
   color:#555;
 }
 
-/* ================= BOTÃO ACOMODAÇÕES ================= */
+/* ================= BOTÃO ================= */
 .btn-acomodacoes{
   display:block;
   width:fit-content;
@@ -118,7 +108,6 @@
 
 /* ================= BANNER ================= */
 .banner-destaque{
-  width:100%;
   height:420px;
   overflow:hidden;
 }
@@ -129,24 +118,21 @@
   object-fit:cover;
 }
 
-/* ================= TEXTO INSTITUCIONAL ================= */
+/* ================= INSTITUCIONAL ================= */
 .institucional{
-  background:#fff;
-  padding:90px 20px 60px;
+  padding:90px 20px 40px;
   text-align:center;
 }
 
 .institucional h2{
   font-size:28px;
-  margin-bottom:14px;
   color:#2f3b2a;
 }
 
 .institucional h3{
   font-size:22px;
+  margin:20px 0 30px;
   font-weight:normal;
-  margin-bottom:30px;
-  color:#2f3b2a;
 }
 
 .institucional p{
@@ -157,10 +143,9 @@
   color:#666;
 }
 
-/* ================= BOTÃO SERVIÇOS ================= */
 .btn-servicos{
   display:inline-block;
-  margin-top:40px;
+  margin:40px 0 60px;
   padding:12px 40px;
   background:#9e9f94;
   color:#fff;
@@ -169,29 +154,26 @@
   font-size:13px;
 }
 
-/* ================= SLIDER GALERIA (AJUSTADO) ================= */
+/* ================= SLIDER GALERIA (ESTILO MAJULE) ================= */
 .slider-galeria{
   width:100%;
-  max-width:1200px;
-  margin:70px auto 0;
-  padding:0 20px;
   overflow:hidden;
 }
 
 .slider-track{
   display:flex;
-  gap:20px;
-  animation:slide 40s linear infinite;
+  width:200%;
+  animation:slide 50s linear infinite;
 }
 
 .slider-track img{
-  width:360px;
-  height:260px;
+  width:25vw;
+  height:320px;
   object-fit:cover;
-  border-radius:6px;
   flex-shrink:0;
 }
 
+/* animação contínua */
 @keyframes slide{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
@@ -226,7 +208,6 @@
   font-size:20px;
   margin-bottom:20px;
   color:#2f3b2a;
-  letter-spacing:1px;
 }
 
 .rodape-item{
@@ -246,7 +227,6 @@
   text-align:center;
   margin-top:40px;
   font-size:13px;
-  color:#333;
   border-top:1px solid rgba(0,0,0,0.1);
   padding-top:20px;
 }
@@ -268,8 +248,8 @@
   }
 
   .slider-track img{
-    width:260px;
-    height:180px;
+    width:70vw;
+    height:220px;
   }
 
   .rodape-container{
@@ -313,9 +293,8 @@
     <h1>Chalé Fulo de Pequi</h1>
     <h2>Conforto, natureza e tranquilidade</h2>
     <p>
-      Chalé com estrutura moderna, aconchegante e integrado à natureza.
-      O deck de madeira amplo se estende para fora, integrando-se ao gramado.
-      Viva a experiência de desfrutar da natureza com conforto.
+      Viva a experiência de se conectar com a natureza em um espaço
+      pensado para descanso, silêncio e bem-estar.
     </p>
   </div>
 
@@ -328,15 +307,16 @@
 
 <section class="institucional">
   <h2>FULÔ DE PEQUI</h2>
-  <h3>um lugar onde o tempo desacelera e o essencial emerge</h3>
+  <h3>onde o tempo desacelera</h3>
 
   <p>
-    Em meio à natureza preservada do cerrado, o Chalé Fulo de Pequi oferece
-    uma experiência única de acolhimento e conexão com o essencial.
+    Um refúgio no cerrado que une conforto, arquitetura e natureza
+    em perfeita harmonia.
   </p>
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
 
+  <!-- SLIDER -->
   <div class="slider-galeria">
     <div class="slider-track">
       <img src="assets/galeria/g1.jpg">
@@ -348,6 +328,7 @@
       <img src="assets/galeria/g7.jpg">
       <img src="assets/galeria/g8.jpg">
 
+      <!-- duplicadas para loop -->
       <img src="assets/galeria/g1.jpg">
       <img src="assets/galeria/g2.jpg">
       <img src="assets/galeria/g3.jpg">
