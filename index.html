@@ -4,33 +4,147 @@
 <meta charset="UTF-8">
 <title>Fulo de Pequi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/style.css">
 
-<!-- AJUSTE AUTOMÁTICO DA LOGO -->
 <style>
-  .topo {
-    height: 90px;
-    background: #2f3b2a;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* ================= TOPO ================= */
+.topo {
+  height: 90px;
+  background: #2f3b2a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.logo {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-height: 100%;
+  max-width: 180px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+/* ================= HERO ================= */
+.hero {
+  width: 100%;
+}
+
+.hero-imagens {
+  height: calc(100vh - 90px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.hero-imagens img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= CHALÉ ================= */
+.chale {
+  padding: 140px 20px 100px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.btn-reserva {
+  display: inline-block;
+  margin-bottom: 30px;
+  padding: 14px 40px;
+  background: #2f3b2a;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 2px;
+}
+
+.chale h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.chale p {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ================= GALERIA ================= */
+.galeria {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.galeria img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* ================= FOOTER ================= */
+.rodape {
+  background: #2f3b2a;
+  color: #fff;
+  text-align: center;
+  padding: 30px;
+  margin-top: 100px;
+}
+
+/* ================= RESPONSIVO ================= */
+@media (max-width: 900px) {
+
+  .menu {
+    display: none;
   }
 
-  .logo {
-    height: 60px;
-    display: flex;
-    align-items: center;
-  }
-
-  .logo img {
-    max-height: 100%;
-    max-width: 180px;
-    width: auto;
+  .hero-imagens {
+    grid-template-columns: 1fr;
     height: auto;
-    object-fit: contain;
-    display: block;
   }
+
+  .hero-imagens img {
+    height: 300px;
+  }
+
+  .galeria {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
 </style>
 
 </head>
@@ -38,32 +152,35 @@
 
 <header class="hero">
 
-<nav class="topo">
-  <div class="logo">
-    <img src="assets/logo.png" alt="Fulo de Pequi">
-  </div>
+  <nav class="topo">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Fulo de Pequi">
+    </div>
 
-  <ul class="menu">
-    <li><a href="#">Início</a></li>
-    <li><a href="#">Quem Somos</a></li>
-    <li><a href="#">Chalé</a></li>
-    <li><a href="#">Tarifas</a></li>
-    <li><a href="#">Contato</a></li>
-  </ul>
-</nav>
+    <ul class="menu">
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Quem Somos</a></li>
+      <li><a href="#">Chalé</a></li>
+      <li><a href="#">Tarifas</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+  </nav>
 
-<section class="hero-imagens">
-  <img src="assets/hero-1.jpg">
-  <img src="assets/hero-2.jpeg">
-  <img src="assets/hero-3.jpg">
-</section>
+  <section class="hero-imagens">
+    <img src="assets/hero-1.jpg">
+    <img src="assets/hero-2.jpg">
+    <img src="assets/hero-3.jpg">
+  </section>
 
 </header>
 
 <section class="chale">
   <a href="#" class="btn-reserva">RESERVAR</a>
+
   <h1>Chalé Fulo de Pequi</h1>
-  <p>Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.</p>
+  <p>
+    Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.
+  </p>
 
   <div class="galeria">
     <img src="assets/gallery/g1.jpg">
