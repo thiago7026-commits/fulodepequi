@@ -102,22 +102,16 @@
   color:#555;
 }
 
-/* ================= VIDEO PROPORCIONAL ================= */
-.video-wrapper{
+/* ================= BANNER ESTILO MACOÃ ================= */
+.banner-destaque{
   width:100%;
   max-width:1200px;
+  height:420px;
   margin:80px auto 0;
   padding:0 20px;
 }
 
-.video-proporcional{
-  width:100%;
-  aspect-ratio:16/9;
-  overflow:hidden;
-  background:#000;
-}
-
-.video-proporcional video{
+.banner-destaque img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -203,7 +197,8 @@
     height:300px;
   }
 
-  .video-wrapper{
+  .banner-destaque{
+    height:260px;
     margin-top:50px;
   }
 
@@ -252,14 +247,9 @@
     </p>
   </div>
 
-  <!-- VÍDEO PROPORCIONAL -->
-  <div class="video-wrapper">
-    <div class="video-proporcional">
-      <video autoplay loop muted playsinline>
-        <source src="assets/video-full.mp4" type="video/mp4">
-        Seu navegador não suporta vídeo HTML5.
-      </video>
-    </div>
+  <!-- BANNER ESTÁTICO -->
+  <div class="banner-destaque">
+    <img src="assets/banner-destaque.jpg" alt="Chalé Fulo de Pequi">
   </div>
 
 </section>
