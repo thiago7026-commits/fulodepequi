@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Fulo de Pequi</title>
+<title>Fulô de Pequi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -24,7 +24,7 @@
 }
 
 .logo img{
-  max-height:80px;
+  height:70px;
 }
 
 .menu{
@@ -37,8 +37,8 @@
   color:#fff;
   text-decoration:none;
   text-transform:uppercase;
-  letter-spacing:1px;
   font-size:14px;
+  letter-spacing:1px;
 }
 
 /* ================= HERO ================= */
@@ -120,7 +120,7 @@
 
 /* ================= INSTITUCIONAL ================= */
 .institucional{
-  padding:90px 20px 40px;
+  padding:90px 0 0;
   text-align:center;
 }
 
@@ -154,32 +154,27 @@
   font-size:13px;
 }
 
-/* ================= SLIDER GALERIA (FULL WIDTH REAL) ================= */
+/* ================= SLIDER FULL WIDTH ================= */
 .slider-galeria{
-  position:relative;
-  left:50%;
-  right:50%;
-  margin-left:-50vw;
-  margin-right:-50vw;
-
   width:100vw;
   overflow:hidden;
+  margin-top:20px;
 }
 
 .slider-track{
   display:flex;
-  width:max-content;
-  animation:slide 50s linear infinite;
+  width:200%;
+  animation:slide 45s linear infinite;
 }
 
 .slider-track img{
-  width:calc(100vw / 4);
-  height:320px;
+  width:25vw;
+  height:360px;
   object-fit:cover;
   flex-shrink:0;
 }
 
-/* animação */
+/* animação contínua */
 @keyframes slide{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
@@ -188,19 +183,24 @@
 /* ================= RODAPÉ ================= */
 .rodape{
   background:#C2C1BB;
-  padding:70px 40px 40px;
+  padding:80px 40px 40px;
 }
 
 .rodape-container{
   max-width:1200px;
   margin:0 auto;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:80px;
+  align-items:center;
 }
 
 .rodape-logo{
+  display:flex;
+  justify-content:center;
+}
+
+.rodape-logo img{
   max-width:220px;
 }
 
@@ -209,18 +209,14 @@
 }
 
 .rodape-contato h3{
-  font-size:20px;
+  font-size:22px;
   margin-bottom:20px;
   color:#2f3b2a;
 }
 
 .rodape-item{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
-  font-size:14px;
+  margin-bottom:14px;
+  font-size:15px;
 }
 
 .rodape-item a{
@@ -232,7 +228,7 @@
   text-align:center;
   margin-top:40px;
   font-size:13px;
-  border-top:1px solid rgba(0,0,0,0.1);
+  border-top:1px solid rgba(0,0,0,0.15);
   padding-top:20px;
 }
 
@@ -253,13 +249,12 @@
   }
 
   .slider-track img{
-    width:80vw;
-    height:220px;
+    width:70vw;
+    height:240px;
   }
 
   .rodape-container{
-    flex-direction:column;
-    gap:30px;
+    grid-template-columns:1fr;
   }
 }
 </style>
@@ -270,13 +265,12 @@
 <header>
   <nav class="topo">
     <div class="logo">
-      <img src="assets/logo.png" alt="Fulo de Pequi">
+      <img src="assets/logo.png" alt="Fulô de Pequi">
     </div>
 
     <ul class="menu">
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Quem Somos</a></li>
-      <li><a href="#">Chalé</a></li>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="reservas.html">Reservas</a></li>
       <li><a href="#">Contato</a></li>
     </ul>
   </nav>
@@ -290,8 +284,8 @@
 
 <section class="chale">
   <div class="chale-centro">
-    <a href="#" class="btn-reserva">RESERVAR</a>
-    <h1>Chalé Fulo de Pequi</h1>
+    <a href="reservas.html" class="btn-reserva">RESERVAR</a>
+    <h1>Chalé Fulô de Pequi</h1>
     <h2>Conforto, natureza e tranquilidade</h2>
     <p>
       Viva a experiência de se conectar com a natureza em um espaço
@@ -329,7 +323,7 @@
       <img src="assets/galeria/g7.jpg">
       <img src="assets/galeria/g8.jpg">
 
-      <!-- duplicadas para loop -->
+      <!-- duplicadas -->
       <img src="assets/galeria/g1.jpg">
       <img src="assets/galeria/g2.jpg">
       <img src="assets/galeria/g3.jpg">
@@ -340,10 +334,8 @@
 
 <footer class="rodape">
   <div class="rodape-container">
-
-    <div class="rodape-info">
-      <!-- LOGO DIFERENTE DO CABEÇALHO -->
-      <img src="assets/logo2.png" class="rodape-logo" alt="Fulo de Pequi">
+    <div class="rodape-logo">
+      <img src="assets/logo2.png" alt="Fulô de Pequi">
     </div>
 
     <div class="rodape-contato">
@@ -356,11 +348,10 @@
         <a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a>
       </div>
     </div>
-
   </div>
 
   <div class="rodape-copy">
-    © 2026 • Fulo de Pequi • Todos os direitos reservados
+    © 2026 • Fulô de Pequi • Todos os direitos reservados
   </div>
 </footer>
 
