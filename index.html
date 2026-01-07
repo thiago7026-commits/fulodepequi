@@ -127,7 +127,6 @@
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position:center center;
 }
 
 /* ================= TEXTO INSTITUCIONAL ================= */
@@ -170,27 +169,29 @@
   font-size:13px;
 }
 
-/* ================= SLIDER GALERIA ================= */
+/* ================= SLIDER GALERIA (AJUSTADO) ================= */
 .slider-galeria{
   width:100%;
   max-width:1200px;
   margin:70px auto 0;
+  padding:0 20px;
   overflow:hidden;
 }
 
 .slider-track{
   display:flex;
-  width:calc(100% * 8);
-  animation:slide 40s infinite linear;
+  gap:20px;
+  animation:slide 40s linear infinite;
 }
 
 .slider-track img{
-  width:12.5%;
-  height:380px;
+  width:360px;
+  height:260px;
   object-fit:cover;
+  border-radius:6px;
+  flex-shrink:0;
 }
 
-/* animação */
 @keyframes slide{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
@@ -199,7 +200,7 @@
 /* ================= RODAPÉ ================= */
 .rodape{
   background:#C2C1BB;
-  padding:60px 40px 40px;
+  padding:70px 40px 40px;
 }
 
 .rodape-container{
@@ -207,24 +208,25 @@
   margin:0 auto;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:40px;
+  gap:60px;
 }
 
-.rodape-logo img{
+.rodape-logo{
   max-width:160px;
-  margin-bottom:14px;
+  margin-bottom:16px;
 }
 
 .rodape-texto{
   font-size:14px;
-  line-height:1.6;
+  line-height:1.7;
   color:#333;
 }
 
 .rodape-contato h3{
-  font-size:22px;
-  margin-bottom:16px;
+  font-size:20px;
+  margin-bottom:20px;
   color:#2f3b2a;
+  letter-spacing:1px;
 }
 
 .rodape-item{
@@ -232,32 +234,49 @@
   align-items:center;
   gap:12px;
   margin-bottom:14px;
-  font-size:15px;
+  font-size:14px;
 }
 
 .rodape-item a{
-  color:#000;
+  color:#333;
   text-decoration:none;
 }
 
 .rodape-copy{
   text-align:center;
-  margin-top:30px;
+  margin-top:40px;
   font-size:13px;
   color:#333;
+  border-top:1px solid rgba(0,0,0,0.1);
+  padding-top:20px;
 }
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
   .menu{display:none;}
-  .hero-imagens{grid-template-columns:1fr;}
-  .hero-imagens img{height:300px;}
-  .banner-destaque{height:260px;}
-  .slider-track img{height:240px;}
+
+  .hero-imagens{
+    grid-template-columns:1fr;
+  }
+
+  .hero-imagens img{
+    height:300px;
+  }
+
+  .banner-destaque{
+    height:260px;
+  }
+
+  .slider-track img{
+    width:260px;
+    height:180px;
+  }
+
   .rodape-container{
     grid-template-columns:1fr;
     text-align:center;
   }
+
   .rodape-item{
     justify-content:center;
   }
@@ -269,7 +288,10 @@
 
 <header>
   <nav class="topo">
-    <div class="logo"><img src="assets/logo.png" alt="Fulo de Pequi"></div>
+    <div class="logo">
+      <img src="assets/logo.png" alt="Fulo de Pequi">
+    </div>
+
     <ul class="menu">
       <li><a href="#">Início</a></li>
       <li><a href="#">Quem Somos</a></li>
@@ -286,7 +308,6 @@
 </header>
 
 <section class="chale">
-
   <div class="chale-centro">
     <a href="#" class="btn-reserva">RESERVAR</a>
     <h1>Chalé Fulo de Pequi</h1>
@@ -294,9 +315,6 @@
     <p>
       Chalé com estrutura moderna, aconchegante e integrado à natureza.
       O deck de madeira amplo se estende para fora, integrando-se ao gramado.
-      Um balanço encantador de madeira rústica sob uma estrutura de pergolado
-      complementa o ambiente. Durante o dia mistura-se à paisagem verde,
-      e à noite é iluminado pela lua e pelas estrelas, criando um ambiente mágico.
       Viva a experiência de desfrutar da natureza com conforto.
     </p>
   </div>
@@ -304,9 +322,8 @@
   <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
 
   <div class="banner-destaque">
-    <img src="assets/banner-destaque.jpg" alt="Fulo de Pequi">
+    <img src="assets/banner-destaque.jpg">
   </div>
-
 </section>
 
 <section class="institucional">
@@ -315,13 +332,11 @@
 
   <p>
     Em meio à natureza preservada do cerrado, o Chalé Fulo de Pequi oferece
-    uma experiência única de acolhimento, silêncio e conexão com o essencial.
-    Cada detalhe foi pensado para proporcionar bem-estar, conforto e tranquilidade.
+    uma experiência única de acolhimento e conexão com o essencial.
   </p>
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
 
-  <!-- SLIDER -->
   <div class="slider-galeria">
     <div class="slider-track">
       <img src="assets/galeria/g1.jpg">
@@ -333,7 +348,6 @@
       <img src="assets/galeria/g7.jpg">
       <img src="assets/galeria/g8.jpg">
 
-      <!-- duplicadas para loop -->
       <img src="assets/galeria/g1.jpg">
       <img src="assets/galeria/g2.jpg">
       <img src="assets/galeria/g3.jpg">
@@ -355,8 +369,12 @@
     <div class="rodape-contato">
       <h3>CONTATO</h3>
       <div class="rodape-item">📍 Cavalcante – GO</div>
-      <div class="rodape-item"><a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a></div>
-      <div class="rodape-item"><a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a></div>
+      <div class="rodape-item">
+        <a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a>
+      </div>
+      <div class="rodape-item">
+        <a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a>
+      </div>
     </div>
   </div>
 
