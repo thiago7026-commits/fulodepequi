@@ -156,6 +156,12 @@
 
 /* ================= SLIDER GALERIA (FULL WIDTH REAL) ================= */
 .slider-galeria{
+  position:relative;
+  left:50%;
+  right:50%;
+  margin-left:-50vw;
+  margin-right:-50vw;
+
   width:100vw;
   overflow:hidden;
 }
@@ -173,7 +179,7 @@
   flex-shrink:0;
 }
 
-/* animação contínua */
+/* animação */
 @keyframes slide{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
@@ -196,13 +202,6 @@
 
 .rodape-logo{
   max-width:220px;
-}
-
-.rodape-texto{
-  font-size:14px;
-  line-height:1.7;
-  color:#333;
-  text-align:center;
 }
 
 .rodape-contato{
@@ -343,11 +342,8 @@
   <div class="rodape-container">
 
     <div class="rodape-info">
-      <img src="assets/logo.png" class="rodape-logo" alt="Fulo de Pequi">
-      <div class="rodape-texto">
-        Chalé Fulo de Pequi<br>
-        Cavalcante – GO
-      </div>
+      <!-- LOGO DIFERENTE DO CABEÇALHO -->
+      <img src="assets/logo2.png" class="rodape-logo" alt="Fulo de Pequi">
     </div>
 
     <div class="rodape-contato">
