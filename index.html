@@ -102,28 +102,16 @@
   color:#555;
 }
 
-/* ================= BANNER ================= */
-.banner-full{
-  width:100%;
-  max-width:1200px;
-  max-height:400px;
-  margin:60px auto;
-  overflow:hidden;
-}
-
-.banner-full img{
-  width:100%;
-  object-fit:cover;
-}
-
-/* ================= VIDEO FULL ================= */
+/* ================= VÍDEO (ESTILO MACOÃ) ================= */
 .video-full{
   width:100vw;
-  height:600px;
+  height:460px;
+  margin:80px 0 0;
   position:relative;
   left:50%;
   transform:translateX(-50%);
   overflow:hidden;
+  background:#000;
 }
 
 .video-full video{
@@ -199,10 +187,23 @@
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
+
   .menu{display:none;}
-  .hero-imagens{grid-template-columns:1fr;}
-  .hero-imagens img{height:300px;}
-  .video-full{height:400px;}
+
+  .hero-imagens{
+    grid-template-columns:1fr;
+    height:auto;
+  }
+
+  .hero-imagens img{
+    height:300px;
+  }
+
+  .video-full{
+    height:280px;
+    margin-top:50px;
+  }
+
   .rodape-container{
     grid-template-columns:1fr;
   }
@@ -248,13 +249,11 @@
     </p>
   </div>
 
-  <div class="banner-full">
-    <img src="assets/banner-full.jpg">
-  </div>
-
+  <!-- VÍDEO -->
   <div class="video-full">
     <video autoplay loop muted playsinline>
-      <source src="assets/video-destaque.mp4" type="video/mp4">
+      <source src="assets/video-full.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo HTML5.
     </video>
   </div>
 
