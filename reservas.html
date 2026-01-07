@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Reservas | Fulô de Pequi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FullCalendar (gratuito) -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f5f5f2;
+  color:#333;
+}
+
+/* ===== TOPO ===== */
+.topo{
+  height:90px;
+  background:#2f3b2a;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
+}
+
+.topo img{
+  height:70px;
+}
+
+.menu{
+  list-style:none;
+  display:flex;
+  gap:30px;
+}
+
+.menu a{
+  color:#fff;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-size:14px;
+  letter-spacing:1px;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+  max-width:1200px;
+  margin:60px auto;
+  padding:0 20px;
+}
+
+/* ===== TÍTULO ===== */
+.titulo{
+  text-align:center;
+  font-size:36px;
+  color:#2f3b2a;
+  margin-bottom:40px;
+}
+
+/* ===== CARD ===== */
+.reserva-card{
+  background:#fff;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:40px;
+  padding:40px;
+}
+
+/* ===== GALERIA ===== */
+.galeria img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ===== INFO ===== */
+.info h2{
+  font-size:28px;
+  margin-bottom:15px;
+}
+
+.info p{
+  font-size:15px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+.icones{
+  display:flex;
+  gap:20px;
+  margin-bottom:25px;
+  font-size:14px;
+}
+
+/* ===== CALENDÁRIO ===== */
+#calendar{
+  margin-bottom:25px;
+}
+
+/* ===== RESUMO ===== */
+.resumo{
+  background:#f0f0ec;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.resumo p{
+  margin-bottom:8px;
+  font-size:14px;
+}
+
+/* ===== BOTÃO ===== */
+.btn-reservar{
+  width:100%;
+  padding:14px;
+  background:#2f3b2a;
+  color:#fff;
+  border:none;
+  font-size:15px;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+
+.btn-reservar:hover{
+  opacity:0.9;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:900px){
+  .reserva-card{
+    grid-template-columns:1fr;
+  }
+  .menu{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topo">
+  <img src="assets/logo.png" alt="Fulô de Pequi">
+  <ul class="menu">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="reservas.html">Reservas</a></li>
+  </ul>
+</header>
+
+<main class="container">
+
+  <h1 class="titulo">Reserva</h1>
+
+  <div class="reserva-card">
+
+    <div class="galeria">
+      <img src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
+    </div>
+
+    <div class="info">
+      <h2>Chalé Fulô de Pequi</h2>
+
+      <p>
+        Chalé exclusivo para até 2 hóspedes, com 1 quarto,
+        1 cama e 1 banheiro, em meio à natureza do cerrado.
+      </p>
+
+      <div class="icones">
+        🛏️ 1 quarto
+        🚿 1 banheiro
+        👥 2 hóspedes
+      </div>
+
+      <div id="calendar"></div>
+
+      <div class="resumo">
+        <p><strong>Entrada:</strong> <span id="entrada">—</span></p>
+        <p><strong>Saída:</strong> <span id="saida">—</span></p>
+        <p><strong>Noites:</strong> <span id="noites">—</span></p>
+        <p><strong>Total:</strong> R$ <span id="total">—</span></p>
+      </div>
+
+      <button class="btn-reservar" onclick="reservarWhatsApp()">
+        Continuar reserva
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+<script>
+const diaria = 380;
+let checkin = null;
+let checkout = null;
+
+document.addEventListener('DOMContentLoaded', function () {
+  const calendarEl = document.getElementById('calendar');
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'pt-br',
+    selectable: true,
+    select: function(info) {
+      checkin = info.startStr;
+      checkout = info.endStr;
+
+      const start = new Date(info.start);
+      const end = new Date(info.end);
+      const noites = (end - start) / (1000 * 60 * 60 * 24);
+
+      document.getElementById('entrada').innerText = checkin;
+      document.getElementById('saida').innerText = checkout;
+      document.getElementById('noites').innerText = noites;
+      document.getElementById('total').innerText = noites * diaria;
+    }
+  });
+
+  calendar.render();
+});
+
+function reservarWhatsApp(){
+  if(!checkin || !checkout){
+    alert("Selecione as datas da reserva.");
+    return;
+  }
+
+  const msg = `Olá! Gostaria de reservar o Chalé Fulô de Pequi.%0A
+Entrada: ${checkin}%0A
+Saída: ${checkout}%0A
+Diária: R$380`;
+
+  window.open(`https://wa.me/5562999350693?text=${msg}`, '_blank');
+}
+</script>
+
+</body>
+</html>
