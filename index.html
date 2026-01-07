@@ -133,7 +133,7 @@
 /* ================= TEXTO INSTITUCIONAL ================= */
 .institucional{
   background:#fff;
-  padding:90px 20px 80px;
+  padding:90px 20px 60px;
   text-align:center;
 }
 
@@ -168,6 +168,32 @@
   text-decoration:none;
   letter-spacing:2px;
   font-size:13px;
+}
+
+/* ================= SLIDER GALERIA ================= */
+.slider-galeria{
+  width:100%;
+  max-width:1200px;
+  margin:70px auto 0;
+  overflow:hidden;
+}
+
+.slider-track{
+  display:flex;
+  width:calc(100% * 8);
+  animation:slide 40s infinite linear;
+}
+
+.slider-track img{
+  width:12.5%;
+  height:380px;
+  object-fit:cover;
+}
+
+/* animação */
+@keyframes slide{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
 }
 
 /* ================= RODAPÉ ================= */
@@ -227,6 +253,7 @@
   .hero-imagens{grid-template-columns:1fr;}
   .hero-imagens img{height:300px;}
   .banner-destaque{height:260px;}
+  .slider-track img{height:240px;}
   .rodape-container{
     grid-template-columns:1fr;
     text-align:center;
@@ -282,7 +309,6 @@
 
 </section>
 
-<!-- TEXTO ABAIXO DO BANNER -->
 <section class="institucional">
   <h2>FULÔ DE PEQUI</h2>
   <h3>um lugar onde o tempo desacelera e o essencial emerge</h3>
@@ -290,19 +316,36 @@
   <p>
     Em meio à natureza preservada do cerrado, o Chalé Fulo de Pequi oferece
     uma experiência única de acolhimento, silêncio e conexão com o essencial.
-    Cada detalhe foi pensado para proporcionar bem-estar, conforto e tranquilidade,
-    em um refúgio onde o ritmo da vida desacelera e a natureza conduz a experiência.
+    Cada detalhe foi pensado para proporcionar bem-estar, conforto e tranquilidade.
   </p>
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
+
+  <!-- SLIDER -->
+  <div class="slider-galeria">
+    <div class="slider-track">
+      <img src="assets/galeria/g1.jpg">
+      <img src="assets/galeria/g2.jpg">
+      <img src="assets/galeria/g3.jpg">
+      <img src="assets/galeria/g4.jpg">
+      <img src="assets/galeria/g5.jpg">
+      <img src="assets/galeria/g6.jpg">
+      <img src="assets/galeria/g7.jpg">
+      <img src="assets/galeria/g8.jpg">
+
+      <!-- duplicadas para loop -->
+      <img src="assets/galeria/g1.jpg">
+      <img src="assets/galeria/g2.jpg">
+      <img src="assets/galeria/g3.jpg">
+      <img src="assets/galeria/g4.jpg">
+    </div>
+  </div>
 </section>
 
 <footer class="rodape">
-
   <div class="rodape-container">
-
     <div>
-      <img src="assets/logo.png" alt="Fulo de Pequi" class="rodape-logo">
+      <img src="assets/logo.png" class="rodape-logo">
       <div class="rodape-texto">
         Chalé Fulo de Pequi<br>
         Cavalcante – GO
@@ -311,27 +354,15 @@
 
     <div class="rodape-contato">
       <h3>CONTATO</h3>
-
-      <div class="rodape-item">
-        📍 Cavalcante – GO
-      </div>
-
-      <div class="rodape-item">
-        <a href="https://wa.me/5562999350693" target="_blank">📞 (62) 99935-0693</a>
-      </div>
-
-      <div class="rodape-item">
-        <a href="https://www.instagram.com/fulodpequi/" target="_blank">📷 @fulodpequi</a>
-      </div>
-
+      <div class="rodape-item">📍 Cavalcante – GO</div>
+      <div class="rodape-item"><a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a></div>
+      <div class="rodape-item"><a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a></div>
     </div>
-
   </div>
 
   <div class="rodape-copy">
     © 2026 • Fulo de Pequi • Todos os direitos reservados
   </div>
-
 </footer>
 
 </body>
