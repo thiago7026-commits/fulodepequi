@@ -43,15 +43,38 @@
 
 /* ================= HERO ================= */
 .hero-imagens{
-  height:calc(100vh - 90px);
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  height:calc(100svh - 90px);
+  display:flex;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
 }
 
 .hero-imagens img{
   width:100%;
   height:100%;
   object-fit:cover;
+  flex:0 0 100%;
+  scroll-snap-align:start;
+}
+
+.hero-imagens::-webkit-scrollbar{
+  height:8px;
+}
+
+.hero-imagens::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.15);
+}
+
+.hero-imagens::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.4);
+  border-radius:10px;
+}
+
+.secao-ancora{
+  scroll-margin-top:110px;
 }
 
 /* ================= CHALÉ ================= */
@@ -234,14 +257,26 @@
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-  .menu{display:none;}
+  .topo{
+    flex-direction:column;
+    height:auto;
+    padding:20px;
+    gap:16px;
+  }
+
+  .menu{
+    width:100%;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
 
   .hero-imagens{
-    grid-template-columns:1fr;
+    height:60svh;
   }
 
   .hero-imagens img{
-    height:300px;
+    height:100%;
   }
 
   .banner-destaque{
@@ -270,8 +305,10 @@
 
     <ul class="menu">
       <li><a href="index.html">Início</a></li>
-      <li><a href="reservas.html">Reservas</a></li>
-      <li><a href="#">Contato</a></li>
+      <li><a href="#quem-somos">Quem somos</a></li>
+      <li><a href="#acomodacoes">Acomodações</a></li>
+      <li><a href="#tarifas">Tarifas</a></li>
+      <li><a href="#outros">Outros</a></li>
     </ul>
   </nav>
 
@@ -282,7 +319,7 @@
   </section>
 </header>
 
-<section class="chale">
+<section class="chale secao-ancora" id="acomodacoes">
   <div class="chale-centro">
     <a href="reservas.html" class="btn-reserva">RESERVAR</a>
     <h1>Chalé Fulô de Pequi</h1>
@@ -295,12 +332,12 @@
 
   <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
 
-  <div class="banner-destaque">
+  <div class="banner-destaque secao-ancora" id="tarifas">
     <img src="assets/banner-destaque.jpg">
   </div>
 </section>
 
-<section class="institucional">
+<section class="institucional secao-ancora" id="quem-somos">
   <h2>FULÔ DE PEQUI</h2>
   <h3>onde o tempo desacelera</h3>
 
@@ -332,7 +369,7 @@
   </div>
 </section>
 
-<footer class="rodape">
+<footer class="rodape secao-ancora" id="outros">
   <div class="rodape-container">
     <div class="rodape-logo">
       <img src="assets/logo2.png" alt="Fulô de Pequi">
