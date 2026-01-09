@@ -42,12 +42,45 @@
   gap:30px;
 }
 
+.menu li{
+  position:relative;
+}
+
 .menu a{
   color:#fff;
   text-decoration:none;
   text-transform:uppercase;
   font-size:13px;
   font-weight:600;
+  letter-spacing:1px;
+}
+
+.submenu{
+  list-style:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  background:#2f3b2a;
+  padding:16px;
+  display:none;
+  flex-direction:column;
+  gap:10px;
+  min-width:180px;
+  z-index:10;
+}
+
+.menu li:hover .submenu,
+.menu li:focus-within .submenu{
+  display:flex;
+}
+
+.submenu a{
+  display:block;
+  padding:10px 14px;
+  background:#9e9f94;
+  color:#fff;
+  text-align:center;
+  font-size:12px;
   letter-spacing:1px;
 }
 
@@ -188,6 +221,26 @@
   text-decoration:none;
   letter-spacing:2px;
   font-size:13px;
+}
+
+/* ================= POLÍTICAS ================= */
+.politicas{
+  padding:80px 20px 40px;
+  text-align:center;
+}
+
+.politicas h2{
+  font-size:28px;
+  color:#2f3b2a;
+  margin-bottom:16px;
+}
+
+.politicas p{
+  max-width:780px;
+  margin:0 auto;
+  font-size:15px;
+  line-height:1.8;
+  color:#666;
 }
 
 /* ================= SLIDER FULL WIDTH ================= */
@@ -357,7 +410,13 @@
       <li><a href="index.html">Início</a></li>
       <li><a href="#acomodacoes">Acomodações</a></li>
       <li><a href="https://fulodepequi.com.br/reservas.html">Tarifas</a></li>
-      <li><a href="#outros">Outros</a></li>
+      <li>
+        <a href="#outros">Outros</a>
+        <ul class="submenu">
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#politicas">Políticas</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 
@@ -390,7 +449,7 @@
       Viva a experiência de se conectar com a natureza em um espaço
       pensado para descanso, silêncio e bem-estar.
     </p>
-    <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
+    <a href="https://fulodepequi.com.br/reservas.html" class="btn-acomodacoes">ACOMODAÇÕES</a>
   </div>
 
   <div class="banner-destaque secao-ancora" id="tarifas">
@@ -398,7 +457,7 @@
   </div>
 </section>
 
-<section class="institucional secao-ancora" id="quem-somos">
+<section class="institucional secao-ancora" id="servicos">
   <h2>FULÔ DE PEQUI</h2>
   <h3>onde o tempo desacelera</h3>
 
@@ -428,6 +487,14 @@
       <img src="assets/galeria/g4.jpg">
     </div>
   </div>
+</section>
+
+<section class="politicas secao-ancora" id="politicas">
+  <h2>POLÍTICAS</h2>
+  <p>
+    Confira as informações sobre regras da hospedagem, horários e condições
+    de reserva para planejar sua estadia com tranquilidade.
+  </p>
 </section>
 
 <footer class="rodape secao-ancora" id="outros">

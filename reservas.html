@@ -7,13 +7,16 @@
 
 <!-- Flatpickr (calendário estilo Airbnb) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial, sans-serif;
+  font-family:"Poppins", "Montserrat", sans-serif;
 }
 
 /* ================= TOPO ================= */
@@ -34,7 +37,9 @@
   color:#fff;
   text-decoration:none;
   text-transform:uppercase;
-  font-size:14px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1px;
 }
 
 /* ================= RESERVA ================= */
@@ -58,6 +63,7 @@
   gap:40px;
   background:#f7f7f5;
   padding:40px;
+  border:1px solid rgba(0,0,0,0.08);
 }
 
 /* ================= IMAGEM ================= */
@@ -71,6 +77,7 @@
 .form h2{
   font-size:26px;
   margin-bottom:20px;
+  color:#2f3b2a;
 }
 
 .form p{
@@ -84,6 +91,7 @@
   display:block;
   margin-top:18px;
   font-size:14px;
+  color:#2f3b2a;
 }
 
 .form input, .form select{
@@ -91,6 +99,8 @@
   padding:12px;
   margin-top:6px;
   font-size:15px;
+  border:1px solid rgba(0,0,0,0.2);
+  background:#fff;
 }
 
 .form button{
@@ -103,6 +113,7 @@
   font-size:15px;
   letter-spacing:1px;
   cursor:pointer;
+  text-transform:uppercase;
 }
 
 /* ================= INFO ================= */
@@ -126,7 +137,9 @@
 <header>
   <nav class="topo">
     <div class="logo">
-      <img src="assets/logo.png" alt="Fulô de Pequi">
+      <a href="index.html">
+        <img src="assets/logo.png" alt="Fulô de Pequi">
+      </a>
     </div>
     <div class="menu">
       <a href="index.html">Início</a>
