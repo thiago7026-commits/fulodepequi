@@ -253,11 +253,34 @@
 .rodape-item{
   margin-bottom:14px;
   font-size:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  color:#4a4a4a;
 }
 
 .rodape-item a{
-  color:#333;
+  color:inherit;
   text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+
+.rodape-icone{
+  display:inline-flex;
+  color:#2f3b2a;
+}
+
+.rodape-icone svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
 .rodape-copy{
@@ -415,12 +438,36 @@
 
     <div class="rodape-contato">
       <h3>CONTATO</h3>
-      <div class="rodape-item">📍 Cavalcante – GO</div>
       <div class="rodape-item">
-        <a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a>
+        <span class="rodape-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" focusable="false">
+            <path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+          </svg>
+        </span>
+        <span>Cavalcante – GO</span>
       </div>
       <div class="rodape-item">
-        <a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a>
+        <a href="https://wa.me/5562999350693">
+          <span class="rodape-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img" focusable="false">
+              <path d="M22 16.5v3a2 2 0 0 1-2.2 2A19 19 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7l.6 3a2 2 0 0 1-.6 1.8L8.5 11a15 15 0 0 0 4.5 4.5l1.5-1.5a2 2 0 0 1 1.8-.6l3 .6a2 2 0 0 1 1.7 2z"></path>
+            </svg>
+          </span>
+          <span>(62) 99935-0693</span>
+        </a>
+      </div>
+      <div class="rodape-item">
+        <a href="https://www.instagram.com/fulodpequi/">
+          <span class="rodape-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.5"></circle>
+              <circle cx="17.2" cy="6.8" r="1"></circle>
+            </svg>
+          </span>
+          <span>@fulodpequi</span>
+        </a>
       </div>
     </div>
   </div>
