@@ -47,37 +47,32 @@ html, body{
   letter-spacing:1px;
 }
 
-/* ================= HERO (PRIMEIRO BLOCO - ASSETS HERO) ================= */
+/* ================= HERO ================= */
 .hero-imagens{
   height:42vh;
   max-height:420px;
   min-height:320px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-
-  /* ✅ RESPIRO: impede texto/botões de “encostar” no hero */
-  margin-bottom:80px;
 }
 
 .hero-imagens img{
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position:center;
   display:block;
 }
 
-/* ================= CHALÉ ================= */
-/* ✅ antes estava 180px e fazia o conteúdo “subir” demais */
-.chale{
-  padding:80px 0 0;
+/* ================= FAIXA DE CONTEÚDO ================= */
+.chale-faixa{
+  background:#fff;
+  padding:90px 20px 70px;
+  text-align:center;
 }
 
 .chale-centro{
   max-width:860px;
   margin:0 auto;
-  padding:0 20px 60px;
-  text-align:center;
 }
 
 .btn-reserva{
@@ -107,12 +102,11 @@ html, body{
   color:#555;
 }
 
-/* ================= BOTÃO ================= */
-/* ✅ mais espaçamento para não “colar” no texto nem no hero */
+/* ================= BOTÃO ACOMODAÇÕES ================= */
 .btn-acomodacoes{
   display:block;
   width:fit-content;
-  margin:40px auto 30px;
+  margin:40px auto 0;
   padding:12px 36px;
   background:#9e9f94;
   color:#fff;
@@ -123,6 +117,7 @@ html, body{
 
 /* ================= BANNER ================= */
 .banner-destaque{
+  margin-top:50px;
   height:420px;
   overflow:hidden;
 }
@@ -136,7 +131,7 @@ html, body{
 
 /* ================= INSTITUCIONAL ================= */
 .institucional{
-  padding:90px 0 0;
+  padding:90px 20px 0;
   text-align:center;
 }
 
@@ -170,19 +165,11 @@ html, body{
   font-size:13px;
 }
 
-/* ================= SEGUNDO BLOCO (GALERIA PERTO DO RODAPÉ) ================= */
+/* ================= GALERIA ================= */
 .galeria-horizontal{
   width:100%;
   overflow-x:auto;
-  overflow-y:hidden;
   padding:20px 0 50px;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
-}
-
-.galeria-horizontal::-webkit-scrollbar{
-  display:none;
 }
 
 .galeria-track{
@@ -192,13 +179,11 @@ html, body{
 }
 
 .galeria-track img{
-  flex:0 0 auto;
   width:32vw;
   max-width:420px;
   min-width:280px;
   height:360px;
   object-fit:cover;
-  display:block;
 }
 
 /* ================= RODAPÉ ================= */
@@ -223,7 +208,6 @@ html, body{
 
 .rodape-logo img{
   max-width:220px;
-  display:block;
 }
 
 .rodape-contato{
@@ -258,21 +242,13 @@ html, body{
 @media(max-width:900px){
   .menu{display:none;}
 
-  /* mobile estava bom: mantém */
   .hero-imagens{
     grid-template-columns:1fr;
     height:auto;
-    max-height:none;
-    min-height:0;
-    margin-bottom:40px; /* respiro menor no mobile */
   }
 
   .hero-imagens img{
     height:300px;
-  }
-
-  .chale{
-    padding:40px 0 0;
   }
 
   .banner-destaque{
@@ -285,7 +261,6 @@ html, body{
 
   .galeria-track img{
     width:80vw;
-    min-width:0;
     height:260px;
   }
 
@@ -311,7 +286,6 @@ html, body{
     </ul>
   </nav>
 
-  <!-- HERO (assets/hero-1,2,3) -->
   <section class="hero-imagens">
     <img src="assets/hero-1.jpg" alt="">
     <img src="assets/hero-2.jpg" alt="">
@@ -319,7 +293,7 @@ html, body{
   </section>
 </header>
 
-<section class="chale">
+<section class="chale-faixa">
   <div class="chale-centro">
     <a href="reservas.html" class="btn-reserva">RESERVAR</a>
     <h1>Chalé Fulô de Pequi</h1>
@@ -331,11 +305,11 @@ html, body{
   </div>
 
   <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
-
-  <div class="banner-destaque">
-    <img src="assets/banner-destaque.jpg" alt="">
-  </div>
 </section>
+
+<div class="banner-destaque">
+  <img src="assets/banner-destaque.jpg" alt="">
+</div>
 
 <section class="institucional">
   <h2>FULÔ DE PEQUI</h2>
@@ -348,19 +322,13 @@ html, body{
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
 
-  <!-- GALERIA -->
   <section class="galeria-horizontal">
     <div class="galeria-track">
-      <img src="assets/galeria/g1.jpg" alt="">
-      <img src="assets/galeria/g2.jpg" alt="">
-      <img src="assets/galeria/g3.jpg" alt="">
-      <img src="assets/galeria/g4.jpg" alt="">
-      <img src="assets/galeria/g5.jpg" alt="">
-      <img src="assets/galeria/g6.jpg" alt="">
-      <img src="assets/galeria/g7.jpg" alt="">
-      <img src="assets/galeria/g8.jpg" alt="">
-      <img src="assets/galeria/g9.jpg" alt="">
-      <img src="assets/galeria/g10.jpg" alt="">
+      <img src="assets/galeria/g1.jpg">
+      <img src="assets/galeria/g2.jpg">
+      <img src="assets/galeria/g3.jpg">
+      <img src="assets/galeria/g4.jpg">
+      <img src="assets/galeria/g5.jpg">
     </div>
   </section>
 </section>
@@ -368,7 +336,7 @@ html, body{
 <footer class="rodape">
   <div class="rodape-container">
     <div class="rodape-logo">
-      <img src="assets/logo2.png" alt="Fulô de Pequi">
+      <img src="assets/logo2.png" alt="">
     </div>
 
     <div class="rodape-contato">
