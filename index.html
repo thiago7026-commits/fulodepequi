@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fulô de Pequi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FONTES -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,13 +17,8 @@
       font-family:"Poppins", sans-serif;
     }
 
-    body{
-      background:#fff;
-      color:#222;
-    }
-
-    /* ================= TOPO ================= */
-    header{
+    /* TOPO */
+    .topo{
       height:90px;
       background:#2f3b2f;
       display:flex;
@@ -33,71 +27,66 @@
       padding:0 40px;
     }
 
-    header img{
-      height:50px;
+    .logo{
+      height:48px;
+      display:block;
     }
 
-    nav a{
+    .menu{
+      display:flex;
+      gap:28px;
+    }
+
+    .menu a{
       color:#fff;
       text-decoration:none;
-      margin-left:30px;
-      font-weight:500;
-      font-size:14px;
+      font-weight:600;
+      font-size:13px;
       letter-spacing:1px;
     }
 
-    /* ================= GALERIA PRINCIPAL ================= */
-    .galeria{
+    /* BLOCO 1 - IMAGENS LADO A LADO (SEM CORTE) */
+    .bloco-imagens{
       display:flex;
       width:100%;
     }
 
-    .galeria img{
+    .bloco-imagens img{
       width:50%;
       height:auto;          /* mantém proporção */
-      object-fit:contain;  /* NÃO corta */
+      object-fit:contain;   /* garante que NÃO corta */
       display:block;
     }
 
-    /* ================= SEÇÕES ================= */
-    section{
-      padding:80px 40px;
-      max-width:1200px;
-      margin:auto;
+    /* CONTEÚDO */
+    .conteudo{
+      padding:70px 40px;
+      max-width:1100px;
+      margin:0 auto;
     }
 
-    h2{
-      font-size:32px;
-      margin-bottom:20px;
+    h1, h2{
       color:#2f3b2f;
+      margin-bottom:16px;
     }
 
     p{
-      font-size:16px;
       line-height:1.7;
-      max-width:800px;
+      color:#222;
+      max-width:850px;
     }
 
-    /* ================= RESPONSIVO ================= */
+    /* MOBILE */
     @media (max-width: 768px){
-      header{
-        padding:0 20px;
-      }
+      .topo{ padding:0 20px; }
+      .menu{ gap:16px; }
 
-      nav{
-        display:none;
-      }
-
-      .galeria{
+      .bloco-imagens{
         flex-direction:column;
       }
 
-      .galeria img{
+      .bloco-imagens img{
         width:100%;
-      }
-
-      section{
-        padding:60px 20px;
       }
     }
   </style>
@@ -106,9 +95,11 @@
 <body>
 
   <!-- TOPO -->
-  <header>
-    <img src="images/logo.png" alt="Fulô de Pequi">
-    <nav>
+  <header class="topo">
+    <!-- TROQUE o src do logo pelo seu arquivo real -->
+    <img class="logo" src="logo.png" alt="Fulô de Pequi">
+
+    <nav class="menu">
       <a href="#inicio">INÍCIO</a>
       <a href="#acomodacoes">ACOMODAÇÕES</a>
       <a href="#tarifas">TARIFAS</a>
@@ -116,23 +107,23 @@
     </nav>
   </header>
 
-  <!-- GALERIA / PRIMEIRO BLOCO -->
-  <section class="galeria" id="inicio">
-    <img src="images/foto1.jpg" alt="Chalé Fulô de Pequi">
-    <img src="images/foto2.jpg" alt="Chalé Fulô de Pequi">
+  <!-- BLOCO 1 -->
+  <section class="bloco-imagens" id="inicio">
+    <!-- TROQUE pelos nomes REAIS das suas imagens -->
+    <img src="foto1.jpg" alt="Chalé Fulô de Pequi">
+    <img src="foto2.jpg" alt="Chalé Fulô de Pequi">
   </section>
 
-  <!-- SOBRE -->
-  <section>
-    <h2>Fulô de Pequi</h2>
+  <!-- SEÇÕES -->
+  <section class="conteudo">
+    <h1>Fulô de Pequi</h1>
     <p>
       Um refúgio integrado à natureza, pensado para quem busca silêncio,
       conforto e conexão com o território da Chapada dos Veadeiros.
     </p>
   </section>
 
-  <!-- ACOMODAÇÕES -->
-  <section id="acomodacoes">
+  <section class="conteudo" id="acomodacoes">
     <h2>Acomodações</h2>
     <p>
       Chalés com arquitetura integrada ao cerrado, varanda, vista para o verde
@@ -140,12 +131,14 @@
     </p>
   </section>
 
-  <!-- TARIFAS -->
-  <section id="tarifas">
+  <section class="conteudo" id="tarifas">
     <h2>Tarifas</h2>
-    <p>
-      Consulte valores e disponibilidade pelo WhatsApp ou Instagram.
-    </p>
+    <p>Consulte valores e disponibilidade.</p>
+  </section>
+
+  <section class="conteudo" id="contato">
+    <h2>Contato</h2>
+    <p>WhatsApp / Instagram</p>
   </section>
 
 </body>
