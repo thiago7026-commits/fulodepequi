@@ -47,13 +47,14 @@ html, body{
   letter-spacing:1px;
 }
 
-/* ================= HERO ================= */
-/* ✅ HERO “Macoã style”: faixa bonita no PC, sem ficar gigante */
+/* ================= HERO (PRIMEIRO BLOCO) ================= */
+/* ✅ CORREÇÃO AQUI: no PC estava gigante. Agora é faixa elegante tipo Macoã */
 .hero-imagens{
-  height:460px;         /* altura fixa elegante no desktop */
-  max-height:520px;     /* segurança */
+  height:480px;        /* altura controlada */
+  max-height:520px;    /* segurança */
+  min-height:420px;    /* segurança */
   display:grid;
-  grid-template-columns:repeat(3, 1fr);
+  grid-template-columns:repeat(3,1fr);
 }
 
 .hero-imagens img{
@@ -165,7 +166,8 @@ html, body{
   font-size:13px;
 }
 
-/* ================= GALERIA (rolagem manual) ================= */
+/* ================= SEGUNDO BLOCO (GALERIA PERTO DO RODAPÉ) ================= */
+/* ✅ NÃO MEXI NISSO: continua rolagem manual */
 .galeria-horizontal{
   width:100%;
   overflow-x:auto;
@@ -253,11 +255,12 @@ html, body{
 @media(max-width:900px){
   .menu{display:none;}
 
-  /* ✅ no celular você disse que tá perfeito: mantém como faixa menor */
+  /* ✅ HERO no celular: mantém como você disse que já está bom */
   .hero-imagens{
     grid-template-columns:1fr;
     height:auto;
     max-height:none;
+    min-height:0;
   }
 
   .hero-imagens img{
@@ -300,6 +303,7 @@ html, body{
     </ul>
   </nav>
 
+  <!-- ✅ PRIMEIRO BLOCO: HERO -->
   <section class="hero-imagens">
     <img src="assets/hero-1.jpg" alt="">
     <img src="assets/hero-2.jpg" alt="">
@@ -336,6 +340,7 @@ html, body{
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
 
+  <!-- ✅ SEGUNDO BLOCO: GALERIA perto do rodapé (não confunde com hero) -->
   <section class="galeria-horizontal">
     <div class="galeria-track">
       <img src="assets/galeria/g1.jpg" alt="">
