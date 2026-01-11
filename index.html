@@ -48,13 +48,15 @@ html, body{
 }
 
 /* ================= HERO (PRIMEIRO BLOCO - ASSETS HERO) ================= */
-/* ✅ Ajuste correto: não fica gigante no PC e mantém o mobile perfeito */
 .hero-imagens{
-  height:42vh;          /* faixa elegante no desktop */
-  max-height:420px;     /* trava em telas grandes */
-  min-height:320px;     /* mantém presença */
+  height:42vh;
+  max-height:420px;
+  min-height:320px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
+
+  /* ✅ RESPIRO: impede texto/botões de “encostar” no hero */
+  margin-bottom:80px;
 }
 
 .hero-imagens img{
@@ -66,8 +68,9 @@ html, body{
 }
 
 /* ================= CHALÉ ================= */
+/* ✅ antes estava 180px e fazia o conteúdo “subir” demais */
 .chale{
-  padding:180px 0 0;
+  padding:80px 0 0;
 }
 
 .chale-centro{
@@ -105,10 +108,11 @@ html, body{
 }
 
 /* ================= BOTÃO ================= */
+/* ✅ mais espaçamento para não “colar” no texto nem no hero */
 .btn-acomodacoes{
   display:block;
   width:fit-content;
-  margin:0 auto 30px;
+  margin:40px auto 30px;
   padding:12px 36px;
   background:#9e9f94;
   color:#fff;
@@ -167,7 +171,6 @@ html, body{
 }
 
 /* ================= SEGUNDO BLOCO (GALERIA PERTO DO RODAPÉ) ================= */
-/* (não mexi — continua rolagem manual) */
 .galeria-horizontal{
   width:100%;
   overflow-x:auto;
@@ -261,10 +264,15 @@ html, body{
     height:auto;
     max-height:none;
     min-height:0;
+    margin-bottom:40px; /* respiro menor no mobile */
   }
 
   .hero-imagens img{
     height:300px;
+  }
+
+  .chale{
+    padding:40px 0 0;
   }
 
   .banner-destaque{
@@ -303,7 +311,7 @@ html, body{
     </ul>
   </nav>
 
-  <!-- ✅ PRIMEIRO BLOCO: HERO (assets/hero-1,2,3) -->
+  <!-- HERO (assets/hero-1,2,3) -->
   <section class="hero-imagens">
     <img src="assets/hero-1.jpg" alt="">
     <img src="assets/hero-2.jpg" alt="">
@@ -340,7 +348,7 @@ html, body{
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
 
-  <!-- SEGUNDO BLOCO: GALERIA -->
+  <!-- GALERIA -->
   <section class="galeria-horizontal">
     <div class="galeria-track">
       <img src="assets/galeria/g1.jpg" alt="">
