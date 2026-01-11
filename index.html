@@ -1,145 +1,196 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fulô de Pequi</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+.slider-track{
+display:flex;
+  width:calc(33.333vw * 16);
+  width:calc(647px * 16);
+animation:slide 45s linear infinite;
+}
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:"Poppins", sans-serif;
-    }
+.slider-track img{
+  width:33.333vw;
+  height:360px;
+  width:647px;
+  height:647px;
+  border-radius:0;
+object-fit:cover;
+flex-shrink:0;
+}
+@@ -373,176 +374,176 @@
+}
 
-    /* TOPO */
-    .topo{
-      height:90px;
-      background:#2f3b2f;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 40px;
-    }
+.slider-track img{
+    width:70vw;
+    height:240px;
+    width:647px;
+    height:647px;
+}
 
-    .logo{
-      height:48px;
-      display:block;
-    }
+.rodape-container{
+grid-template-columns:1fr;
+}
+}
 
-    .menu{
-      display:flex;
-      gap:28px;
-    }
+@media(min-width:901px){
+.hero-imagens{
+gap:0;
+}
 
-    .menu a{
-      color:#fff;
-      text-decoration:none;
-      font-weight:600;
-      font-size:13px;
-      letter-spacing:1px;
-    }
-
-    /* BLOCO 1 - IMAGENS LADO A LADO (SEM CORTE) */
-    .bloco-imagens{
-      display:flex;
-      width:100%;
-    }
-
-    .bloco-imagens img{
-      width:50%;
-      height:auto;          /* mantém proporção */
-      object-fit:contain;   /* garante que NÃO corta */
-      display:block;
-    }
-
-    /* CONTEÚDO */
-    .conteudo{
-      padding:70px 40px;
-      max-width:1100px;
-      margin:0 auto;
-    }
-
-    h1, h2{
-      color:#2f3b2f;
-      margin-bottom:16px;
-    }
-
-    p{
-      line-height:1.7;
-      color:#222;
-      max-width:850px;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px){
-      .topo{ padding:0 20px; }
-      .menu{ gap:16px; }
-
-      .bloco-imagens{
-        flex-direction:column;
-      }
-
-      .bloco-imagens img{
-        width:100%;
-      }
-    }
-  </style>
+.hero-imagens img{
+object-fit:cover;
+flex:0 0 70vw;
+width:70vw;
+}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- TOPO -->
-  <header class="topo">
-    <!-- TROQUE o src do logo pelo seu arquivo real -->
-    <img class="logo" src="logo.png" alt="Fulô de Pequi">
+<header>
+<nav class="topo">
+<div class="logo">
+<a href="index.html">
+<img src="assets/logo.png" alt="Fulô de Pequi">
+</a>
+</div>
 
-    <nav class="menu">
-      <a href="#inicio">INÍCIO</a>
-      <a href="#acomodacoes">ACOMODAÇÕES</a>
-      <a href="#tarifas">TARIFAS</a>
-      <a href="#contato">CONTATO</a>
-    </nav>
-  </header>
+<ul class="menu">
+<li><a href="index.html">Início</a></li>
+<li><a href="#acomodacoes">Acomodações</a></li>
+<li><a href="https://fulodepequi.com.br/reservas.html">Tarifas</a></li>
+<li>
+<a href="#outros">Outros</a>
+<ul class="submenu">
+<li><a href="#servicos">Serviços</a></li>
+<li><a href="#politicas">Políticas</a></li>
+</ul>
+</li>
+</ul>
+</nav>
 
-  <!-- BLOCO 1 -->
-  <section class="bloco-imagens" id="inicio">
-    <!-- TROQUE pelos nomes REAIS das suas imagens -->
-    <img src="foto1.jpg" alt="Chalé Fulô de Pequi">
-    <img src="foto2.jpg" alt="Chalé Fulô de Pequi">
-  </section>
+<section class="hero-imagens">
+<img src="assets/hero-1.jpg">
+<img src="assets/hero-2.jpg">
+<img src="assets/hero-3.jpg">
+<img src="assets/hero-4.jpg">
+<img src="assets/hero-5.jpg">
+<img src="assets/hero-6.jpg">
+<img src="assets/hero-7.jpg">
+<img src="assets/hero-8.jpg">
+<img src="assets/hero-9.jpg">
+<img src="assets/hero-10.jpg">
+<img src="assets/hero-11.jpg">
+<img src="assets/hero-12.jpg">
+</section>
+</header>
 
-  <!-- SEÇÕES -->
-  <section class="conteudo">
-    <h1>Fulô de Pequi</h1>
-    <p>
-      Um refúgio integrado à natureza, pensado para quem busca silêncio,
-      conforto e conexão com o território da Chapada dos Veadeiros.
-    </p>
-  </section>
+<section class="chale secao-ancora" id="acomodacoes">
+<div class="chale-centro">
+<a href="https://fulodepequi.com.br/reservas.html" class="btn-reserva">RESERVAR</a>
+<h1>Chalé Fulô de Pequi</h1>
+<h2>Conforto, natureza e tranquilidade</h2>
+<p>
+Viva a experiência de se conectar com a natureza em um espaço
+pensado para descanso, silêncio e bem-estar.
+</p>
+<a href="https://fulodepequi.com.br/reservas.html" class="btn-acomodacoes">ACOMODAÇÕES</a>
+</div>
 
-  <section class="conteudo" id="acomodacoes">
-    <h2>Acomodações</h2>
-    <p>
-      Chalés com arquitetura integrada ao cerrado, varanda, vista para o verde
-      e todo o conforto para uma estadia tranquila.
-    </p>
-  </section>
+<div class="banner-destaque secao-ancora" id="tarifas">
+<img src="assets/banner-destaque.jpg">
+</div>
+</section>
 
-  <section class="conteudo" id="tarifas">
-    <h2>Tarifas</h2>
-    <p>Consulte valores e disponibilidade.</p>
-  </section>
+<section class="institucional secao-ancora" id="servicos">
+<h2>FULÔ DE PEQUI</h2>
+<h3>onde o tempo desacelera</h3>
 
-  <section class="conteudo" id="contato">
-    <h2>Contato</h2>
-    <p>WhatsApp / Instagram</p>
-  </section>
+<p>
+Um refúgio no cerrado que une conforto, arquitetura e natureza
+em perfeita harmonia.
+</p>
+
+<a href="#" class="btn-servicos">SERVIÇOS</a>
+
+<!-- SLIDER -->
+<div class="slider-galeria">
+<div class="slider-track">
+<img src="assets/galeria/g1.jpg">
+<img src="assets/galeria/g2.jpg">
+<img src="assets/galeria/g3.jpg">
+<img src="assets/galeria/g4.jpg">
+<img src="assets/galeria/g5.jpg">
+<img src="assets/galeria/g6.jpg">
+<img src="assets/galeria/g7.jpg">
+<img src="assets/galeria/g8.jpg">
+
+<!-- duplicadas -->
+<img src="assets/galeria/g1.jpg">
+<img src="assets/galeria/g2.jpg">
+<img src="assets/galeria/g3.jpg">
+<img src="assets/galeria/g4.jpg">
+<img src="assets/galeria/g5.jpg">
+<img src="assets/galeria/g6.jpg">
+<img src="assets/galeria/g7.jpg">
+<img src="assets/galeria/g8.jpg">
+</div>
+</div>
+</section>
+
+<section class="politicas secao-ancora" id="politicas">
+<h2>POLÍTICAS</h2>
+<p>
+Confira as informações sobre regras da hospedagem, horários e condições
+de reserva para planejar sua estadia com tranquilidade.
+</p>
+</section>
+
+<footer class="rodape secao-ancora" id="outros">
+<div class="rodape-container">
+<div class="rodape-logo">
+<img src="assets/logo2.png" alt="Fulô de Pequi">
+</div>
+
+<div class="rodape-contato">
+<h3>CONTATO</h3>
+<div class="rodape-item">
+<span class="rodape-icone" aria-hidden="true">
+<svg viewBox="0 0 24 24" role="img" focusable="false">
+<path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"></path>
+<circle cx="12" cy="10" r="2.5"></circle>
+</svg>
+</span>
+<span>Cavalcante – GO</span>
+</div>
+<div class="rodape-item">
+<a href="https://wa.me/5562999350693">
+<span class="rodape-icone" aria-hidden="true">
+<svg viewBox="0 0 24 24" role="img" focusable="false">
+<path d="M22 16.5v3a2 2 0 0 1-2.2 2A19 19 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7l.6 3a2 2 0 0 1-.6 1.8L8.5 11a15 15 0 0 0 4.5 4.5l1.5-1.5a2 2 0 0 1 1.8-.6l3 .6a2 2 0 0 1 1.7 2z"></path>
+</svg>
+</span>
+<span>(62) 99935-0693</span>
+</a>
+</div>
+<div class="rodape-item">
+<a href="https://www.instagram.com/fulodpequi/">
+<span class="rodape-icone" aria-hidden="true">
+<svg viewBox="0 0 24 24" role="img" focusable="false">
+<rect x="3" y="3" width="18" height="18" rx="5"></rect>
+<circle cx="12" cy="12" r="4.5"></circle>
+<circle cx="17.2" cy="6.8" r="1"></circle>
+</svg>
+</span>
+<span>@fulodpequi</span>
+</a>
+</div>
+</div>
+</div>
+
+<div class="rodape-copy">
+© 2026 • Fulô de Pequi • Todos os direitos reservados
+</div>
+</footer>
 
 </body>
 </html>
