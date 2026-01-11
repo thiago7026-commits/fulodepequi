@@ -5,16 +5,19 @@
 <title>Fulô de Pequi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial, sans-serif;
+  font-family:"Poppins", sans-serif;
 }
 
-html, body{
-  width:100%;
+body{
   overflow-x:hidden;
 }
 
@@ -43,254 +46,94 @@ html, body{
   color:#fff;
   text-decoration:none;
   text-transform:uppercase;
-  font-size:14px;
+  font-size:13px;
   letter-spacing:1px;
 }
 
-/* ================= HERO (PRIMEIRO BLOCO - ASSETS HERO) ================= */
-.hero-imagens{
-  height:42vh;
-  max-height:420px;
-  min-height:320px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-
-  /* ✅ RESPIRO: impede texto/botões de “encostar” no hero */
-  margin-bottom:80px;
-}
-
-.hero-imagens img{
+/* ================= HERO ================= */
+.hero{
+  position:relative;
   width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
 }
 
-/* ================= CHALÉ ================= */
-/* ✅ antes estava 180px e fazia o conteúdo “subir” demais */
-.chale{
-  padding:80px 0 0;
-}
-
-.chale-centro{
-  max-width:860px;
-  margin:0 auto;
-  padding:0 20px 60px;
-  text-align:center;
-}
-
-.btn-reserva{
-  display:inline-block;
-  margin-bottom:30px;
-  padding:14px 46px;
-  background:#2f3b2a;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-  font-size:14px;
-}
-
-.chale-centro h1{
-  font-size:42px;
-}
-
-.chale-centro h2{
-  font-size:18px;
-  color:#777;
-  margin:20px 0 30px;
-}
-
-.chale-centro p{
-  font-size:16px;
-  line-height:1.9;
-  color:#555;
-}
-
-/* ================= BOTÃO ================= */
-/* ✅ mais espaçamento para não “colar” no texto nem no hero */
-.btn-acomodacoes{
-  display:block;
-  width:fit-content;
-  margin:40px auto 30px;
-  padding:12px 36px;
-  background:#9e9f94;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-  font-size:13px;
-}
-
-/* ================= BANNER ================= */
-.banner-destaque{
-  height:420px;
+.hero-imagens{
+  display:flex;
+  width:100%;
+  height:85vh;
   overflow:hidden;
 }
 
-.banner-destaque img{
-  width:100%;
+.hero-imagens img{
+  width:33.33%;
   height:100%;
   object-fit:cover;
-  display:block;
 }
 
-/* ================= INSTITUCIONAL ================= */
-.institucional{
-  padding:90px 0 0;
+/* ================= CONTEÚDO HERO ================= */
+.hero-conteudo{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  padding:40px 20px;
   text-align:center;
+
+  background:rgba(0,0,0,0.35); /* 🔥 resolve o problema do texto em cima da imagem */
 }
 
-.institucional h2{
-  font-size:28px;
-  color:#2f3b2a;
-}
-
-.institucional h3{
-  font-size:22px;
-  margin:20px 0 30px;
-  font-weight:normal;
-}
-
-.institucional p{
-  max-width:900px;
-  margin:0 auto;
-  font-size:15px;
-  line-height:1.9;
-  color:#666;
-}
-
-.btn-servicos{
+/* BOTÃO */
+.btn-reservar{
   display:inline-block;
-  margin:40px 0 60px;
-  padding:12px 40px;
-  background:#9e9f94;
+  padding:14px 36px;
+  margin-bottom:26px;
+
+  background:#2f3b2a;
   color:#fff;
   text-decoration:none;
+  font-size:13px;
   letter-spacing:2px;
-  font-size:13px;
+
+  border-radius:2px;
+  transition:all 0.3s ease;
 }
 
-/* ================= SEGUNDO BLOCO (GALERIA PERTO DO RODAPÉ) ================= */
-.galeria-horizontal{
-  width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-  padding:20px 0 50px;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
+.btn-reservar:hover{
+  background:#3f4d38;
+  transform:translateY(-2px);
 }
 
-.galeria-horizontal::-webkit-scrollbar{
-  display:none;
+/* TEXTOS */
+.hero-conteudo h1{
+  font-size:clamp(32px, 5vw, 56px);
+  color:#fff;
+  margin-bottom:18px;
 }
 
-.galeria-track{
-  display:flex;
-  gap:20px;
-  padding:0 40px;
-}
-
-.galeria-track img{
-  flex:0 0 auto;
-  width:32vw;
-  max-width:420px;
-  min-width:280px;
-  height:360px;
-  object-fit:cover;
-  display:block;
-}
-
-/* ================= RODAPÉ ================= */
-.rodape{
-  background:#C2C1BB;
-  padding:80px 40px 40px;
-}
-
-.rodape-container{
-  max-width:1200px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:80px;
-  align-items:center;
-}
-
-.rodape-logo{
-  display:flex;
-  justify-content:center;
-}
-
-.rodape-logo img{
-  max-width:220px;
-  display:block;
-}
-
-.rodape-contato{
-  text-align:center;
-}
-
-.rodape-contato h3{
-  font-size:22px;
-  margin-bottom:20px;
-  color:#2f3b2a;
-}
-
-.rodape-item{
-  margin-bottom:14px;
-  font-size:15px;
-}
-
-.rodape-item a{
-  color:#333;
-  text-decoration:none;
-}
-
-.rodape-copy{
-  text-align:center;
-  margin-top:40px;
-  font-size:13px;
-  border-top:1px solid rgba(0,0,0,0.15);
-  padding-top:20px;
+.hero-conteudo p{
+  max-width:700px;
+  color:#eaeaea;
+  font-size:16px;
+  line-height:1.6;
 }
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-  .menu{display:none;}
-
-  /* mobile estava bom: mantém */
   .hero-imagens{
-    grid-template-columns:1fr;
+    flex-direction:column;
     height:auto;
-    max-height:none;
-    min-height:0;
-    margin-bottom:40px; /* respiro menor no mobile */
   }
 
   .hero-imagens img{
-    height:300px;
+    width:100%;
+    height:33vh;
   }
 
-  .chale{
-    padding:40px 0 0;
-  }
-
-  .banner-destaque{
-    height:260px;
-  }
-
-  .galeria-track{
-    padding:0 20px;
-  }
-
-  .galeria-track img{
-    width:80vw;
-    min-width:0;
-    height:260px;
-  }
-
-  .rodape-container{
-    grid-template-columns:1fr;
+  .hero-conteudo{
+    position:absolute;
   }
 }
 </style>
@@ -298,95 +141,42 @@ html, body{
 
 <body>
 
-<header>
-  <nav class="topo">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Fulô de Pequi">
-    </div>
+<!-- ================= TOPO ================= -->
+<header class="topo">
+  <div class="logo">
+    <a href="index.html">
+      <img src="img/logo.png" alt="Fulô de Pequi">
+    </a>
+  </div>
 
-    <ul class="menu">
-      <li><a href="index.html">Início</a></li>
-      <li><a href="reservas.html">Reservas</a></li>
-      <li><a href="#">Contato</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO (assets/hero-1,2,3) -->
-  <section class="hero-imagens">
-    <img src="assets/hero-1.jpg" alt="">
-    <img src="assets/hero-2.jpg" alt="">
-    <img src="assets/hero-3.jpg" alt="">
-  </section>
+  <ul class="menu">
+    <li><a href="#acomodacoes">Acomodações</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="reservas.html">Reservas</a></li>
+  </ul>
 </header>
 
-<section class="chale">
-  <div class="chale-centro">
-    <a href="reservas.html" class="btn-reserva">RESERVAR</a>
+<!-- ================= HERO ================= -->
+<section class="hero">
+
+  <div class="hero-imagens">
+    <img src="img/hero1.jpg" alt="">
+    <img src="img/hero2.jpg" alt="">
+    <img src="img/hero3.jpg" alt="">
+  </div>
+
+  <div class="hero-conteudo">
+    <a href="reservas.html" class="btn-reservar">RESERVAR</a>
+
     <h1>Chalé Fulô de Pequi</h1>
-    <h2>Conforto, natureza e tranquilidade</h2>
+
     <p>
-      Viva a experiência de se conectar com a natureza em um espaço
-      pensado para descanso, silêncio e bem-estar.
+      Viva a experiência de se conectar com a natureza em um espaço pensado
+      para descanso, silêncio e bem-estar.
     </p>
   </div>
 
-  <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
-
-  <div class="banner-destaque">
-    <img src="assets/banner-destaque.jpg" alt="">
-  </div>
 </section>
-
-<section class="institucional">
-  <h2>FULÔ DE PEQUI</h2>
-  <h3>onde o tempo desacelera</h3>
-
-  <p>
-    Um refúgio no cerrado que une conforto, arquitetura e natureza
-    em perfeita harmonia.
-  </p>
-
-  <a href="#" class="btn-servicos">SERVIÇOS</a>
-
-  <!-- GALERIA -->
-  <section class="galeria-horizontal">
-    <div class="galeria-track">
-      <img src="assets/galeria/g1.jpg" alt="">
-      <img src="assets/galeria/g2.jpg" alt="">
-      <img src="assets/galeria/g3.jpg" alt="">
-      <img src="assets/galeria/g4.jpg" alt="">
-      <img src="assets/galeria/g5.jpg" alt="">
-      <img src="assets/galeria/g6.jpg" alt="">
-      <img src="assets/galeria/g7.jpg" alt="">
-      <img src="assets/galeria/g8.jpg" alt="">
-      <img src="assets/galeria/g9.jpg" alt="">
-      <img src="assets/galeria/g10.jpg" alt="">
-    </div>
-  </section>
-</section>
-
-<footer class="rodape">
-  <div class="rodape-container">
-    <div class="rodape-logo">
-      <img src="assets/logo2.png" alt="Fulô de Pequi">
-    </div>
-
-    <div class="rodape-contato">
-      <h3>CONTATO</h3>
-      <div class="rodape-item">📍 Cavalcante – GO</div>
-      <div class="rodape-item">
-        <a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a>
-      </div>
-      <div class="rodape-item">
-        <a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="rodape-copy">
-    © 2026 • Fulô de Pequi • Todos os direitos reservados
-  </div>
-</footer>
 
 </body>
 </html>
