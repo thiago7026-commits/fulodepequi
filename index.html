@@ -13,6 +13,11 @@
   font-family:Arial, sans-serif;
 }
 
+html, body{
+  width:100%;
+  overflow-x:hidden; /* ✅ evita estouro lateral */
+}
+
 /* ================= TOPO ================= */
 .topo{
   height:90px;
@@ -25,6 +30,7 @@
 
 .logo img{
   height:70px;
+  display:block; /* ✅ evita espaços estranhos em imagem */
 }
 
 .menu{
@@ -52,6 +58,7 @@
   width:100%;
   height:100%;
   object-fit:cover;
+  display:block; /* ✅ evita “gap” */
 }
 
 /* ================= CHALÉ ================= */
@@ -116,6 +123,7 @@
   width:100%;
   height:100%;
   object-fit:cover;
+  display:block;
 }
 
 /* ================= INSTITUCIONAL ================= */
@@ -156,14 +164,14 @@
 
 /* ================= SLIDER FULL WIDTH ================= */
 .slider-galeria{
-  width:100vw;
+  width:100%;           /* ✅ era 100vw */
   overflow:hidden;
   margin-top:20px;
 }
 
 .slider-track{
   display:flex;
-  width:200%;
+  width:max-content;    /* ✅ não força 200% errado */
   animation:slide 45s linear infinite;
 }
 
@@ -172,9 +180,12 @@
   height:360px;
   object-fit:cover;
   flex-shrink:0;
+  display:block;
 }
 
-/* animação contínua */
+/* animação contínua
+   ✅ como duplicamos tudo, -50% funciona certinho
+*/
 @keyframes slide{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
@@ -202,6 +213,7 @@
 
 .rodape-logo img{
   max-width:220px;
+  display:block;
 }
 
 .rodape-contato{
@@ -276,9 +288,9 @@
   </nav>
 
   <section class="hero-imagens">
-    <img src="assets/hero-1.jpg">
-    <img src="assets/hero-2.jpg">
-    <img src="assets/hero-3.jpg">
+    <img src="assets/hero-1.jpg" alt="">
+    <img src="assets/hero-2.jpg" alt="">
+    <img src="assets/hero-3.jpg" alt="">
   </section>
 </header>
 
@@ -296,7 +308,7 @@
   <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
 
   <div class="banner-destaque">
-    <img src="assets/banner-destaque.jpg">
+    <img src="assets/banner-destaque.jpg" alt="">
   </div>
 </section>
 
@@ -314,20 +326,25 @@
   <!-- SLIDER -->
   <div class="slider-galeria">
     <div class="slider-track">
-      <img src="assets/galeria/g1.jpg">
-      <img src="assets/galeria/g2.jpg">
-      <img src="assets/galeria/g3.jpg">
-      <img src="assets/galeria/g4.jpg">
-      <img src="assets/galeria/g5.jpg">
-      <img src="assets/galeria/g6.jpg">
-      <img src="assets/galeria/g7.jpg">
-      <img src="assets/galeria/g8.jpg">
+      <!-- 8 imagens -->
+      <img src="assets/galeria/g1.jpg" alt="">
+      <img src="assets/galeria/g2.jpg" alt="">
+      <img src="assets/galeria/g3.jpg" alt="">
+      <img src="assets/galeria/g4.jpg" alt="">
+      <img src="assets/galeria/g5.jpg" alt="">
+      <img src="assets/galeria/g6.jpg" alt="">
+      <img src="assets/galeria/g7.jpg" alt="">
+      <img src="assets/galeria/g8.jpg" alt="">
 
-      <!-- duplicadas -->
-      <img src="assets/galeria/g1.jpg">
-      <img src="assets/galeria/g2.jpg">
-      <img src="assets/galeria/g3.jpg">
-      <img src="assets/galeria/g4.jpg">
+      <!-- ✅ duplicadas (todas as 8) -->
+      <img src="assets/galeria/g1.jpg" alt="">
+      <img src="assets/galeria/g2.jpg" alt="">
+      <img src="assets/galeria/g3.jpg" alt="">
+      <img src="assets/galeria/g4.jpg" alt="">
+      <img src="assets/galeria/g5.jpg" alt="">
+      <img src="assets/galeria/g6.jpg" alt="">
+      <img src="assets/galeria/g7.jpg" alt="">
+      <img src="assets/galeria/g8.jpg" alt="">
     </div>
   </div>
 </section>
