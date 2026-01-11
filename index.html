@@ -1,554 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Fulô de Pequi</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Fulô de Pequi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Poppins", "Montserrat", sans-serif;
-}
+  <!-- FONTES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-/* ================= TOPO ================= */
-.topo{
-  height:90px;
-  background:#2f3b2a;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 40px;
-}
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Poppins", sans-serif;
+    }
 
-.logo img{
-  height:70px;
-}
+    body{
+      background:#fff;
+      color:#222;
+    }
 
-.logo a{
-  display:inline-block;
-  line-height:0;
-  text-decoration:none;
-}
+    /* ================= TOPO ================= */
+    header{
+      height:90px;
+      background:#2f3b2f;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 60px;
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
 
-.menu{
-  list-style:none;
-  display:flex;
-  gap:30px;
-}
+    header img{
+      height:48px;
+    }
 
-.menu li{
-  position:relative;
-}
+    nav{
+      display:flex;
+      gap:32px;
+    }
 
-.menu a{
-  color:#fff;
-  text-decoration:none;
-  text-transform:uppercase;
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:1px;
-}
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:500;
+      letter-spacing:1.5px;
+      transition:opacity .3s ease;
+    }
 
-.submenu{
-  list-style:none;
-  position:absolute;
-  top:100%;
-  left:0;
-  background:#2f3b2a;
-  padding:16px;
-  display:none;
-  flex-direction:column;
-  gap:10px;
-  min-width:180px;
-  z-index:10;
-}
+    nav a:hover{
+      opacity:.7;
+    }
 
-.menu li:hover .submenu,
-.menu li:focus-within .submenu{
-  display:flex;
-}
+    /* ================= HERO / GALERIA ================= */
+    .galeria{
+      display:flex;
+      width:100%;
+      max-height:85vh;
+      overflow:hidden;
+      background:#000;
+    }
 
-.submenu a{
-  display:block;
-  padding:10px 14px;
-  background:#9e9f94;
-  color:#fff;
-  text-align:center;
-  font-size:12px;
-  letter-spacing:1px;
-}
+    .galeria img{
+      width:50%;
+      height:85vh;
+      object-fit:contain; /* mantém imagem inteira */
+      display:block;
+    }
 
-/* ================= HERO ================= */
-.hero-imagens{
-  height:647px;
-  display:flex;
-  align-items:center;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
-  background:#111;
-}
+    /* ================= SEÇÕES ================= */
+    section.conteudo{
+      padding:90px 60px;
+      max-width:1200px;
+      margin:auto;
+    }
 
-.hero-imagens img{
-  width:647px;
-  height:647px;
-  object-fit:cover;
-  flex:0 0 647px;
-  scroll-snap-align:start;
-}
+    h2{
+      font-size:34px;
+      margin-bottom:24px;
+      color:#2f3b2f;
+      font-weight:600;
+    }
 
-.hero-imagens::-webkit-scrollbar{
-  height:8px;
-}
+    p{
+      font-size:16px;
+      line-height:1.8;
+      max-width:820px;
+      color:#333;
+    }
 
-.hero-imagens::-webkit-scrollbar-track{
-  background:rgba(255,255,255,0.15);
-}
+    /* ================= RESPONSIVO ================= */
+    @media (max-width: 768px){
+      header{
+        padding:0 24px;
+      }
 
-.hero-imagens::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,0.4);
-  border-radius:10px;
-}
+      nav{
+        display:none;
+      }
 
-.secao-ancora{
-  scroll-margin-top:110px;
-}
+      .galeria{
+        flex-direction:column;
+        max-height:none;
+      }
 
-/* ================= CHALÉ ================= */
-.chale{
-  padding:150px 0 0;
-}
+      .galeria img{
+        width:100%;
+        height:auto;
+      }
 
-.chale-centro{
-  max-width:860px;
-  margin:0 auto;
-  padding:0 20px 50px;
-  text-align:center;
-}
+      section.conteudo{
+        padding:60px 24px;
+      }
 
-.btn-reserva{
-  display:inline-block;
-  margin-bottom:16px;
-  padding:12px 44px;
-  background:#2f3b2a;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-  font-size:14px;
-}
-
-.chale-centro h1{
-  font-size:44px;
-  font-weight:700;
-}
-
-.chale-centro h2{
-  font-size:20px;
-  font-weight:500;
-  color:#777;
-  margin:20px 0 30px;
-}
-
-.chale-centro p{
-  font-size:16px;
-  line-height:1.9;
-  color:#555;
-}
-
-/* ================= BOTÃO ================= */
-.btn-acomodacoes{
-  display:inline-block;
-  margin:28px auto 0;
-  padding:12px 34px;
-  background:#9e9f94;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-  font-size:13px;
-}
-
-/* ================= BANNER ================= */
-.banner-destaque{
-  height:420px;
-  overflow:hidden;
-}
-
-.banner-destaque img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* ================= INSTITUCIONAL ================= */
-.institucional{
-  padding:90px 0 0;
-  text-align:center;
-}
-
-.institucional h2{
-  font-size:30px;
-  font-weight:700;
-  color:#2f3b2a;
-}
-
-.institucional h3{
-  font-size:20px;
-  margin:20px 0 30px;
-  font-weight:500;
-}
-
-.institucional p{
-  max-width:900px;
-  margin:0 auto;
-  font-size:15px;
-  line-height:1.9;
-  color:#666;
-}
-
-.btn-servicos{
-  display:inline-block;
-  margin:40px 0 60px;
-  padding:12px 40px;
-  background:#9e9f94;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-  font-size:13px;
-}
-
-/* ================= POLÍTICAS ================= */
-.politicas{
-  padding:80px 20px 40px;
-  text-align:center;
-}
-
-.politicas h2{
-  font-size:28px;
-  color:#2f3b2a;
-  margin-bottom:16px;
-}
-
-.politicas p{
-  max-width:780px;
-  margin:0 auto;
-  font-size:15px;
-  line-height:1.8;
-  color:#666;
-}
-
-/* ================= SLIDER FULL WIDTH ================= */
-.slider-galeria{
-  width:100vw;
-  overflow:hidden;
-  margin-top:20px;
-}
-
-.slider-track{
-  display:flex;
-  width:calc(647px * 16);
-  animation:slide 45s linear infinite;
-}
-
-.slider-track img{
-  width:647px;
-  height:647px;
-  border-radius:0;
-  object-fit:cover;
-  flex-shrink:0;
-}
-
-/* animação contínua */
-@keyframes slide{
-  from{ transform:translateX(0); }
-  to{ transform:translateX(-50%); }
-}
-
-/* ================= RODAPÉ ================= */
-.rodape{
-  background:#C2C1BB;
-  padding:80px 40px 40px;
-}
-
-.rodape-container{
-  max-width:1200px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:80px;
-  align-items:center;
-}
-
-.rodape-logo{
-  display:flex;
-  justify-content:center;
-}
-
-.rodape-logo img{
-  max-width:220px;
-}
-
-.rodape-contato{
-  text-align:center;
-}
-
-.rodape-contato h3{
-  font-size:22px;
-  margin-bottom:20px;
-  color:#2f3b2a;
-}
-
-.rodape-item{
-  margin-bottom:14px;
-  font-size:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  color:#4a4a4a;
-}
-
-.rodape-item a{
-  color:inherit;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-
-.rodape-icone{
-  display:inline-flex;
-  color:#2f3b2a;
-}
-
-.rodape-icone svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
-  fill:none;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.rodape-copy{
-  text-align:center;
-  margin-top:40px;
-  font-size:13px;
-  border-top:1px solid rgba(0,0,0,0.15);
-  padding-top:20px;
-}
-
-/* ================= RESPONSIVO ================= */
-@media(max-width:900px){
-  .topo{
-    flex-direction:column;
-    height:auto;
-    padding:20px;
-    gap:16px;
-  }
-
-  .menu{
-    width:100%;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:wrap;
-  }
-
-  .hero-imagens{
-    height:auto;
-  }
-
-  .hero-imagens img{
-    width:100%;
-    height:auto;
-    aspect-ratio:1 / 1;
-    flex:0 0 100%;
-  }
-
-  .banner-destaque{
-    height:260px;
-  }
-
-  .slider-track img{
-    width:647px;
-    height:647px;
-  }
-
-  .rodape-container{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(min-width:901px){
-  .hero-imagens{
-    gap:0;
-  }
-
-  .hero-imagens img{
-    object-fit:cover;
-    flex:0 0 647px;
-    width:647px;
-  }
-}
-</style>
+      h2{
+        font-size:28px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <nav class="topo">
-    <div class="logo">
-      <a href="index.html">
-        <img src="assets/logo.png" alt="Fulô de Pequi">
-      </a>
-    </div>
+  <!-- TOPO -->
+  <header>
+    <img src="images/logo.png" alt="Fulô de Pequi">
+    <nav>
+      <a href="#inicio">INÍCIO</a>
+      <a href="#acomodacoes">ACOMODAÇÕES</a>
+      <a href="#tarifas">TARIFAS</a>
+      <a href="#contato">CONTATO</a>
+    </nav>
+  </header>
 
-    <ul class="menu">
-      <li><a href="index.html">Início</a></li>
-      <li><a href="#acomodacoes">Acomodações</a></li>
-      <li><a href="https://fulodepequi.com.br/reservas.html">Tarifas</a></li>
-      <li>
-        <a href="#outros">Outros</a>
-        <ul class="submenu">
-          <li><a href="#servicos">Serviços</a></li>
-          <li><a href="#politicas">Políticas</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-
-  <section class="hero-imagens">
-    <img src="assets/hero-1.jpg">
-    <img src="assets/hero-2.jpg">
-    <img src="assets/hero-3.jpg">
-    <img src="assets/hero-4.jpg">
-    <img src="assets/hero-5.jpg">
-    <img src="assets/hero-6.jpg">
-    <img src="assets/hero-7.jpg">
-    <img src="assets/hero-8.jpg">
-    <img src="assets/hero-9.jpg">
-    <img src="assets/hero-10.jpg">
-    <img src="assets/hero-11.jpg">
-    <img src="assets/hero-12.jpg">
-    <img src="assets/hero-13.jpg">
+  <!-- HERO / PRIMEIRO BLOCO -->
+  <section class="galeria" id="inicio">
+    <img src="images/foto1.jpg" alt="Chalé Fulô de Pequi">
+    <img src="images/foto2.jpg" alt="Chalé Fulô de Pequi">
   </section>
-</header>
 
-<section class="chale secao-ancora" id="acomodacoes">
-  <div class="chale-centro">
-    <a href="https://fulodepequi.com.br/reservas.html" class="btn-reserva">RESERVAR</a>
-    <h1>Chalé Fulô de Pequi</h1>
-    <h2>Conforto, natureza e tranquilidade</h2>
+  <!-- SOBRE -->
+  <section class="conteudo">
+    <h2>Fulô de Pequi</h2>
     <p>
-      Viva a experiência de se conectar com a natureza em um espaço
-      pensado para descanso, silêncio e bem-estar.
+      Um refúgio integrado à natureza, pensado para quem busca silêncio,
+      conforto e conexão com o território da Chapada dos Veadeiros.
+      Arquitetura contemporânea, paisagem preservada e uma experiência
+      de hospedagem simples, bonita e verdadeira.
     </p>
-    <a href="https://fulodepequi.com.br/reservas.html" class="btn-acomodacoes">ACOMODAÇÕES</a>
-  </div>
+  </section>
 
-  <div class="banner-destaque secao-ancora" id="tarifas">
-    <img src="assets/banner-destaque.jpg">
-  </div>
-</section>
+  <!-- ACOMODAÇÕES -->
+  <section class="conteudo" id="acomodacoes">
+    <h2>Acomodações</h2>
+    <p>
+      Chalés projetados para oferecer conforto térmico, privacidade e
+      integração com o cerrado. Ambientes amplos, varanda e vista para o verde.
+    </p>
+  </section>
 
-<section class="institucional secao-ancora" id="servicos">
-  <h2>FULÔ DE PEQUI</h2>
-  <h3>onde o tempo desacelera</h3>
-
-  <p>
-    Um refúgio no cerrado que une conforto, arquitetura e natureza
-    em perfeita harmonia.
-  </p>
-
-  <a href="#" class="btn-servicos">SERVIÇOS</a>
-
-  <!-- SLIDER -->
-  <div class="slider-galeria">
-    <div class="slider-track">
-      <img src="assets/galeria/g1.jpg">
-      <img src="assets/galeria/g2.jpg">
-      <img src="assets/galeria/g3.jpg">
-      <img src="assets/galeria/g4.jpg">
-      <img src="assets/galeria/g5.jpg">
-      <img src="assets/galeria/g6.jpg">
-      <img src="assets/galeria/g7.jpg">
-      <img src="assets/galeria/g8.jpg">
-
-      <!-- duplicadas -->
-      <img src="assets/galeria/g1.jpg">
-      <img src="assets/galeria/g2.jpg">
-      <img src="assets/galeria/g3.jpg">
-      <img src="assets/galeria/g4.jpg">
-      <img src="assets/galeria/g5.jpg">
-      <img src="assets/galeria/g6.jpg">
-      <img src="assets/galeria/g7.jpg">
-      <img src="assets/galeria/g8.jpg">
-    </div>
-  </div>
-</section>
-
-<section class="politicas secao-ancora" id="politicas">
-  <h2>POLÍTICAS</h2>
-  <p>
-    Confira as informações sobre regras da hospedagem, horários e condições
-    de reserva para planejar sua estadia com tranquilidade.
-  </p>
-</section>
-
-<footer class="rodape secao-ancora" id="outros">
-  <div class="rodape-container">
-    <div class="rodape-logo">
-      <img src="assets/logo2.png" alt="Fulô de Pequi">
-    </div>
-
-    <div class="rodape-contato">
-      <h3>CONTATO</h3>
-      <div class="rodape-item">
-        <span class="rodape-icone" aria-hidden="true">
-          <svg viewBox="0 0 24 24" role="img" focusable="false">
-            <path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"></path>
-            <circle cx="12" cy="10" r="2.5"></circle>
-          </svg>
-        </span>
-        <span>Cavalcante – GO</span>
-      </div>
-      <div class="rodape-item">
-        <a href="https://wa.me/5562999350693">
-          <span class="rodape-icone" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img" focusable="false">
-              <path d="M22 16.5v3a2 2 0 0 1-2.2 2A19 19 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7l.6 3a2 2 0 0 1-.6 1.8L8.5 11a15 15 0 0 0 4.5 4.5l1.5-1.5a2 2 0 0 1 1.8-.6l3 .6a2 2 0 0 1 1.7 2z"></path>
-            </svg>
-          </span>
-          <span>(62) 99935-0693</span>
-        </a>
-      </div>
-      <div class="rodape-item">
-        <a href="https://www.instagram.com/fulodpequi/">
-          <span class="rodape-icone" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img" focusable="false">
-              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-              <circle cx="12" cy="12" r="4.5"></circle>
-              <circle cx="17.2" cy="6.8" r="1"></circle>
-            </svg>
-          </span>
-          <span>@fulodpequi</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="rodape-copy">
-    © 2026 • Fulô de Pequi • Todos os direitos reservados
-  </div>
-</footer>
+  <!-- TARIFAS -->
+  <section class="conteudo" id="tarifas">
+    <h2>Tarifas</h2>
+    <p>
+      Consulte valores e disponibilidade diretamente pelo WhatsApp
+      ou pelas redes sociais.
+    </p>
+  </section>
 
 </body>
 </html>
