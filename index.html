@@ -47,9 +47,9 @@ html, body{
   letter-spacing:1px;
 }
 
-/* ================= CHALÉ (AGORA É O PRIMEIRO BLOCO) ================= */
+/* ================= CHALÉ (PRIMEIRO BLOCO) ================= */
 .chale{
-  padding:160px 0 0; /* ajustado pois o hero foi removido */
+  padding:160px 0 0;
 }
 
 .chale-centro{
@@ -114,7 +114,7 @@ html, body{
 
 /* ================= INSTITUCIONAL ================= */
 .institucional{
-  padding:90px 0 0;
+  padding:90px 0;
   text-align:center;
 }
 
@@ -139,44 +139,13 @@ html, body{
 
 .btn-servicos{
   display:inline-block;
-  margin:40px 0 60px;
+  margin:40px 0 0;
   padding:12px 40px;
   background:#9e9f94;
   color:#fff;
   text-decoration:none;
   letter-spacing:2px;
   font-size:13px;
-}
-
-/* ================= GALERIA (SEGUNDO BLOCO DE IMAGENS) ================= */
-.galeria-horizontal{
-  width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-  padding:20px 0 50px;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
-}
-
-.galeria-horizontal::-webkit-scrollbar{
-  display:none;
-}
-
-.galeria-track{
-  display:flex;
-  gap:20px;
-  padding:0 40px;
-}
-
-.galeria-track img{
-  flex:0 0 auto;
-  width:32vw;
-  max-width:420px;
-  min-width:280px;
-  height:360px;
-  object-fit:cover;
-  display:block;
 }
 
 /* ================= RODAPÉ ================= */
@@ -240,16 +209,6 @@ html, body{
     height:260px;
   }
 
-  .galeria-track{
-    padding:0 20px;
-  }
-
-  .galeria-track img{
-    width:80vw;
-    min-width:0;
-    height:260px;
-  }
-
   .rodape-container{
     grid-template-columns:1fr;
   }
@@ -273,7 +232,7 @@ html, body{
   </nav>
 </header>
 
-<!-- AGORA O SITE COMEÇA AQUI -->
+<!-- SITE COMEÇA AQUI -->
 <section class="chale">
   <div class="chale-centro">
     <a href="reservas.html" class="btn-reserva">RESERVAR</a>
@@ -302,19 +261,6 @@ html, body{
   </p>
 
   <a href="#" class="btn-servicos">SERVIÇOS</a>
-
-  <section class="galeria-horizontal">
-    <div class="galeria-track">
-      <img src="assets/galeria/g1.jpg" alt="">
-      <img src="assets/galeria/g2.jpg" alt="">
-      <img src="assets/galeria/g3.jpg" alt="">
-      <img src="assets/galeria/g4.jpg" alt="">
-      <img src="assets/galeria/g5.jpg" alt="">
-      <img src="assets/galeria/g6.jpg" alt="">
-      <img src="assets/galeria/g7.jpg" alt="">
-      <img src="assets/galeria/g8.jpg" alt="">
-    </div>
-  </section>
 </section>
 
 <footer class="rodape">
