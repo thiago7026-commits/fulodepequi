@@ -18,14 +18,18 @@ html, body{
   overflow-x:hidden;
 }
 
-/* ================= TOPO ================= */
+/* ================= TOPO (LOGO ESQUERDA + MENU CENTRAL) ================= */
 .topo{
   height:90px;
   background:#2f3b2a;
-  display:flex;
+  display:grid;
+  grid-template-columns:auto 1fr;
   align-items:center;
-  justify-content:space-between;
   padding:0 40px;
+}
+
+.logo{
+  justify-self:start;
 }
 
 .logo img{
@@ -33,18 +37,39 @@ html, body{
   display:block;
 }
 
+/* menu centralizado */
 .menu{
   list-style:none;
   display:flex;
-  gap:30px;
+  justify-content:center;
+  gap:50px;
+  margin:0;
+  padding:0;
+}
+
+.menu li{
+  position:relative;
 }
 
 .menu a{
   color:#fff;
   text-decoration:none;
   text-transform:uppercase;
-  font-size:14px;
-  letter-spacing:1px;
+  font-size:13px;
+  letter-spacing:2px;
+  padding:10px 0;
+}
+
+/* linha sutil em cima (estilo ecolodge) */
+.menu li::before{
+  content:"";
+  position:absolute;
+  top:-12px;
+  left:50%;
+  width:32px;
+  height:1px;
+  background:rgba(255,255,255,0.5);
+  transform:translateX(-50%);
 }
 
 /* ================= HERO (3 IMAGENS) ================= */
@@ -54,7 +79,7 @@ html, body{
   min-height:320px;
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  margin:0; /* evita “colar” com o bloco branco */
+  margin:0;
 }
 
 .hero-imagens img{
@@ -122,7 +147,7 @@ html, body{
 
 /* ================= BANNER ================= */
 .banner-destaque{
-  margin-top:40px; /* espaço entre bloco branco e banner */
+  margin-top:40px;
   height:420px;
   overflow:hidden;
 }
@@ -319,21 +344,22 @@ html, body{
     </div>
 
     <ul class="menu">
-      <li><a href="index.html">Início</a></li>
-      <li><a href="reservas.html">Reservas</a></li>
-      <li><a href="#">Contato</a></li>
+      <li><a href="#inicio">INÍCIO</a></li>
+      <li><a href="#acomodacoes">ACOMODAÇÕES</a></li>
+      <li><a href="#servicos">SERVIÇOS</a></li>
+      <li><a href="#politica">POLÍTICA</a></li>
     </ul>
   </nav>
 
-  <!-- HERO: SÓ IMAGENS -->
-  <section class="hero-imagens">
+  <!-- HERO -->
+  <section class="hero-imagens" id="inicio">
     <img src="assets/hero-1.jpg" alt="">
     <img src="assets/hero-2.jpg" alt="">
     <img src="assets/hero-3.jpg" alt="">
   </section>
 </header>
 
-<!-- BLOCO BRANCO: BOTÕES + TEXTO (IGUAL PC E CELULAR) -->
+<!-- BLOCO BRANCO -->
 <section class="intro">
   <div class="intro-centro">
     <a href="reservas.html" class="btn-reserva">RESERVAR</a>
@@ -343,7 +369,7 @@ html, body{
       Viva a experiência de se conectar com a natureza em um espaço
       pensado para descanso, silêncio e bem-estar.
     </p>
-    <a href="#" class="btn-acomodacoes">ACOMODAÇÕES</a>
+    <a href="#acomodacoes" class="btn-acomodacoes">ACOMODAÇÕES</a>
   </div>
 </section>
 
@@ -352,7 +378,7 @@ html, body{
   <img src="assets/banner-destaque.jpg" alt="">
 </div>
 
-<section class="institucional">
+<section class="institucional" id="acomodacoes">
   <h2>FULÔ DE PEQUI</h2>
   <h3>onde o tempo desacelera</h3>
 
@@ -361,7 +387,7 @@ html, body{
     em perfeita harmonia.
   </p>
 
-  <a href="#" class="btn-servicos">SERVIÇOS</a>
+  <a href="#servicos" class="btn-servicos">SERVIÇOS</a>
 
   <!-- GALERIA -->
   <section class="galeria-horizontal">
@@ -378,6 +404,24 @@ html, body{
       <img src="assets/galeria/g10.jpg" alt="">
     </div>
   </section>
+</section>
+
+<!-- ÂNCORA SERVIÇOS -->
+<section class="institucional" id="servicos">
+  <h2>SERVIÇOS</h2>
+  <h3>experiências pensadas para você</h3>
+  <p>
+    Aqui você pode listar os serviços do chalé (café, fogueira, trilhas, etc.).
+  </p>
+</section>
+
+<!-- ÂNCORA POLÍTICA -->
+<section class="institucional" id="politica">
+  <h2>POLÍTICA</h2>
+  <h3>regras e informações importantes</h3>
+  <p>
+    Aqui você pode colocar política de cancelamento, check-in/check-out e regras do espaço.
+  </p>
 </section>
 
 <footer class="rodape">
