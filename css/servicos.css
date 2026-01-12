@@ -1,9 +1,77 @@
-/* FUNDO TOTAL VERDE (TIRA O BRANCO) */
-html, body{
-  background:#2f3b2a;
+/* ================= BASE ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* TÍTULO MAIS HARMONIOSO */
+html, body{
+  width:100%;
+  overflow-x:hidden;
+  background:#2f3b2a; /* fundo verde igual ao topo */
+}
+
+/* ================= TOPO (IGUAL AO INDEX) ================= */
+.topo{
+  height:90px;
+  background:#2f3b2a;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  padding:0 40px;
+}
+
+.logo{
+  justify-self:start;
+}
+
+.logo img{
+  height:70px;
+  display:block;
+}
+
+/* menu centralizado */
+.menu{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin:0;
+  padding:0;
+}
+
+.menu li{
+  position:relative;
+}
+
+.menu a{
+  color:#fff;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:2px;
+  padding:10px 0;
+  opacity:0.92;
+}
+
+/* linha sutil em cima */
+.menu li::before{
+  content:"";
+  position:absolute;
+  top:-12px;
+  left:50%;
+  width:32px;
+  height:1px;
+  background:rgba(255,255,255,0.5);
+  transform:translateX(-50%);
+}
+
+.menu a.ativo{
+  opacity:1;
+}
+
+/* ================= TÍTULO ================= */
 .hero-servicos{
   padding:90px 0 60px;
   text-align:center;
@@ -17,11 +85,11 @@ html, body{
   text-transform:uppercase;
 }
 
-/* CONTEÚDO */
+/* ================= CONTEÚDO (ESTILO MACAÓ) ================= */
 .servicos{
   max-width:1200px;
   margin:0 auto;
-  padding:40px 40px 90px;
+  padding:10px 40px 90px;
 }
 
 .servico{
@@ -33,9 +101,8 @@ html, body{
 }
 
 .servico.invertido{
-  direction:rtl; /* inverte a ordem */
+  direction:rtl;
 }
-
 .servico.invertido > *{
   direction:ltr;
 }
@@ -62,13 +129,66 @@ html, body{
   max-width:520px;
 }
 
-/* deixar o "SERVIÇOS" do menu marcado */
-.menu a.ativo{
-  opacity:1;
+/* ================= RODAPÉ (IGUAL AO INDEX) ================= */
+.rodape{
+  background:#C2C1BB;
+  padding:80px 40px 40px;
 }
 
+.rodape-container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.rodape-logo{
+  display:flex;
+  justify-content:center;
+}
+
+.rodape-logo img{
+  max-width:220px;
+  display:block;
+}
+
+.rodape-contato{
+  text-align:center;
+}
+
+.rodape-contato h3{
+  font-size:22px;
+  margin-bottom:20px;
+  color:#2f3b2a;
+}
+
+.rodape-item{
+  margin-bottom:14px;
+  font-size:15px;
+}
+
+.rodape-item a{
+  color:#333;
+  text-decoration:none;
+}
+
+.rodape-copy{
+  text-align:center;
+  margin-top:40px;
+  font-size:13px;
+  border-top:1px solid rgba(0,0,0,0.15);
+  padding-top:20px;
+}
+
+/* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-  .servicos{ padding:30px 20px 70px; }
+  .menu{ display:none; }
+
+  .servicos{
+    padding:10px 20px 70px;
+  }
 
   .servico{
     grid-template-columns:1fr;
@@ -86,5 +206,9 @@ html, body{
 
   .hero-servicos h1{
     font-size:34px;
+  }
+
+  .rodape-container{
+    grid-template-columns:1fr;
   }
 }
