@@ -1,65 +1,90 @@
-.hero-servicos{
+/* FUNDO TOTAL VERDE (TIRA O BRANCO) */
+html, body{
   background:#2f3b2a;
-  color:#fff;
-  height:220px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+}
+
+/* TÍTULO MAIS HARMONIOSO */
+.hero-servicos{
+  padding:90px 0 60px;
+  text-align:center;
 }
 
 .hero-servicos h1{
-  font-size:36px;
+  color:#f3f3ef;
+  font-size:44px;
   font-weight:300;
-  letter-spacing:1px;
+  letter-spacing:3px;
+  text-transform:uppercase;
 }
 
+/* CONTEÚDO */
 .servicos{
   max-width:1200px;
-  margin:80px auto;
-  padding:0 20px;
+  margin:0 auto;
+  padding:40px 40px 90px;
 }
 
 .servico{
-  display:flex;
-  gap:60px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
   align-items:center;
-  margin-bottom:100px;
+  margin:70px 0;
 }
 
 .servico.invertido{
-  flex-direction:row-reverse;
+  direction:rtl; /* inverte a ordem */
+}
+
+.servico.invertido > *{
+  direction:ltr;
 }
 
 .servico img{
-  width:50%;
-  border-radius:12px;
+  width:100%;
+  height:520px;
   object-fit:cover;
+  border-radius:10px;
+  display:block;
 }
 
-.servico .texto{
-  width:50%;
-}
-
-.servico h2{
-  font-size:28px;
-  margin-bottom:15px;
+.texto h2{
   color:#fff;
+  font-size:26px;
+  margin-bottom:14px;
+  letter-spacing:1px;
 }
 
-.servico p{
-  font-size:16px;
-  line-height:1.7;
-  color:#e5e5e5;
+.texto p{
+  color:rgba(255,255,255,0.75);
+  line-height:1.9;
+  font-size:15px;
+  max-width:520px;
 }
 
-@media (max-width:900px){
-  .servico,
-  .servico.invertido{
-    flex-direction:column;
+/* deixar o "SERVIÇOS" do menu marcado */
+.menu a.ativo{
+  opacity:1;
+}
+
+@media(max-width:900px){
+  .servicos{ padding:30px 20px 70px; }
+
+  .servico{
+    grid-template-columns:1fr;
+    gap:22px;
+    margin:55px 0;
   }
 
-  .servico img,
-  .servico .texto{
-    width:100%;
+  .servico.invertido{
+    direction:ltr;
+  }
+
+  .servico img{
+    height:320px;
+  }
+
+  .hero-servicos h1{
+    font-size:34px;
   }
 }
