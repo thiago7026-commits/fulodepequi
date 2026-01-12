@@ -76,15 +76,31 @@
 /* ================= FORM ================= */
 .form h2{
   font-size:26px;
-  margin-bottom:20px;
+  margin-bottom:12px;
   color:#2f3b2a;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.badge{
+  font-size:12px;
+  padding:7px 10px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  color:#2f3b2a;
+  letter-spacing:0.4px;
 }
 
 .form p{
   font-size:15px;
   color:#555;
-  margin-bottom:20px;
-  line-height:1.6;
+  margin-bottom:18px;
+  line-height:1.7;
 }
 
 .form label{
@@ -105,7 +121,7 @@
 
 .form button{
   width:100%;
-  margin-top:30px;
+  margin-top:26px;
   padding:14px;
   background:#2f3b2a;
   color:#fff;
@@ -118,15 +134,82 @@
 
 /* ================= INFO ================= */
 .info{
-  margin-top:20px;
+  margin-top:18px;
   font-size:14px;
   color:#666;
+  line-height:1.7;
+}
+
+/* ================= DETALHES (NOVO) ================= */
+.detalhes{
+  margin-top:40px;
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,0.08);
+  padding:34px 34px 10px;
+}
+
+.detalhes h2{
+  font-size:22px;
+  color:#2f3b2a;
+  margin-bottom:14px;
+}
+
+.detalhes p{
+  font-size:15px;
+  color:#555;
+  line-height:1.8;
+  margin-bottom:18px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px 24px;
+  margin:14px 0 22px;
+}
+
+.item{
+  background:#f7f7f5;
+  border:1px solid rgba(0,0,0,0.06);
+  padding:14px 14px;
+  font-size:14px;
+  color:#444;
+  line-height:1.5;
+}
+
+.lista{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 20px;
+  margin:10px 0 22px;
+  padding-left:18px;
+}
+
+.lista li{
+  font-size:14px;
+  color:#444;
+  line-height:1.5;
+}
+
+.hr{
+  height:1px;
+  background:rgba(0,0,0,0.08);
+  margin:22px 0;
 }
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
   .card{
     grid-template-columns:1fr;
+  }
+  .grid{
+    grid-template-columns:1fr;
+  }
+  .lista{
+    grid-template-columns:1fr;
+  }
+  .detalhes{
+    padding:26px 18px 8px;
   }
 }
 </style>
@@ -151,36 +234,92 @@
   <h1>Reserva</h1>
 
   <div class="card">
-    
+
     <!-- IMAGEM -->
     <img src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
 
     <!-- FORMULÁRIO -->
     <div class="form">
       <h2>Chalé Fulô de Pequi</h2>
+
+      <div class="badges">
+        <div class="badge">Chalé inteiro • privativo</div>
+        <div class="badge">Até 2 hóspedes</div>
+        <div class="badge">Self check-in</div>
+        <div class="badge">Estacionamento gratuito</div>
+      </div>
+
       <p>
-        Chalé exclusivo para até <strong>2 hóspedes</strong>,
-        com 1 quarto, 1 cama e 1 banheiro.
+        Um refúgio em meio ao cerrado de Cavalcante — moderno, aconchegante e integrado à natureza.
+        Ideal para casais e viajantes que buscam tranquilidade, conforto e privacidade.
       </p>
 
       <label>Período da estadia</label>
       <input type="text" id="datas" placeholder="Selecione as datas">
 
       <label>Número de hóspedes</label>
-      <select>
-        <option>1 hóspede</option>
-        <option>2 hóspedes</option>
+      <select id="hospedes">
+        <option value="1">1 hóspede</option>
+        <option value="2">2 hóspedes</option>
       </select>
 
       <button onclick="reservar()">Solicitar reserva</button>
 
       <div class="info">
         Valor da diária: <strong>R$ 380</strong><br>
-        Confirmação via WhatsApp
+        Confirmação via WhatsApp<br>
+        <small>Localização exata é enviada após a confirmação.</small>
       </div>
     </div>
 
   </div>
+
+  <!-- ================= NOVO BLOCO: MAIS INFORMAÇÕES DO CHALÉ ================= -->
+  <div class="detalhes">
+    <h2>Sobre o chalé</h2>
+    <p>
+      O Chalé Fulô de Pequi foi pensado para quem quer desacelerar e viver dias de silêncio, natureza e conforto.
+      A estrutura é privativa e perfeita para uma experiência a dois — com clima de refúgio, praticidade e aconchego.
+    </p>
+
+    <div class="grid">
+      <div class="item"><strong>Capacidade:</strong> 2 hóspedes</div>
+      <div class="item"><strong>Ambientes:</strong> 1 quarto • 1 cama • 1 banheiro</div>
+      <div class="item"><strong>Destaque:</strong> a ~20 min de carro do Parque Nacional da Chapada dos Veadeiros</div>
+      <div class="item"><strong>Check-in:</strong> self check-in (cofre de chaves)</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <h2>Comodidades</h2>
+    <ul class="lista">
+      <li>Cozinha</li>
+      <li>Wi-Fi</li>
+      <li>Ar-condicionado</li>
+      <li>Estacionamento gratuito</li>
+      <li>Pátio ou varanda privativa</li>
+      <li>Quintal privativo (totalmente cercado)</li>
+      <li>Fogueira (área externa)</li>
+      <li>Geladeira</li>
+      <li>Estadias longas permitidas</li>
+      <li>Ambiente tranquilo e privativo</li>
+    </ul>
+
+    <div class="hr"></div>
+
+    <h2>O que os hóspedes mais elogiam</h2>
+    <div class="grid">
+      <div class="item"><strong>Avaliação média:</strong> 4,92/5</div>
+      <div class="item"><strong>Quantidade:</strong> 93 avaliações</div>
+      <div class="item"><strong>Limpeza:</strong> 5,0/5</div>
+      <div class="item"><strong>Check-in e comunicação:</strong> 5,0/5</div>
+    </div>
+
+    <p style="margin-bottom:26px;">
+      Quer reservar? Selecione as datas acima e envie sua solicitação — confirmamos tudo pelo WhatsApp.
+    </p>
+  </div>
+
 </section>
 
 <!-- Flatpickr -->
@@ -197,6 +336,7 @@ flatpickr("#datas", {
 
 function reservar(){
   const datas = document.getElementById("datas").value;
+  const hospedes = document.getElementById("hospedes").value;
 
   if(!datas){
     alert("Selecione o período da estadia.");
@@ -204,7 +344,7 @@ function reservar(){
   }
 
   const mensagem = encodeURIComponent(
-    `Olá! Gostaria de reservar o Chalé Fulô de Pequi.\n\nPeríodo: ${datas}\nHóspedes: até 2 pessoas`
+    `Olá! Gostaria de reservar o Chalé Fulô de Pequi.\n\nPeríodo: ${datas}\nHóspedes: ${hospedes} pessoa(s)\n\nPoderia me confirmar disponibilidade e valores?`
   );
 
   window.open(`https://wa.me/5562999350693?text=${mensagem}`, "_blank");
