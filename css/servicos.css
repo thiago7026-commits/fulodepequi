@@ -9,7 +9,7 @@
 html, body{
   width:100%;
   overflow-x:hidden;
-  background:#2f3b2a; /* fundo verde igual ao topo */
+  background:#8f948c; /* verde claro aprovado */
 }
 
 /* ================= TOPO (IGUAL AO INDEX) ================= */
@@ -52,7 +52,7 @@ html, body{
   font-size:13px;
   letter-spacing:2px;
   padding:10px 0;
-  opacity:0.92;
+  opacity:0.9;
 }
 
 /* linha sutil em cima */
@@ -73,23 +73,24 @@ html, body{
 
 /* ================= TÍTULO ================= */
 .hero-servicos{
-  padding:90px 0 60px;
+  padding:80px 0 50px;
   text-align:center;
 }
 
 .hero-servicos h1{
-  color:#f3f3ef;
-  font-size:44px;
-  font-weight:300;
-  letter-spacing:3px;
+  color:#2f3b2a;
+  font-size:38px;
+  font-weight:400;
+  letter-spacing:4px;
   text-transform:uppercase;
+  margin-bottom:10px;
 }
 
-/* ================= CONTEÚDO (ESTILO MACAÓ) ================= */
+/* ================= LISTA DE SERVIÇOS ================= */
 .servicos{
   max-width:1200px;
   margin:0 auto;
-  padding:10px 40px 90px;
+  padding:20px 40px 90px;
 }
 
 .servico{
@@ -115,15 +116,16 @@ html, body{
   display:block;
 }
 
+/* texto */
 .texto h2{
-  color:#fff;
+  color:#2f3b2a;
   font-size:26px;
   margin-bottom:14px;
   letter-spacing:1px;
 }
 
 .texto p{
-  color:rgba(255,255,255,0.75);
+  color:rgba(0,0,0,0.75);
   line-height:1.9;
   font-size:15px;
   max-width:520px;
@@ -184,7 +186,9 @@ html, body{
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-  .menu{ display:none; }
+  .menu{
+    display:none;
+  }
 
   .servicos{
     padding:10px 20px 70px;
@@ -205,7 +209,8 @@ html, body{
   }
 
   .hero-servicos h1{
-    font-size:34px;
+    font-size:32px;
+    letter-spacing:3px;
   }
 
   .rodape-container{
