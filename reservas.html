@@ -20,12 +20,21 @@ body{ background:#f3e2be; }
 .topo{
   height:90px;
   background:#2f3b2a;
-  display:flex;
+  display:grid;
+  grid-template-columns:auto 1fr;
   align-items:center;
-  justify-content:space-between;
   padding:0 40px;
 }
 .logo img{height:70px;display:block;}
+.menu{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin:0;
+  padding:0;
+}
+.menu li{position:relative;}
 .menu a{
   color:#fff;
   text-decoration:none;
@@ -33,6 +42,17 @@ body{ background:#f3e2be; }
   font-size:13px;
   font-weight:500;
   letter-spacing:1px;
+  padding:10px 0;
+}
+.menu li::before{
+  content:"";
+  position:absolute;
+  top:-12px;
+  left:50%;
+  width:32px;
+  height:1px;
+  background:rgba(255,255,255,0.5);
+  transform:translateX(-50%);
 }
 
 /* ===== ÁREA ===== */
@@ -58,11 +78,44 @@ body{ background:#f3e2be; }
   border-radius:6px;
   box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
-.card img{
+.galeria-reserva{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.galeria-principal{
   width:100%;
   height:100%;
+  max-height:420px;
+  object-fit:cover;
+  border-radius:6px;
+}
+.miniaturas{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  scrollbar-width:none;
+}
+.miniaturas::-webkit-scrollbar{display:none;}
+.miniatura{
+  border:0;
+  padding:0;
+  background:none;
+  cursor:pointer;
+  flex:0 0 auto;
+  border-radius:4px;
+}
+.miniatura img{
+  width:90px;
+  height:70px;
   object-fit:cover;
   border-radius:4px;
+  border:2px solid transparent;
+  display:block;
+}
+.miniatura.ativa img{
+  border-color:#2f3b2a;
 }
 
 /* ===== COLUNA DIREITA ===== */
@@ -166,6 +219,9 @@ body{ background:#f3e2be; }
 /* Responsivo */
 @media(max-width:900px){
   .card{ grid-template-columns:1fr; }
+  .menu{display:none;}
+  .galeria-principal{max-height:360px;}
+  .miniatura img{width:80px;height:60px;}
 }
 </style>
 </head>
@@ -180,9 +236,12 @@ body{ background:#f3e2be; }
         <img src="assets/logo.png" alt="Fulô de Pequi">
       </a>
     </div>
-    <div class="menu">
-      <a href="index.html">Início</a>
-    </div>
+    <ul class="menu">
+      <li><a href="index.html">INÍCIO</a></li>
+      <li><a href="reservas.html">ACOMODAÇÕES</a></li>
+      <li><a href="servicos.html">SERVIÇOS</a></li>
+      <li><a href="politica.html">POLÍTICA</a></li>
+    </ul>
   </nav>
 </header>
 
@@ -191,8 +250,36 @@ body{ background:#f3e2be; }
 
   <div class="card">
 
-    <!-- IMAGEM -->
-    <img src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
+    <!-- GALERIA -->
+    <div class="galeria-reserva">
+      <img class="galeria-principal" id="galeriaPrincipal" src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
+      <div class="miniaturas" id="galeriaMiniaturas">
+        <button class="miniatura ativa" type="button" data-img="assets/galeria/g1.jpg">
+          <img src="assets/galeria/g1.jpg" alt="Vista do chalé">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g2.jpg">
+          <img src="assets/galeria/g2.jpg" alt="Área externa">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g3.jpg">
+          <img src="assets/galeria/g3.jpg" alt="Sala integrada">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g4.jpg">
+          <img src="assets/galeria/g4.jpg" alt="Banheira">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g5.jpg">
+          <img src="assets/galeria/g5.jpg" alt="Detalhes do quarto">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g6.jpg">
+          <img src="assets/galeria/g6.jpg" alt="Varanda">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g7.jpg">
+          <img src="assets/galeria/g7.jpg" alt="Paisagem do entorno">
+        </button>
+        <button class="miniatura" type="button" data-img="assets/galeria/g8.jpg">
+          <img src="assets/galeria/g8.jpg" alt="Ambiente interno">
+        </button>
+      </div>
+    </div>
 
     <!-- CONTEÚDO / FORM -->
     <div class="form">
@@ -256,6 +343,21 @@ const VALOR_DIARIA = 340;
 const inputDatas = document.getElementById("datas");
 const hospedesEl = document.getElementById("hospedes");
 const totalBox = document.getElementById("totalBox");
+const galeriaPrincipal = document.getElementById("galeriaPrincipal");
+const miniaturas = document.querySelectorAll(".miniatura");
+
+miniaturas.forEach((miniatura) => {
+  miniatura.addEventListener("click", () => {
+    const novaImagem = miniatura.getAttribute("data-img");
+    if(!novaImagem){
+      return;
+    }
+
+    galeriaPrincipal.src = novaImagem;
+    miniaturas.forEach((item) => item.classList.remove("ativa"));
+    miniatura.classList.add("ativa");
+  });
+});
 
 function noites(inicio, fim){
   return Math.round((fim - inicio) / (1000 * 60 * 60 * 24));
