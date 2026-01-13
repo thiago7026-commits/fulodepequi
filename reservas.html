@@ -5,21 +5,25 @@
 <title>Reservas | Fulô de Pequi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Flatpickr (calendário estilo Airbnb) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:"Poppins", "Montserrat", sans-serif;
+  font-family:"Poppins", sans-serif;
 }
 
-/* ================= TOPO ================= */
+/* ===== FUNDO AMARELO ===== */
+body{
+  background:#f3e2be;
+}
+
+/* ===== TOPO ===== */
 .topo{
   height:90px;
   background:#2f3b2a;
@@ -38,11 +42,10 @@
   text-decoration:none;
   text-transform:uppercase;
   font-size:13px;
-  font-weight:600;
-  letter-spacing:1px;
+  font-weight:500;
 }
 
-/* ================= RESERVA ================= */
+/* ===== RESERVA ===== */
 .reserva{
   max-width:1100px;
   margin:100px auto;
@@ -56,72 +59,89 @@
   margin-bottom:40px;
 }
 
-/* ================= CARD ================= */
+/* ===== CARD ===== */
 .card{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:40px;
   background:#f7f7f5;
   padding:40px;
-  border:1px solid rgba(0,0,0,0.08);
+  border-radius:6px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* ================= IMAGEM ================= */
+/* ===== IMAGEM ===== */
 .card img{
   width:100%;
   height:100%;
   object-fit:cover;
+  border-radius:4px;
 }
 
-/* ================= FORM ================= */
+/* ===== FORM ===== */
 .form h2{
   font-size:26px;
-  margin-bottom:12px;
+  margin-bottom:10px;
   color:#2f3b2a;
-}
-
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.badge{
-  font-size:12px;
-  padding:7px 10px;
-  border:1px solid rgba(0,0,0,0.12);
-  background:#fff;
-  color:#2f3b2a;
-  letter-spacing:0.4px;
 }
 
 .form p{
   font-size:15px;
   color:#555;
-  margin-bottom:18px;
-  line-height:1.7;
+  margin-bottom:14px;
+  line-height:1.6;
+}
+
+/* ===== REGRAS ===== */
+.regras-reserva{
+  margin:16px 0 22px;
+  padding:14px 16px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.15);
+  font-size:14px;
+  color:#444;
+  line-height:1.6;
+}
+
+.regras-reserva ul{
+  margin:8px 0 6px 18px;
+}
+
+.regras-reserva li{
+  margin-bottom:4px;
+}
+
+.regras-reserva strong{
+  color:#2f3b2a;
+}
+
+.regras-reserva small{
+  display:block;
+  margin-top:8px;
+  color:#666;
 }
 
 .form label{
   display:block;
-  margin-top:18px;
+  margin-top:16px;
   font-size:14px;
   color:#2f3b2a;
 }
 
-.form input, .form select{
+.form input, 
+.form select{
   width:100%;
   padding:12px;
   margin-top:6px;
   font-size:15px;
   border:1px solid rgba(0,0,0,0.2);
-  background:#fff;
+  border-radius:4px;
 }
 
+/* ===== BOTÃO ===== */
 .form button{
   width:100%;
-  margin-top:26px;
+  margin-top:24px;
   padding:14px;
   background:#2f3b2a;
   color:#fff;
@@ -130,86 +150,28 @@
   letter-spacing:1px;
   cursor:pointer;
   text-transform:uppercase;
+  border-radius:4px;
 }
 
-/* ================= INFO ================= */
+/* ===== INFO ===== */
 .info{
   margin-top:18px;
   font-size:14px;
-  color:#666;
-  line-height:1.7;
-}
-
-/* ================= DETALHES (NOVO) ================= */
-.detalhes{
-  margin-top:40px;
-  background:#ffffff;
-  border:1px solid rgba(0,0,0,0.08);
-  padding:34px 34px 10px;
-}
-
-.detalhes h2{
-  font-size:22px;
-  color:#2f3b2a;
-  margin-bottom:14px;
-}
-
-.detalhes p{
-  font-size:15px;
   color:#555;
-  line-height:1.8;
-  margin-bottom:18px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px 24px;
-  margin:14px 0 22px;
+#totalBox{
+  margin-top:10px;
+  padding:12px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.15);
+  border-radius:4px;
 }
 
-.item{
-  background:#f7f7f5;
-  border:1px solid rgba(0,0,0,0.06);
-  padding:14px 14px;
-  font-size:14px;
-  color:#444;
-  line-height:1.5;
-}
-
-.lista{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px 20px;
-  margin:10px 0 22px;
-  padding-left:18px;
-}
-
-.lista li{
-  font-size:14px;
-  color:#444;
-  line-height:1.5;
-}
-
-.hr{
-  height:1px;
-  background:rgba(0,0,0,0.08);
-  margin:22px 0;
-}
-
-/* ================= RESPONSIVO ================= */
+/* ===== RESPONSIVO ===== */
 @media(max-width:900px){
   .card{
     grid-template-columns:1fr;
-  }
-  .grid{
-    grid-template-columns:1fr;
-  }
-  .lista{
-    grid-template-columns:1fr;
-  }
-  .detalhes{
-    padding:26px 18px 8px;
   }
 }
 </style>
@@ -238,116 +200,117 @@
     <!-- IMAGEM -->
     <img src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
 
-    <!-- FORMULÁRIO -->
+    <!-- FORM -->
     <div class="form">
       <h2>Chalé Fulô de Pequi</h2>
-
-      <div class="badges">
-        <div class="badge">Chalé inteiro • privativo</div>
-        <div class="badge">Até 2 hóspedes</div>
-        <div class="badge">Self check-in</div>
-        <div class="badge">Estacionamento gratuito</div>
-      </div>
-
       <p>
-        Um refúgio em meio ao cerrado de Cavalcante — moderno, aconchegante e integrado à natureza.
-        Ideal para casais e viajantes que buscam tranquilidade, conforto e privacidade.
+        Chalé inteiro, privativo, integrado à natureza.
+        Ideal para casais que buscam conforto, tranquilidade e privacidade.
       </p>
+
+      <div class="regras-reserva">
+        <strong>💰 Descontos automáticos</strong>
+        <ul>
+          <li>3 noites: <strong>8% de desconto</strong></li>
+          <li>4 noites ou mais: <strong>10% de desconto</strong></li>
+        </ul>
+
+        <strong>📅 Finais de semana</strong>
+        <p>Reservas apenas com <strong>sábado + domingo juntos</strong>.</p>
+
+        <small>* O valor com desconto é calculado automaticamente.</small>
+      </div>
 
       <label>Período da estadia</label>
       <input type="text" id="datas" placeholder="Selecione as datas">
 
       <label>Número de hóspedes</label>
-      <select id="hospedes">
-        <option value="1">1 hóspede</option>
-        <option value="2">2 hóspedes</option>
+      <select>
+        <option>1 hóspede</option>
+        <option>2 hóspedes</option>
       </select>
 
       <button onclick="reservar()">Solicitar reserva</button>
 
       <div class="info">
-        Valor da diária: <strong>R$ 380</strong><br>
-        Confirmação via WhatsApp<br>
-        <small>Localização exata é enviada após a confirmação.</small>
+        Valor da diária: <strong>R$ 340,00</strong>
+        <div id="totalBox"></div>
       </div>
     </div>
 
   </div>
-
-  <!-- ================= NOVO BLOCO: MAIS INFORMAÇÕES DO CHALÉ ================= -->
-  <div class="detalhes">
-    <h2>Sobre o chalé</h2>
-    <p>
-      O Chalé Fulô de Pequi foi pensado para quem quer desacelerar e viver dias de silêncio, natureza e conforto.
-      A estrutura é privativa e perfeita para uma experiência a dois — com clima de refúgio, praticidade e aconchego.
-    </p>
-
-    <div class="grid">
-      <div class="item"><strong>Capacidade:</strong> 2 hóspedes</div>
-      <div class="item"><strong>Ambientes:</strong> 1 quarto • 1 cama • 1 banheiro</div>
-      <div class="item"><strong>Destaque:</strong> a ~20 min de carro do Parque Nacional da Chapada dos Veadeiros</div>
-      <div class="item"><strong>Check-in:</strong> self check-in (cofre de chaves)</div>
-    </div>
-
-    <div class="hr"></div>
-
-    <h2>Comodidades</h2>
-    <ul class="lista">
-      <li>Cozinha</li>
-      <li>Wi-Fi</li>
-      <li>Ar-condicionado</li>
-      <li>Estacionamento gratuito</li>
-      <li>Pátio ou varanda privativa</li>
-      <li>Quintal privativo (totalmente cercado)</li>
-      <li>Fogueira (área externa)</li>
-      <li>Geladeira</li>
-      <li>Estadias longas permitidas</li>
-      <li>Ambiente tranquilo e privativo</li>
-    </ul>
-
-    <div class="hr"></div>
-
-    <h2>O que os hóspedes mais elogiam</h2>
-    <div class="grid">
-      <div class="item"><strong>Avaliação média:</strong> 4,92/5</div>
-      <div class="item"><strong>Quantidade:</strong> 93 avaliações</div>
-      <div class="item"><strong>Limpeza:</strong> 5,0/5</div>
-      <div class="item"><strong>Check-in e comunicação:</strong> 5,0/5</div>
-    </div>
-
-    <p style="margin-bottom:26px;">
-      Quer reservar? Selecione as datas acima e envie sua solicitação — confirmamos tudo pelo WhatsApp.
-    </p>
-  </div>
-
 </section>
 
-<!-- Flatpickr -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
 <script>
+const VALOR_DIARIA = 340;
+const totalBox = document.getElementById("totalBox");
+
+function noites(inicio, fim){
+  return Math.round((fim - inicio) / (1000*60*60*24));
+}
+
+function fimDeSemanaOk(inicio, fim){
+  let sab=false, dom=false;
+  const d = new Date(inicio);
+  while(d <= fim){
+    if(d.getDay() === 6) sab = true;
+    if(d.getDay() === 0) dom = true;
+    d.setDate(d.getDate()+1);
+  }
+  return !(sab ^ dom);
+}
+
+function desconto(n){
+  if(n >= 4) return 0.10;
+  if(n === 3) return 0.08;
+  return 0;
+}
+
 flatpickr("#datas", {
-  mode: "range",
-  minDate: "today",
-  dateFormat: "d/m/Y",
-  locale: "pt"
+  mode:"range",
+  minDate:"today",
+  dateFormat:"d/m/Y",
+  locale:"pt",
+  onClose(datas){
+    if(datas.length < 2) return;
+
+    const n = noites(datas[0], datas[1]);
+
+    if(!fimDeSemanaOk(datas[0], datas[1])){
+      alert("Finais de semana devem incluir sábado e domingo juntos.");
+      this.clear();
+      totalBox.innerHTML = "";
+      return;
+    }
+
+    const d = desconto(n);
+    const subtotal = VALOR_DIARIA * n;
+    const total = subtotal * (1 - d);
+
+    totalBox.innerHTML = `
+      Noites: ${n}<br>
+      Subtotal: R$ ${subtotal.toFixed(2).replace(".",",")}<br>
+      ${d>0 ? `Desconto: ${d*100}%<br>` : ""}
+      <strong>Total: R$ ${total.toFixed(2).replace(".",",")}</strong>
+    `;
+  }
 });
 
 function reservar(){
   const datas = document.getElementById("datas").value;
-  const hospedes = document.getElementById("hospedes").value;
-
   if(!datas){
     alert("Selecione o período da estadia.");
     return;
   }
-
-  const mensagem = encodeURIComponent(
-    `Olá! Gostaria de reservar o Chalé Fulô de Pequi.\n\nPeríodo: ${datas}\nHóspedes: ${hospedes} pessoa(s)\n\nPoderia me confirmar disponibilidade e valores?`
+  window.open(
+    `https://wa.me/5562999350693?text=${encodeURIComponent(
+      "Olá! Gostaria de reservar o Chalé Fulô de Pequi.\nPeríodo: " + datas
+    )}`,
+    "_blank"
   );
-
-  window.open(`https://wa.me/5562999350693?text=${mensagem}`, "_blank");
 }
 </script>
 
