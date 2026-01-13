@@ -1,0 +1,224 @@
+/* ================= BASE ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body{
+  width:100%;
+  overflow-x:hidden;
+  background:#8f948c;
+}
+
+/* ================= TOPO ================= */
+.topo{
+  height:90px;
+  background:#2f3b2a;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  padding:0 40px;
+}
+
+.logo{
+  justify-self:start;
+}
+
+.logo img{
+  height:70px;
+  display:block;
+}
+
+.menu{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin:0;
+  padding:0;
+}
+
+.menu li{
+  position:relative;
+}
+
+.menu a{
+  color:#fff;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-size:13px;
+  letter-spacing:2px;
+  padding:10px 0;
+  opacity:0.9;
+}
+
+.menu li::before{
+  content:"";
+  position:absolute;
+  top:-12px;
+  left:50%;
+  width:32px;
+  height:1px;
+  background:rgba(255,255,255,0.5);
+  transform:translateX(-50%);
+}
+
+.menu a.ativo{
+  opacity:1;
+}
+
+/* ================= HERO ================= */
+.hero-politica{
+  padding:90px 20px 50px;
+  text-align:center;
+}
+
+.hero-conteudo{
+  max-width:760px;
+  margin:0 auto;
+}
+
+.hero-sobre{
+  text-transform:uppercase;
+  letter-spacing:3px;
+  font-size:12px;
+  color:rgba(0,0,0,0.6);
+  margin-bottom:12px;
+}
+
+.hero-politica h1{
+  color:#2f3b2a;
+  font-size:38px;
+  font-weight:400;
+  letter-spacing:4px;
+}
+
+/* ================= CONTEÚDO ================= */
+.politicas{
+  max-width:1200px;
+  margin:0 auto;
+  padding:10px 40px 90px;
+}
+
+.politica-intro{
+  text-align:center;
+  margin-bottom:50px;
+}
+
+.politica-intro p{
+  color:rgba(0,0,0,0.75);
+  line-height:1.9;
+  font-size:15px;
+  max-width:760px;
+  margin:0 auto;
+}
+
+.politica-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:30px;
+}
+
+.politica-card{
+  background:#f4f3ef;
+  border-radius:12px;
+  padding:28px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.1);
+}
+
+.politica-card h2{
+  color:#2f3b2a;
+  font-size:22px;
+  margin-bottom:14px;
+  letter-spacing:1px;
+}
+
+.politica-card ul{
+  padding-left:18px;
+  color:rgba(0,0,0,0.75);
+  font-size:15px;
+  line-height:1.8;
+}
+
+.politica-card li{
+  margin-bottom:8px;
+}
+
+/* ================= RODAPÉ ================= */
+.rodape{
+  background:#C2C1BB;
+  padding:80px 40px 40px;
+}
+
+.rodape-container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.rodape-logo{
+  display:flex;
+  justify-content:center;
+}
+
+.rodape-logo img{
+  max-width:220px;
+  display:block;
+}
+
+.rodape-contato{
+  text-align:center;
+}
+
+.rodape-contato h3{
+  font-size:22px;
+  margin-bottom:20px;
+  color:#2f3b2a;
+}
+
+.rodape-item{
+  margin-bottom:14px;
+  font-size:15px;
+}
+
+.rodape-item a{
+  color:#333;
+  text-decoration:none;
+}
+
+.rodape-copy{
+  text-align:center;
+  margin-top:40px;
+  font-size:13px;
+  border-top:1px solid rgba(0,0,0,0.15);
+  padding-top:20px;
+}
+
+/* ================= RESPONSIVO ================= */
+@media(max-width:900px){
+  .menu{
+    display:none;
+  }
+
+  .politicas{
+    padding:0 20px 70px;
+  }
+
+  .politica-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-politica h1{
+    font-size:32px;
+    letter-spacing:3px;
+  }
+
+  .rodape-container{
+    grid-template-columns:1fr;
+  }
+}
