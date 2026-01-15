@@ -58,7 +58,7 @@ body{ background:#f3e2be; }
 }
 
 /* =========================================
-   GALERIA (mesmo tamanho do bloco da imagem)
+   GALERIA (10 fotos)
    ========================================= */
 .galeria{
   width:100%;
@@ -70,7 +70,7 @@ body{ background:#f3e2be; }
 .galeria-principal{
   width:100%;
   height:100%;
-  min-height:420px; /* garante “cara” de foto grande no desktop */
+  min-height:420px;
   border-radius:4px;
   overflow:hidden;
   cursor:pointer;
@@ -81,8 +81,6 @@ body{ background:#f3e2be; }
   object-fit:cover;
   display:block;
 }
-
-/* Miniaturas */
 .galeria-thumbs{
   display:grid;
   grid-template-columns:repeat(5, 1fr);
@@ -94,7 +92,7 @@ body{ background:#f3e2be; }
   border:1px solid rgba(0,0,0,0.12);
   background:#fff;
   cursor:pointer;
-  aspect-ratio: 4 / 3; /* miniaturas padronizadas */
+  aspect-ratio: 4 / 3;
 }
 .thumb img{
   width:100%;
@@ -118,6 +116,8 @@ body{ background:#f3e2be; }
   line-height:1.7;
   margin:10px 0 18px;
 }
+
+/* Chips */
 .chips{
   display:flex;
   flex-wrap:wrap;
@@ -136,6 +136,8 @@ body{ background:#f3e2be; }
   color:#333;
   white-space:nowrap;
 }
+
+/* Regras */
 .regras-reserva{
   margin:14px 0 18px;
   padding:14px 16px;
@@ -154,6 +156,8 @@ body{ background:#f3e2be; }
   margin-top:8px;
   color:#666;
 }
+
+/* Form */
 .form label{
   display:block;
   margin-top:14px;
@@ -182,18 +186,63 @@ body{ background:#f3e2be; }
   text-transform:uppercase;
   border-radius:6px;
 }
+
+/* Resumo total */
 .info{
   margin-top:16px;
   font-size:14px;
   color:#555;
   line-height:1.6;
 }
+
+/* ===== TotalBox estilo Airbnb (verde suave quando há desconto) ===== */
 #totalBox{
-  margin-top:10px;
-  padding:12px;
+  margin-top:14px;
+  padding:16px 18px;
   background:#fff;
   border:1px solid rgba(0,0,0,0.15);
-  border-radius:6px;
+  border-radius:12px;
+  font-size:15px;
+  line-height:1.7;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Linha do TOTAL em evidência */
+#totalBox .linha-total{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed rgba(0,0,0,0.20);
+  font-size:20px;
+  font-weight:600;
+  color:#2f3b2a;
+}
+
+/* Badge de desconto */
+#totalBox .badge-desconto{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:10px;
+  background:rgba(0,0,0,0.04);
+  color:#333;
+}
+
+/* Estado com desconto */
+#totalBox.com-desconto{
+  background:#ecf7ef;
+  border:1px solid rgba(34,139,34,0.35);
+  box-shadow:0 8px 22px rgba(34,139,34,0.12);
+}
+#totalBox.com-desconto .badge-desconto{
+  background:rgba(34,139,34,0.12);
+  color:#1f6f2a;
+}
+#totalBox.com-desconto .linha-total{
+  color:#1f6f2a;
 }
 
 /* ===================
@@ -306,18 +355,18 @@ body{ background:#f3e2be; }
 
   <div class="card">
 
-    <!-- GALERIA (10 fotos) -->
+    <!-- GALERIA -->
     <div class="galeria" id="galeria">
       <div class="galeria-principal" id="galeriaPrincipal" title="Clique para ampliar">
         <img id="imgPrincipal" src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
       </div>
 
       <div class="galeria-thumbs" id="thumbs">
-        <!-- as miniaturas são montadas via JS -->
+        <!-- thumbs via JS -->
       </div>
     </div>
 
-    <!-- CONTEÚDO / FORM -->
+    <!-- FORM -->
     <div class="form">
       <h2>Chalé Fulô de Pequi</h2>
 
@@ -421,7 +470,6 @@ function montarThumbs(){
 function setFoto(idx){
   fotoAtual = idx;
   imgPrincipal.src = fotos[idx];
-  // marca thumb ativa
   [...thumbs.children].forEach((el, i) => {
     el.classList.toggle("active", i === idx);
   });
@@ -481,12 +529,12 @@ document.addEventListener("keydown", (e) => {
   if(e.key === "ArrowRight") nextFoto();
 });
 
-// inicia
+// inicia galeria
 montarThumbs();
 setFoto(0);
 
 /* =========================
-   SUA LÓGICA DE RESERVA
+   RESERVA / CÁLCULO
    ========================= */
 const VALOR_DIARIA = 340;
 
@@ -519,15 +567,18 @@ function formatBR(v){
   return v.toFixed(2).replace(".", ",");
 }
 
+/* ===== RESUMO COM ESTILO AIRBNB (verde quando há desconto) ===== */
 function atualizarResumo(selectedDates){
   if(!selectedDates || selectedDates.length < 2){
     totalBox.innerHTML = "";
+    totalBox.classList.remove("com-desconto");
     return;
   }
 
   const n = noites(selectedDates[0], selectedDates[1]);
   if(n <= 0){
     totalBox.innerHTML = "";
+    totalBox.classList.remove("com-desconto");
     return;
   }
 
@@ -536,11 +587,15 @@ function atualizarResumo(selectedDates){
   const total = subtotal * (1 - d);
   const pct = Math.round(d * 100);
 
+  if(d > 0) totalBox.classList.add("com-desconto");
+  else totalBox.classList.remove("com-desconto");
+
   totalBox.innerHTML = `
+    ${d > 0 ? `<div class="badge-desconto">💚 Desconto aplicado • ${pct}%</div>` : ``}
     <div><strong>Noites:</strong> ${n}</div>
     <div><strong>Subtotal:</strong> R$ ${formatBR(subtotal)}</div>
     ${d > 0 ? `<div><strong>Desconto:</strong> ${pct}%</div>` : ``}
-    <div><strong>Total:</strong> R$ ${formatBR(total)}</div>
+    <div class="linha-total"><strong>Total:</strong> R$ ${formatBR(total)}</div>
   `;
 }
 
@@ -559,6 +614,7 @@ flatpickr("#datas", {
       alert("Nos finais de semana, a reserva deve incluir SÁBADO e DOMINGO juntos.");
       this.clear();
       totalBox.innerHTML = "";
+      totalBox.classList.remove("com-desconto");
       return;
     }
 
@@ -595,6 +651,10 @@ function reservar(){
   const subtotal = VALOR_DIARIA * n;
   const total = subtotal * (1 - d);
   const pct = Math.round(d * 100);
+
+  // mantém o destaque coerente caso o usuário clique rápido
+  if(d > 0) totalBox.classList.add("com-desconto");
+  else totalBox.classList.remove("com-desconto");
 
   const msg =
     `Olá! Gostaria de reservar o Chalé Fulô de Pequi.\n\n` +
