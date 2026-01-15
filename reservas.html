@@ -12,29 +12,18 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
-
-/* ===== FUNDO AMARELO (como seu anexo) ===== */
 body{ background:#f3e2be; }
 
-/* ===== TOPO (NÃO MEXI NA ESTRUTURA) ===== */
+/* ===== TOPO ===== */
 .topo{
   height:90px;
   background:#2f3b2a;
-  display:grid;
-  grid-template-columns:auto 1fr;
+  display:flex;
   align-items:center;
+  justify-content:space-between;
   padding:0 40px;
 }
 .logo img{height:70px;display:block;}
-.menu{
-  list-style:none;
-  display:flex;
-  justify-content:center;
-  gap:50px;
-  margin:0;
-  padding:0;
-}
-.menu li{position:relative;}
 .menu a{
   color:#fff;
   text-decoration:none;
@@ -42,17 +31,6 @@ body{ background:#f3e2be; }
   font-size:13px;
   font-weight:500;
   letter-spacing:1px;
-  padding:10px 0;
-}
-.menu li::before{
-  content:"";
-  position:absolute;
-  top:-12px;
-  left:50%;
-  width:32px;
-  height:1px;
-  background:rgba(255,255,255,0.5);
-  transform:translateX(-50%);
 }
 
 /* ===== ÁREA ===== */
@@ -78,44 +56,54 @@ body{ background:#f3e2be; }
   border-radius:6px;
   box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
-.galeria-reserva{
+
+/* =========================================
+   GALERIA (mesmo tamanho do bloco da imagem)
+   ========================================= */
+.galeria{
+  width:100%;
+  height:100%;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:12px;
 }
 .galeria-principal{
   width:100%;
   height:100%;
-  max-height:420px;
-  object-fit:cover;
-  border-radius:6px;
-}
-.miniaturas{
-  display:flex;
-  gap:12px;
-  overflow-x:auto;
-  padding-bottom:6px;
-  scrollbar-width:none;
-}
-.miniaturas::-webkit-scrollbar{display:none;}
-.miniatura{
-  border:0;
-  padding:0;
-  background:none;
+  min-height:420px; /* garante “cara” de foto grande no desktop */
+  border-radius:4px;
+  overflow:hidden;
   cursor:pointer;
-  flex:0 0 auto;
-  border-radius:4px;
 }
-.miniatura img{
-  width:90px;
-  height:70px;
+.galeria-principal img{
+  width:100%;
+  height:100%;
   object-fit:cover;
-  border-radius:4px;
-  border:2px solid transparent;
   display:block;
 }
-.miniatura.ativa img{
-  border-color:#2f3b2a;
+
+/* Miniaturas */
+.galeria-thumbs{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:8px;
+}
+.thumb{
+  border-radius:4px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  cursor:pointer;
+  aspect-ratio: 4 / 3; /* miniaturas padronizadas */
+}
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.thumb.active{
+  outline:2px solid rgba(47,59,42,0.6);
 }
 
 /* ===== COLUNA DIREITA ===== */
@@ -130,8 +118,6 @@ body{ background:#f3e2be; }
   line-height:1.7;
   margin:10px 0 18px;
 }
-
-/* Chips estilo Airbnb */
 .chips{
   display:flex;
   flex-wrap:wrap;
@@ -150,8 +136,6 @@ body{ background:#f3e2be; }
   color:#333;
   white-space:nowrap;
 }
-
-/* Regras (desconto + fim de semana) */
 .regras-reserva{
   margin:14px 0 18px;
   padding:14px 16px;
@@ -170,8 +154,6 @@ body{ background:#f3e2be; }
   margin-top:8px;
   color:#666;
 }
-
-/* Form */
 .form label{
   display:block;
   margin-top:14px;
@@ -200,8 +182,6 @@ body{ background:#f3e2be; }
   text-transform:uppercase;
   border-radius:6px;
 }
-
-/* Resumo total */
 .info{
   margin-top:16px;
   font-size:14px;
@@ -216,12 +196,92 @@ body{ background:#f3e2be; }
   border-radius:6px;
 }
 
+/* ===================
+   LIGHTBOX / MODAL
+   =================== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.82);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:24px;
+}
+.lightbox.open{ display:flex; }
+
+.lightbox-inner{
+  width:min(1100px, 96vw);
+  height:min(700px, 86vh);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.lightbox-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:8px;
+  background:rgba(255,255,255,0.02);
+}
+
+.lb-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lb-btn:hover{ background:rgba(255,255,255,0.18); }
+.lb-prev{ left:10px; }
+.lb-next{ right:10px; }
+
+.lb-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:20px;
+}
+.lb-close:hover{ background:rgba(255,255,255,0.18); }
+
+.lb-count{
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:13px;
+}
+
 /* Responsivo */
 @media(max-width:900px){
   .card{ grid-template-columns:1fr; }
-  .menu{display:none;}
-  .galeria-principal{max-height:360px;}
-  .miniatura img{width:80px;height:60px;}
+  .galeria-principal{ min-height:280px; }
+  .galeria-thumbs{ grid-template-columns:repeat(5, 1fr); }
+}
+@media(max-width:520px){
+  .galeria-thumbs{ grid-template-columns:repeat(4, 1fr); }
 }
 </style>
 </head>
@@ -229,19 +289,15 @@ body{ background:#f3e2be; }
 <body>
 
 <header>
-  <!-- TOPO: mantido igual -->
   <nav class="topo">
     <div class="logo">
       <a href="index.html">
         <img src="assets/logo.png" alt="Fulô de Pequi">
       </a>
     </div>
-    <ul class="menu">
-      <li><a href="index.html">INÍCIO</a></li>
-      <li><a href="reservas.html">ACOMODAÇÕES</a></li>
-      <li><a href="servicos.html">SERVIÇOS</a></li>
-      <li><a href="politica.html">POLÍTICA</a></li>
-    </ul>
+    <div class="menu">
+      <a href="index.html">Início</a>
+    </div>
   </nav>
 </header>
 
@@ -250,34 +306,14 @@ body{ background:#f3e2be; }
 
   <div class="card">
 
-    <!-- GALERIA -->
-    <div class="galeria-reserva">
-      <img class="galeria-principal" id="galeriaPrincipal" src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
-      <div class="miniaturas" id="galeriaMiniaturas">
-        <button class="miniatura ativa" type="button" data-img="assets/galeria/g1.jpg">
-          <img src="assets/galeria/g1.jpg" alt="Vista do chalé">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g2.jpg">
-          <img src="assets/galeria/g2.jpg" alt="Área externa">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g3.jpg">
-          <img src="assets/galeria/g3.jpg" alt="Sala integrada">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g4.jpg">
-          <img src="assets/galeria/g4.jpg" alt="Banheira">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g5.jpg">
-          <img src="assets/galeria/g5.jpg" alt="Detalhes do quarto">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g6.jpg">
-          <img src="assets/galeria/g6.jpg" alt="Varanda">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g7.jpg">
-          <img src="assets/galeria/g7.jpg" alt="Paisagem do entorno">
-        </button>
-        <button class="miniatura" type="button" data-img="assets/galeria/g8.jpg">
-          <img src="assets/galeria/g8.jpg" alt="Ambiente interno">
-        </button>
+    <!-- GALERIA (10 fotos) -->
+    <div class="galeria" id="galeria">
+      <div class="galeria-principal" id="galeriaPrincipal" title="Clique para ampliar">
+        <img id="imgPrincipal" src="assets/galeria/g1.jpg" alt="Chalé Fulô de Pequi">
+      </div>
+
+      <div class="galeria-thumbs" id="thumbs">
+        <!-- as miniaturas são montadas via JS -->
       </div>
     </div>
 
@@ -285,7 +321,6 @@ body{ background:#f3e2be; }
     <div class="form">
       <h2>Chalé Fulô de Pequi</h2>
 
-      <!-- CHIPS (estilo Airbnb) -->
       <div class="chips">
         <span class="chip">🏡 Chalé inteiro • privativo</span>
         <span class="chip">👤 Até 2 hóspedes</span>
@@ -293,13 +328,11 @@ body{ background:#f3e2be; }
         <span class="chip">🚗 Estacionamento gratuito</span>
       </div>
 
-      <!-- Descrição clara -->
       <p class="descricao">
         Um refúgio em meio ao cerrado de Cavalcante — moderno, aconchegante e integrado à natureza.
         Ideal para casais e viajantes que buscam tranquilidade, conforto e privacidade.
       </p>
 
-      <!-- REGRAS (descontos + fim de semana) -->
       <div class="regras-reserva">
         <strong>💰 Descontos automáticos</strong>
         <ul>
@@ -334,42 +367,143 @@ body{ background:#f3e2be; }
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-inner" role="dialog" aria-modal="true" aria-label="Galeria de fotos">
+    <button class="lb-close" id="lbClose" aria-label="Fechar">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Foto anterior">‹</button>
+    <img class="lightbox-img" id="lbImg" alt="Foto ampliada do Chalé">
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Próxima foto">›</button>
+    <div class="lb-count" id="lbCount"></div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
 <script>
+/* =========================
+   GALERIA (10 fotos)
+   ========================= */
+const fotos = [
+  "assets/galeria/g1.jpg",
+  "assets/galeria/g2.jpg",
+  "assets/galeria/g3.jpg",
+  "assets/galeria/g4.jpg",
+  "assets/galeria/g5.jpg",
+  "assets/galeria/g6.jpg",
+  "assets/galeria/g7.jpg",
+  "assets/galeria/g8.jpg",
+  "assets/galeria/g9.jpg",
+  "assets/galeria/g10.jpg"
+];
+
+let fotoAtual = 0;
+
+const imgPrincipal = document.getElementById("imgPrincipal");
+const thumbs = document.getElementById("thumbs");
+const galeriaPrincipal = document.getElementById("galeriaPrincipal");
+
+function montarThumbs(){
+  thumbs.innerHTML = "";
+  fotos.forEach((src, idx) => {
+    const t = document.createElement("div");
+    t.className = "thumb" + (idx === fotoAtual ? " active" : "");
+    t.innerHTML = `<img src="${src}" alt="Foto ${idx+1} do Chalé">`;
+    t.addEventListener("click", () => {
+      setFoto(idx);
+      abrirLightbox(idx);
+    });
+    thumbs.appendChild(t);
+  });
+}
+
+function setFoto(idx){
+  fotoAtual = idx;
+  imgPrincipal.src = fotos[idx];
+  // marca thumb ativa
+  [...thumbs.children].forEach((el, i) => {
+    el.classList.toggle("active", i === idx);
+  });
+}
+
+galeriaPrincipal.addEventListener("click", () => abrirLightbox(fotoAtual));
+
+/* Lightbox */
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbPrev = document.getElementById("lbPrev");
+const lbNext = document.getElementById("lbNext");
+const lbClose = document.getElementById("lbClose");
+const lbCount = document.getElementById("lbCount");
+
+function abrirLightbox(idx){
+  fotoAtual = idx;
+  lbImg.src = fotos[fotoAtual];
+  lbCount.textContent = `${fotoAtual + 1} / ${fotos.length}`;
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+}
+
+function fecharLightbox(){
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+}
+
+function prevFoto(){
+  fotoAtual = (fotoAtual - 1 + fotos.length) % fotos.length;
+  lbImg.src = fotos[fotoAtual];
+  lbCount.textContent = `${fotoAtual + 1} / ${fotos.length}`;
+  setFoto(fotoAtual);
+}
+
+function nextFoto(){
+  fotoAtual = (fotoAtual + 1) % fotos.length;
+  lbImg.src = fotos[fotoAtual];
+  lbCount.textContent = `${fotoAtual + 1} / ${fotos.length}`;
+  setFoto(fotoAtual);
+}
+
+lbPrev.addEventListener("click", (e) => { e.stopPropagation(); prevFoto(); });
+lbNext.addEventListener("click", (e) => { e.stopPropagation(); nextFoto(); });
+lbClose.addEventListener("click", (e) => { e.stopPropagation(); fecharLightbox(); });
+
+// clicar fora fecha
+lightbox.addEventListener("click", (e) => {
+  if(e.target === lightbox) fecharLightbox();
+});
+
+// teclado
+document.addEventListener("keydown", (e) => {
+  if(!lightbox.classList.contains("open")) return;
+  if(e.key === "Escape") fecharLightbox();
+  if(e.key === "ArrowLeft") prevFoto();
+  if(e.key === "ArrowRight") nextFoto();
+});
+
+// inicia
+montarThumbs();
+setFoto(0);
+
+/* =========================
+   SUA LÓGICA DE RESERVA
+   ========================= */
 const VALOR_DIARIA = 340;
 
 const inputDatas = document.getElementById("datas");
 const hospedesEl = document.getElementById("hospedes");
 const totalBox = document.getElementById("totalBox");
-const galeriaPrincipal = document.getElementById("galeriaPrincipal");
-const miniaturas = document.querySelectorAll(".miniatura");
-
-miniaturas.forEach((miniatura) => {
-  miniatura.addEventListener("click", () => {
-    const novaImagem = miniatura.getAttribute("data-img");
-    if(!novaImagem){
-      return;
-    }
-
-    galeriaPrincipal.src = novaImagem;
-    miniaturas.forEach((item) => item.classList.remove("ativa"));
-    miniatura.classList.add("ativa");
-  });
-});
 
 function noites(inicio, fim){
   return Math.round((fim - inicio) / (1000 * 60 * 60 * 24));
 }
 
 function fimDeSemanaOk(inicio, fim){
-  // se tiver sábado, precisa ter domingo também (e vice-versa)
   let sab=false, dom=false;
   const d = new Date(inicio);
   while(d <= fim){
-    if(d.getDay() === 6) sab = true; // sábado
-    if(d.getDay() === 0) dom = true; // domingo
+    if(d.getDay() === 6) sab = true;
+    if(d.getDay() === 0) dom = true;
     d.setDate(d.getDate() + 1);
   }
   return !(sab ^ dom);
@@ -444,7 +578,6 @@ function reservar(){
     return;
   }
 
-  // tenta pegar as datas reais do flatpickr para calcular noites/total no WhatsApp
   const instance = inputDatas._flatpickr;
   const selected = instance ? instance.selectedDates : [];
   if(!selected || selected.length < 2){
