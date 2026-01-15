@@ -1,4 +1,5 @@
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins", sans-serif}
+h1, h2, h3{font-family:"Playfair Display", serif}
 .hero{height:100vh}
 .topo{height:90px;background:#2f3b2a;display:flex;justify-content:space-between;align-items:center;padding:0 40px}
 .menu{display:flex;gap:30px;list-style:none}
