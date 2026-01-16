@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* RESET */
 *{
   margin:0;
   padding:0;
@@ -33,8 +32,6 @@
 .logo img{
   max-height:100%;
   max-width:180px;
-  width:auto;
-  height:auto;
   object-fit:contain;
 }
 
@@ -67,13 +64,15 @@
 
 /* ================= CHALÉ ================= */
 .chale{
-  padding:140px 0 0;
-  text-align:center;
+  padding:200px 0 0;
   background:#fff;
 }
 
-.chale-conteudo{
-  padding:0 20px 60px;
+.chale-centro{
+  max-width:860px;
+  margin:0 auto;
+  padding:0 20px 70px;
+  text-align:center;
 }
 
 .btn-reserva{
@@ -86,30 +85,27 @@
   letter-spacing:2px;
 }
 
-.chale h1{
+.chale-centro h1{
   font-size:42px;
   margin-bottom:10px;
 }
 
-.chale h2{
+.chale-centro h2{
   font-size:18px;
-  font-weight:normal;
   color:#777;
   margin-bottom:30px;
 }
 
-.chale p{
-  max-width:800px;
-  margin:0 auto;
+.chale-centro p{
   font-size:16px;
+  line-height:1.9;
   color:#555;
-  line-height:1.6;
 }
 
-/* ================= BANNER AJUSTADO ================= */
+/* ================= BANNER ================= */
 .banner-full{
   width:100%;
-  max-width:1920px;
+  max-width:1200px;
   max-height:400px;
   margin:60px auto;
   overflow:hidden;
@@ -117,94 +113,98 @@
 
 .banner-full img{
   width:100%;
-  height:auto;
-  max-height:400px;
   object-fit:cover;
 }
 
-/* ================= SLIDER ================= */
-.slider-wrapper{
-  max-width:1200px;
-  margin:40px auto 0;
+/* ================= VIDEO FULL ================= */
+.video-full{
+  width:100vw;
+  height:600px;
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
   overflow:hidden;
 }
 
-.slider{
-  display:flex;
-  width:calc(100% * 12);
-  animation:slide 32s linear infinite;
-}
-
-.slider img{
-  width:12.5%;
-  height:260px;
+.video-full video{
+  width:100%;
+  height:100%;
   object-fit:cover;
-}
-
-@keyframes slide{
-  from{ transform:translateX(0); }
-  to{ transform:translateX(-50%); }
 }
 
 /* ================= RODAPÉ ================= */
 .rodape{
   background:#C2C1BB;
-  color:#000;
-  padding:60px 20px;
-  text-align:center;
+  padding:80px 40px;
 }
 
-.rodape h3{
-  font-size:22px;
+.rodape-container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.rodape-logo img{
+  max-width:180px;
   margin-bottom:20px;
+}
+
+.rodape-texto{
+  font-size:15px;
+  line-height:1.7;
+  color:#333;
+}
+
+.rodape-contato h3{
+  font-size:26px;
+  margin-bottom:20px;
+  color:#2f3b2a;
 }
 
 .rodape-item{
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin:8px 0;
-  font-size:15px;
+  gap:14px;
+  margin-bottom:16px;
+  font-size:16px;
 }
 
-.rodape svg{
-  width:18px;
-  height:18px;
+.rodape-item svg{
+  width:26px;
+  height:26px;
   fill:#2f3b2a;
 }
 
-.rodape a{
+.rodape-item a{
   color:#000;
   text-decoration:none;
 }
 
-.rodape a:hover{
+.rodape-item a:hover{
   text-decoration:underline;
+}
+
+.rodape-copy{
+  text-align:center;
+  margin-top:60px;
+  font-size:14px;
+  color:#333;
 }
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-
-  .menu{
-    display:none;
-  }
-
-  .hero-imagens{
+  .menu{display:none;}
+  .hero-imagens{grid-template-columns:1fr;}
+  .hero-imagens img{height:300px;}
+  .video-full{height:400px;}
+  .rodape-container{
     grid-template-columns:1fr;
-    height:auto;
+    text-align:center;
   }
-
-  .hero-imagens img{
-    height:300px;
-  }
-
-  .banner-full{
-    max-height:400px;
-  }
-
-  .slider img{
-    height:200px;
+  .rodape-item{
+    justify-content:center;
   }
 }
 </style>
@@ -214,14 +214,11 @@
 
 <header>
   <nav class="topo">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Fulo de Pequi">
-    </div>
+    <div class="logo"><img src="assets/logo.png" alt="Fulo de Pequi"></div>
     <ul class="menu">
       <li><a href="#">Início</a></li>
       <li><a href="#">Quem Somos</a></li>
       <li><a href="#">Chalé</a></li>
-      <li><a href="#">Tarifas</a></li>
       <li><a href="#">Contato</a></li>
     </ul>
   </nav>
@@ -235,66 +232,80 @@
 
 <section class="chale">
 
-  <div class="chale-conteudo">
+  <div class="chale-centro">
     <a href="#" class="btn-reserva">RESERVAR</a>
     <h1>Chalé Fulo de Pequi</h1>
     <h2>Conforto, natureza e tranquilidade</h2>
     <p>
-      Refúgio exclusivo em meio à natureza, conforto e conexão com o cerrado.
+      Chalé com estrutura moderna, aconchegante e integrado à natureza.
+      O deck de madeira amplo se estende para fora, integrando-se ao gramado.
+      Um balanço encantador de madeira rústica sob uma estrutura de pergolado
+      complementa o ambiente. Durante o dia mistura-se à paisagem verde,
+      e à noite é iluminado pela lua e pelas estrelas, criando um ambiente mágico.
+      Viva a experiência de desfrutar da natureza com conforto.
     </p>
   </div>
 
-  <!-- BANNER AJUSTADO -->
   <div class="banner-full">
-    <img src="assets/banner-full.jpg" alt="Banner Chalé Fulo de Pequi">
+    <img src="assets/banner-full.jpg">
   </div>
 
-  <!-- TITULO ANTES DO SLIDER -->
-  <div class="chale-conteudo">
-    <h1>Ambientes e Experiência</h1>
-    <h2>Detalhes que fazem a diferença</h2>
-  </div>
-
-  <!-- SLIDER -->
-  <div class="slider-wrapper">
-    <div class="slider">
-      <img src="assets/gallery/g1.jpg">
-      <img src="assets/gallery/g2.jpg">
-      <img src="assets/gallery/g3.jpg">
-      <img src="assets/gallery/g4.jpg">
-      <img src="assets/gallery/g5.jpg">
-      <img src="assets/gallery/g6.jpg">
-      <img src="assets/gallery/g7.jpg">
-      <img src="assets/gallery/g8.jpg">
-
-      <!-- duplicadas -->
-      <img src="assets/gallery/g1.jpg">
-      <img src="assets/gallery/g2.jpg">
-      <img src="assets/gallery/g3.jpg">
-      <img src="assets/gallery/g4.jpg">
-    </div>
+  <div class="video-full">
+    <video autoplay loop muted playsinline>
+      <source src="assets/video-destaque.mp4" type="video/mp4">
+    </video>
   </div>
 
 </section>
 
 <footer class="rodape">
-  <h3>Fulo de Pequi</h3>
 
-  <div class="rodape-item">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-    </svg>
-    <span>R. 241, qd 01 - LT 06 - Vila Morro Encantado, Cavalcante - GO</span>
+  <div class="rodape-container">
+
+    <div class="rodape-logo">
+      <img src="assets/logo.png" alt="Fulo de Pequi">
+      <div class="rodape-texto">
+        Chalé Fulo de Pequi<br>
+        Hospedagem integrada à natureza,<br>
+        conforto e tranquilidade.
+      </div>
+    </div>
+
+    <div class="rodape-contato">
+      <h3>CONTATO</h3>
+
+      <div class="rodape-item">
+        <!-- WhatsApp -->
+        <svg viewBox="0 0 24 24">
+          <path d="M16.7 13.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.5-1.6z"/>
+        </svg>
+        <a href="https://wa.me/5562999350693" target="_blank">(62) 99935-0693</a>
+      </div>
+
+      <div class="rodape-item">
+        <!-- Email -->
+        <svg viewBox="0 0 24 24">
+          <path d="M20 4H4v16h16V4zm0 4-8 5-8-5"/>
+        </svg>
+        <a href="mailto:contato@fulodpequi.com">contato@fulodpequi.com</a>
+      </div>
+
+      <div class="rodape-item">
+        <!-- Instagram .ajeitar roda pe devido esquecer de deixar a localizacao que tinha anteriormente  -->
+        <svg viewBox="0 0 24 24">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
+        </svg>
+        <a href="https://www.instagram.com/fulodpequi/" target="_blank">@fulodpequi</a>
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="rodape-item">
-    <svg viewBox="0 0 24 24">
-      <path d="M16.7 13.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.6-1.8-1.8-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.1-.3.2-.5.1-.2 0-.3 0-.5-.1-.2-.7-1.7-.9-2.3-.2-.6-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.3-.3.2-1 1-1 2.5s1 2.9 1.1 3.1c.1.2 2 3.1 4.9 4.4.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.1-1.4-.1-.2-.3-.3-.6-.5z"/>
-    </svg>
-    <a href="https://wa.me/5562999350693" target="_blank">(62) 99935-0693</a>
+  <div class="rodape-copy">
+    © 2026 • Fulo de Pequi • Todos os direitos reservados
   </div>
 
-  <p style="margin-top:15px;">© 2026 • Todos os direitos reservados</p>
 </footer>
 
 </body>
