@@ -97,6 +97,15 @@ h1, h2, h3{
   display:block;
 }
 
+/* ================= SEPARADOR ================= */
+.separador{
+  width:100%;
+  height:22px;
+  background:#fff;
+  border-top:1px solid rgba(0,0,0,0.08);
+  border-bottom:1px solid rgba(0,0,0,0.08);
+}
+
 /* ================= BLOCO BRANCO (IGUAL NO PC E NO CELULAR) ================= */
 .intro{
   background:#fff;
@@ -112,7 +121,7 @@ h1, h2, h3{
 
 .btn-reserva{
   display:inline-block;
-  margin-bottom:32px;
+  margin-bottom:20px;
   padding:14px 54px;
   background:#2f3b2a;
   color:#fff;
@@ -154,7 +163,6 @@ h1, h2, h3{
 
 /* ================= BANNER ================= */
 .banner-destaque{
-  margin-top:40px;
   height:420px;
   overflow:hidden;
 }
@@ -166,10 +174,11 @@ h1, h2, h3{
   display:block;
 }
 
-/* ================= INSTITUCIONAL ================= */
+/* ================= ACOMODAÇÕES / INSTITUCIONAL ================= */
 .institucional{
   padding:90px 0 0;
   text-align:center;
+  background:#fff;
 }
 
 .institucional h2{
@@ -212,6 +221,7 @@ h1, h2, h3{
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
   scroll-behavior:smooth;
+  background:#fff;
 }
 
 .galeria-horizontal::-webkit-scrollbar{
@@ -334,10 +344,6 @@ h1, h2, h3{
   .intro-centro h2{
     font-size:18px;
   }
-
-  .banner-destaque{
-    margin-top:30px;
-  }
 }
 </style>
 </head>
@@ -358,12 +364,43 @@ h1, h2, h3{
     </ul>
   </nav>
 
+  <!-- HERO -->
+  <section class="hero-imagens">
+    <img src="assets/hero-1.jpg" alt="Chalé Fulô de Pequi - Foto 1">
+    <img src="assets/hero-2.jpg" alt="Chalé Fulô de Pequi - Foto 2">
+    <img src="assets/hero-3.jpg" alt="Chalé Fulô de Pequi - Foto 3">
+  </section>
+</header>
+
+<!-- SEPARADOR -->
+<div class="separador"></div>
+
+<!-- BLOCO BRANCO -->
+<section class="intro">
+  <div class="intro-centro">
+    <a href="reservas.html" class="btn-reserva">RESERVAR</a>
+    <h1>Chalé Fulô de Pequi</h1>
+    <h2>Conforto, natureza e tranquilidade</h2>
+    <p>
+      Viva a experiência de se conectar com a natureza em um espaço
+      pensado para descanso, silêncio e bem-estar.
+    </p>
+    <a href="reservas.html" class="btn-acomodacoes">ACOMODAÇÕES</a>
+  </div>
+</section>
+
+<!-- SEPARADOR -->
+<div class="separador"></div>
+
 <!-- BANNER -->
 <div class="banner-destaque">
   <img src="assets/banner-destaque.jpg" alt="Destaque do Chalé Fulô de Pequi">
 </div>
 
-<!-- INSTITUCIONAL -->
+<!-- SEPARADOR -->
+<div class="separador"></div>
+
+<!-- ACOMODAÇÕES / INSTITUCIONAL (CONTEÚDO) -->
 <section class="institucional">
   <h2>FULÔ DE PEQUI</h2>
   <h3>onde o tempo desacelera</h3>
@@ -376,35 +413,20 @@ h1, h2, h3{
   <a href="servicos.html" class="btn-servicos">SERVIÇOS</a>
 </section>
 
-  <!-- BLOCO BRANCO -->
-<section class="intro">
-  <div class="intro-centro">
-     <a href="reservas.html" class="btn-reserva">RESERVAR</a>
-    <h1>Chalé Fulô de Pequi</h1>
-    <h2>Conforto, natureza e tranquilidade</h2>
-    <p>
-      Viva a experiência de se conectar com a natureza em um espaço
-      pensado para descanso, silêncio e bem-estar.
-    </p>
-    <a href="reservas.html" class="btn-acomodacoes">ACOMODAÇÕES</a>
+<!-- GALERIA -->
+<section class="galeria-horizontal">
+  <div class="galeria-track">
+    <img src="assets/galeria/g1.jpg" alt="">
+    <img src="assets/galeria/g2.jpg" alt="">
+    <img src="assets/galeria/g3.jpg" alt="">
+    <img src="assets/galeria/g4.jpg" alt="">
+    <img src="assets/galeria/g5.jpg" alt="">
+    <img src="assets/galeria/g6.jpg" alt="">
+    <img src="assets/galeria/g7.jpg" alt="">
+    <img src="assets/galeria/g8.jpg" alt="">
+    <img src="assets/galeria/g9.jpg" alt="">
+    <img src="assets/galeria/g10.jpg" alt="">
   </div>
-</section>
-
-  <!-- GALERIA -->
-  <section class="galeria-horizontal">
-    <div class="galeria-track">
-      <img src="assets/galeria/g1.jpg" alt="">
-      <img src="assets/galeria/g2.jpg" alt="">
-      <img src="assets/galeria/g3.jpg" alt="">
-      <img src="assets/galeria/g4.jpg" alt="">
-      <img src="assets/galeria/g5.jpg" alt="">
-      <img src="assets/galeria/g6.jpg" alt="">
-      <img src="assets/galeria/g7.jpg" alt="">
-      <img src="assets/galeria/g8.jpg" alt="">
-      <img src="assets/galeria/g9.jpg" alt="">
-      <img src="assets/galeria/g10.jpg" alt="">
-    </div>
-  </section>
 </section>
 
 <footer class="rodape">
