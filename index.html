@@ -2,43 +2,41 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Fulo de Pequi</title>
+<title>Fulô de Pequi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+html,body{width:100%;overflow-x:hidden;}
+
+:root{
+  --verde:#2f3b2a;
+  --bege:#C2C1BB;
+  --texto:#555;
+  --cinza:#777;
 }
 
 /* ================= TOPO ================= */
 .topo{
   height:90px;
-  background:#2f3b2a;
+  background:var(--verde);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 40px;
+  gap:24px;
 }
 
-.logo{
-  height:60px;
-  display:flex;
-  align-items:center;
-}
-
-.logo img{
-  max-height:100%;
-  max-width:180px;
-  object-fit:contain;
-}
+.logo{height:60px;display:flex;align-items:center;flex:0 0 auto;}
+.logo img{max-height:100%;max-width:180px;object-fit:contain;display:block;}
 
 .menu{
   list-style:none;
   display:flex;
-  gap:30px;
+  align-items:center;
+  gap:22px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 .menu a{
@@ -46,166 +44,246 @@
   text-decoration:none;
   text-transform:uppercase;
   letter-spacing:1px;
-  font-size:14px;
+  font-size:13px;
+  opacity:.95;
 }
+.menu a:hover{opacity:1;text-decoration:underline;}
 
-/* ================= HERO ================= */
-.hero-imagens{
+/* ================= BOTÕES (padrão reservas) ================= */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-size:13px;
+  padding:14px 38px;
+  border-radius:999px;
+  transition:.2s ease;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.btn--primario{background:var(--verde);color:#fff;}
+.btn--primario:hover{transform:translateY(-1px);filter:brightness(1.05);}
+.btn--outline{background:transparent;color:var(--verde);border-color:var(--verde);}
+.btn--outline:hover{background:rgba(47,59,42,.07);transform:translateY(-1px);}
+
+/* ================= HERO (3 fotos FIXAS + arrastar com mouse) ================= */
+.hero-wrap{background:#111;position:relative;}
+.hero-slider{
   height:calc(100vh - 90px);
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+  cursor:grab;
+  user-select:none;
+}
+.hero-slider:active{cursor:grabbing;}
+.hero-slide{flex:0 0 33.3333%;scroll-snap-align:start;}
+.hero-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+
+.hero-hint{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:1px;
 }
 
-.hero-imagens img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* ================= CHALÉ ================= */
-.chale{
-  padding:200px 0 0;
-  background:#fff;
-}
-
-.chale-centro{
-  max-width:860px;
+/* ================= SEÇÕES ================= */
+.section{padding:70px 0;background:#fff;}
+.section--claro{background:#fafafa;}
+.container{
+  max-width:980px;
   margin:0 auto;
-  padding:0 20px 70px;
+  padding:0 20px;
   text-align:center;
 }
 
-.btn-reserva{
-  display:inline-block;
-  margin-bottom:30px;
-  padding:14px 40px;
-  background:#2f3b2a;
-  color:#fff;
-  text-decoration:none;
-  letter-spacing:2px;
-}
+h1{font-size:42px;margin:14px 0 10px;}
+h2{font-size:30px;margin:0 0 10px;}
+.sub{font-size:16px;color:var(--cinza);margin-bottom:26px;}
+p{font-size:16px;line-height:1.9;color:var(--texto);}
 
-.chale-centro h1{
-  font-size:42px;
-  margin-bottom:10px;
-}
-
-.chale-centro h2{
-  font-size:18px;
-  color:#777;
-  margin-bottom:30px;
-}
-
-.chale-centro p{
-  font-size:16px;
-  line-height:1.9;
-  color:#555;
-}
+.sp-12{height:12px;}
+.sp-18{height:18px;}
+.sp-24{height:24px;}
+.sp-30{height:30px;}
+.sp-40{height:40px;}
 
 /* ================= BANNER ================= */
 .banner-full{
   width:100%;
   max-width:1200px;
-  max-height:400px;
-  margin:60px auto;
+  max-height:420px;
+  margin:55px auto 0;
   overflow:hidden;
+  border-radius:22px;
 }
-
 .banner-full img{
   width:100%;
+  height:100%;
   object-fit:cover;
+  display:block;
 }
+
+/* ================= BLOCO “FOTOS REDONDAS” (estilo Macoã) ================= */
+.circulos{
+  background:var(--verde);
+  padding:70px 0;
+}
+.circulos-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+  position:relative;
+}
+
+/* trilho horizontal */
+.circulos-track{
+  display:flex;
+  gap:34px;
+  overflow:hidden;
+  align-items:center;
+  justify-content:center;
+}
+
+/* bolas */
+.bola{
+  width:320px;
+  height:320px;
+  border-radius:50%;
+  overflow:hidden;
+  flex:0 0 auto;
+  background:#22301f;
+  box-shadow:0 14px 40px rgba(0,0,0,.25);
+}
+.bola img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* setas */
+.circulo-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:56px;
+  height:56px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font-size:30px;
+  line-height:56px;
+  text-align:center;
+  transition:.2s ease;
+}
+.circulo-btn:hover{background:rgba(255,255,255,.22);transform:translateY(-50%) scale(1.03);}
+.circulo-btn.prev{left:8px;}
+.circulo-btn.next{right:8px;}
+
+/* ================= CACHOEIRAS ================= */
+.grid-3{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:18px;
+  text-align:left;
+}
+.card{
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+}
+.card .thumb{height:160px;background:#eee;}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.card .body{padding:16px;}
+.card .title{font-weight:700;margin-bottom:8px;color:#111;}
+.card .desc{font-size:14px;line-height:1.7;color:#555;}
+
+/* ================= MAPA ================= */
+.mapa{
+  margin-top:22px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);
+}
+.mapa iframe{width:100%;height:360px;border:0;display:block;}
 
 /* ================= VIDEO FULL ================= */
 .video-full{
   width:100vw;
-  height:600px;
+  height:560px;
   position:relative;
   left:50%;
   transform:translateX(-50%);
   overflow:hidden;
+  margin-top:60px;
 }
-
-.video-full video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+.video-full video{width:100%;height:100%;object-fit:cover;}
 
 /* ================= RODAPÉ ================= */
-.rodape{
-  background:#C2C1BB;
-  padding:80px 40px;
-}
-
+.rodape{background:var(--bege);padding:80px 40px;}
 .rodape-container{
-  max-width:1200px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;
 }
+.rodape-logo img{max-width:180px;margin-bottom:20px;}
+.rodape-texto{font-size:15px;line-height:1.7;color:#333;}
+.rodape-contato h3{font-size:26px;margin-bottom:20px;color:var(--verde);}
+.rodape-item{display:flex;align-items:center;gap:14px;margin-bottom:16px;font-size:16px;}
+.rodape-item svg{width:26px;height:26px;fill:var(--verde);}
+.rodape-item a{color:#000;text-decoration:none;}
+.rodape-item a:hover{text-decoration:underline;}
+.rodape-copy{text-align:center;margin-top:60px;font-size:14px;color:#333;}
 
-.rodape-logo img{
-  max-width:180px;
-  margin-bottom:20px;
-}
-
-.rodape-texto{
-  font-size:15px;
-  line-height:1.7;
-  color:#333;
-}
-
-.rodape-contato h3{
-  font-size:26px;
-  margin-bottom:20px;
-  color:#2f3b2a;
-}
-
-.rodape-item{
+/* WhatsApp flutuante */
+.whats-float{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:56px;height:56px;
+  border-radius:999px;
+  background:#25D366;
   display:flex;
   align-items:center;
-  gap:14px;
-  margin-bottom:16px;
-  font-size:16px;
-}
-
-.rodape-item svg{
-  width:26px;
-  height:26px;
-  fill:#2f3b2a;
-}
-
-.rodape-item a{
-  color:#000;
+  justify-content:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+  z-index:999;
   text-decoration:none;
 }
-
-.rodape-item a:hover{
-  text-decoration:underline;
-}
-
-.rodape-copy{
-  text-align:center;
-  margin-top:60px;
-  font-size:14px;
-  color:#333;
-}
+.whats-float svg{width:28px;height:28px;fill:#fff;}
 
 /* ================= RESPONSIVO ================= */
-@media(max-width:900px){
+@media(max-width:980px){
+  .topo{padding:0 18px;}
   .menu{display:none;}
-  .hero-imagens{grid-template-columns:1fr;}
-  .hero-imagens img{height:300px;}
-  .video-full{height:400px;}
-  .rodape-container{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-  .rodape-item{
-    justify-content:center;
-  }
+  .hero-slide{flex:0 0 100%;}
+  .hero-slider{height:460px;}
+  h1{font-size:34px;}
+  .banner-full{border-radius:16px;}
+
+  .circulos-track{justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:0 10px;}
+  .bola{width:72vw;height:72vw;scroll-snap-align:center;}
+  .circulo-btn{display:none;}
+
+  .grid-3{grid-template-columns:1fr;gap:14px;}
+  .video-full{height:380px;}
+  .rodape-container{grid-template-columns:1fr;text-align:center;}
+  .rodape-item{justify-content:center;}
 }
 </style>
 </head>
@@ -214,58 +292,174 @@
 
 <header>
   <nav class="topo">
-    <div class="logo"><img src="assets/logo.png" alt="Fulo de Pequi"></div>
+    <div class="logo">
+      <a href="index.html" style="display:flex;align-items:center;">
+        <img src="assets/logo.png" alt="Fulô de Pequi">
+      </a>
+    </div>
+
+    <!-- MENU (linkado) -->
     <ul class="menu">
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Quem Somos</a></li>
-      <li><a href="#">Chalé</a></li>
-      <li><a href="#">Contato</a></li>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="reservas.html#acomodacoes">Acomodações</a></li>
+      <li><a href="servicos.html">Serviços</a></li>
+      <li><a href="politica.html">Política</a></li>
+      <li><a class="btn btn--outline" href="reservas.html">Reservar</a></li>
     </ul>
   </nav>
 
-  <section class="hero-imagens">
-    <img src="assets/hero-1.jpg">
-    <img src="assets/hero-2.jpg">
-    <img src="assets/hero-3.jpg">
-  </section>
+  <!-- HERO (3 fotos fixas + arrastar com mouse) -->
+  <div class="hero-wrap">
+    <section class="hero-slider" id="heroSlider" aria-label="Fotos do chalé">
+      <div class="hero-slide"><img src="assets/hero-1.jpg" alt="Chalé Fulô de Pequi 1"></div>
+      <div class="hero-slide"><img src="assets/hero-2.jpg" alt="Chalé Fulô de Pequi 2"></div>
+      <div class="hero-slide"><img src="assets/hero-3.jpg" alt="Chalé Fulô de Pequi 3"></div>
+    </section>
+    <div class="hero-hint">Arraste para o lado</div>
+  </div>
 </header>
 
-<section class="chale">
+<!-- BLOCO: Botão reservar + texto (no estilo do Macoã, adaptado ao Fulô) -->
+<section class="section">
+  <div class="container">
+    <a class="btn btn--primario" href="reservas.html">Reservar</a>
 
-  <div class="chale-centro">
-    <a href="#" class="btn-reserva">RESERVAR</a>
-    <h1>Chalé Fulo de Pequi</h1>
-    <h2>Conforto, natureza e tranquilidade</h2>
+    <h1>Chalé Fulô de Pequi</h1>
+    <div class="sub">Conforto, natureza e tranquilidade</div>
+
     <p>
       Chalé com estrutura moderna, aconchegante e integrado à natureza.
-      O deck de madeira amplo se estende para fora, integrando-se ao gramado.
-      Um balanço encantador de madeira rústica sob uma estrutura de pergolado
-      complementa o ambiente. Durante o dia mistura-se à paisagem verde,
-      e à noite é iluminado pela lua e pelas estrelas, criando um ambiente mágico.
-      Viva a experiência de desfrutar da natureza com conforto.
+      Viva a experiência de descansar com privacidade, silêncio e um céu cheio de estrelas.
     </p>
-  </div>
 
-  <div class="banner-full">
-    <img src="assets/banner-full.jpg">
-  </div>
+    <div class="sp-30"></div>
+    <a class="btn btn--outline" href="reservas.html#acomodacoes">Acomodações</a>
 
-  <div class="video-full">
-    <video autoplay loop muted playsinline>
-      <source src="assets/video-destaque.mp4" type="video/mp4">
-    </video>
-  </div>
+    <!-- BANNER (sua foto da rede) -->
+    <div class="banner-full">
+      <!-- Se o seu banner tiver outro nome, troque aqui. Ex.: banner.jpg -->
+      <img src="assets/banner-full.jpg" alt="Banner destaque">
+    </div>
 
+    <div class="sp-30"></div>
+    <p>
+      Um refúgio pensado para casais que buscam desacelerar e se conectar com a natureza.
+      Ideal para fins de semana, datas especiais e momentos de descanso.
+    </p>
+
+    <div class="sp-30"></div>
+    <a class="btn btn--outline" href="servicos.html">Serviços</a>
+  </div>
+</section>
+
+<!-- BLOCO: FOTOS REDONDAS (estilo Macoã) -->
+<section class="circulos" aria-label="Galeria em destaque">
+  <div class="circulos-inner">
+
+    <!-- Setas (desktop) -->
+    <button class="circulo-btn prev" id="cirPrev" type="button" aria-label="Anterior">‹</button>
+    <button class="circulo-btn next" id="cirNext" type="button" aria-label="Próximo">›</button>
+
+    <div class="circulos-track" id="cirTrack">
+      <!-- IMPORTANTE:
+           Como você disse que não tem fotos de "serviços" ainda,
+           eu usei as HERO aqui para não quebrar nada.
+           Quando você quiser, troque por:
+           assets/servico-1.jpg, servico-2.jpg, etc.
+      -->
+      <div class="bola"><img src="assets/hero-1.jpg" alt="Destaque 1"></div>
+      <div class="bola"><img src="assets/hero-2.jpg" alt="Destaque 2"></div>
+      <div class="bola"><img src="assets/hero-3.jpg" alt="Destaque 3"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BLOCO: reservar novamente + texto -->
+<section class="section">
+  <div class="container">
+    <a class="btn btn--primario" href="reservas.html">Reservar</a>
+    <div class="sp-18"></div>
+    <p style="max-width:760px;margin:0 auto;">
+      Reserve com antecedência para garantir as melhores datas, especialmente em fins de semana e feriados.
+    </p>
+
+    <!-- VIDEO (mantive seu bloco, sem mexer) -->
+    <div class="video-full">
+      <video autoplay loop muted playsinline>
+        <source src="assets/video-destaque.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- CACHOEIRAS (3 principais) + MAPA -->
+<section class="section section--claro">
+  <div class="container">
+    <h2>Cachoeiras em Cavalcante</h2>
+    <div class="sub">Algumas das mais procuradas por turistas na região</div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="thumb">
+          <!-- Troque por assets/cachoeira-1.jpg quando tiver -->
+          <img src="assets/hero-1.jpg" alt="Cachoeira Santa Bárbara">
+        </div>
+        <div class="body">
+          <div class="title">Cachoeira Santa Bárbara</div>
+          <div class="desc">
+            Famosa pelas águas azul-turquesa e pelo cenário preservado no território Kalunga.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb">
+          <!-- Troque por assets/cachoeira-2.jpg quando tiver -->
+          <img src="assets/hero-2.jpg" alt="Cachoeira da Capivara">
+        </div>
+        <div class="body">
+          <div class="title">Cachoeira da Capivara</div>
+          <div class="desc">
+            Uma das mais visitadas, ótima para combinar no mesmo roteiro da região Kalunga.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb">
+          <!-- Troque por assets/cachoeira-3.jpg quando tiver -->
+          <img src="assets/hero-3.jpg" alt="Cachoeira Candaru">
+        </div>
+        <div class="body">
+          <div class="title">Cachoeira Candaru</div>
+          <div class="desc">
+            Opção mais “exclusiva”, indicada para quem quer natureza forte e menos movimento.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-30"></div>
+
+    <!-- MAPA (placeholder: Cavalcante GO). Você vai me mandar a localização exata e eu troco aqui. -->
+    <div class="mapa" aria-label="Mapa da região">
+      <iframe
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Cavalcante%2C%20GO&output=embed">
+      </iframe>
+    </div>
+  </div>
 </section>
 
 <footer class="rodape">
-
   <div class="rodape-container">
 
     <div class="rodape-logo">
-      <img src="assets/logo.png" alt="Fulo de Pequi">
+      <img src="assets/logo.png" alt="Fulô de Pequi">
       <div class="rodape-texto">
-        Chalé Fulo de Pequi<br>
+        Chalé Fulô de Pequi<br>
         Hospedagem integrada à natureza,<br>
         conforto e tranquilidade.
       </div>
@@ -276,37 +470,96 @@
 
       <div class="rodape-item">
         <!-- WhatsApp -->
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M16.7 13.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.5-1.6z"/>
         </svg>
-        <a href="https://wa.me/5562999350693" target="_blank">(62) 99935-0693</a>
+        <a href="https://wa.me/5562999350693" target="_blank" rel="noopener">(62) 99935-0693</a>
       </div>
 
       <div class="rodape-item">
         <!-- Email -->
-        <svg viewBox="0 0 24 24">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M20 4H4v16h16V4zm0 4-8 5-8-5"/>
         </svg>
         <a href="mailto:contato@fulodpequi.com">contato@fulodpequi.com</a>
       </div>
 
       <div class="rodape-item">
-        <!-- Instagram .ajeitar roda pe devido esquecer de deixar a localizacao que tinha anteriormente  -->
-        <svg viewBox="0 0 24 24">
+        <!-- Instagram -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
         </svg>
-        <a href="https://www.instagram.com/fulodpequi/" target="_blank">@fulodpequi</a>
+        <a href="https://www.instagram.com/fulodpequi/" target="_blank" rel="noopener">@fulodpequi</a>
       </div>
 
     </div>
-
   </div>
 
   <div class="rodape-copy">
-    © 2026 • Fulo de Pequi • Todos os direitos reservados
+    © 2026 • Fulô de Pequi • Todos os direitos reservados
   </div>
-
 </footer>
+
+<!-- WhatsApp flutuante -->
+<a class="whats-float" href="https://wa.me/5562999350693" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.8 14.4c-.2.6-1.1 1.1-1.5 1.2-.4.1-.9.1-1.4 0-1.8-.6-3.2-1.6-4.5-2.8-1.1-1.1-2.2-2.7-2.7-4.5-.2-.5-.2-1 0-1.4.1-.4.6-1.3 1.2-1.5.3-.1.6 0 .8.2l.9 1.3c.2.3.2.6.1.9l-.4.9c-.1.2-.1.5 0 .7.3.6.8 1.3 1.4 1.9.6.6 1.3 1.1 1.9 1.4.2.1.5.1.7 0l.9-.4c.3-.1.6-.1.9.1l1.3.9c.2.2.3.5.2.8z"/>
+  </svg>
+</a>
+
+<script>
+/* ================= HERO drag-to-scroll (mouse) ================= */
+(function(){
+  const el = document.getElementById('heroSlider');
+  if(!el) return;
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  el.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+
+  window.addEventListener('mouseup', () => isDown = false);
+
+  window.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    el.scrollLeft = scrollLeft - walk;
+  });
+})();
+
+/* ================= CÍRCULOS (setas no desktop) ================= */
+(function(){
+  const track = document.getElementById('cirTrack');
+  const prev = document.getElementById('cirPrev');
+  const next = document.getElementById('cirNext');
+  if(!track || !prev || !next) return;
+
+  function step(){
+    const item = track.querySelector('.bola');
+    if(!item) return 0;
+    const gap = 34;
+    return item.getBoundingClientRect().width + gap;
+  }
+
+  prev.addEventListener('click', () => {
+    track.scrollBy({ left: -step(), behavior: 'smooth' });
+  });
+  next.addEventListener('click', () => {
+    track.scrollBy({ left: step(), behavior: 'smooth' });
+  });
+
+  /* garante scroll no desktop também */
+  track.style.overflowX = 'auto';
+  track.style.scrollBehavior = 'smooth';
+})();
+</script>
 
 </body>
 </html>
