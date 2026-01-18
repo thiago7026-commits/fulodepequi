@@ -205,24 +205,16 @@ h1, h2, h3{
 
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
-  .menu{
-    display:none;
-  }
+  .menu{ display:none; }
 
-  .politicas{
-    padding:0 20px 70px;
-  }
+  .politicas{ padding:0 20px 70px; }
 
-  .politica-grid{
-    grid-template-columns:1fr;
-  }
+  .politica-grid{ grid-template-columns:1fr; }
 
   .hero-politica h1{
     font-size:32px;
     letter-spacing:3px;
   }
 
-  .rodape-container{
-    grid-template-columns:1fr;
-  }
+  .rodape-container{ grid-template-columns:1fr; }
 }
