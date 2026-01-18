@@ -14,6 +14,7 @@ html,body{width:100%;overflow-x:hidden;}
   --bege:#C2C1BB;
   --texto:#555;
   --cinza:#777;
+  --borda:rgba(0,0,0,.08);
 }
 
 /* ================= TOPO (CENTRALIZADO + STICKY) ================= */
@@ -35,7 +36,9 @@ html,body{width:100%;overflow-x:hidden;}
   align-items:center;
 }
 .logo img{
-  height:60px;
+  max-height:100%;
+  max-width:180px;
+  object-fit:contain;
   display:block;
 }
 
@@ -44,7 +47,7 @@ html,body{width:100%;overflow-x:hidden;}
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:36px;
+  gap:34px;
 }
 
 .menu a{
@@ -58,7 +61,7 @@ html,body{width:100%;overflow-x:hidden;}
 }
 .menu a:hover{opacity:1;text-decoration:underline;}
 
-/* ================= HERO (3 VISÍVEIS + ARRASTAR + MAIS FOTOS) ================= */
+/* ================= HERO (3 VISÍVEIS + ARRASTAR, SEM BAGUNÇAR) ================= */
 .hero-wrap{background:#111;position:relative;}
 
 .hero-slider{
@@ -97,9 +100,10 @@ html,body{width:100%;overflow-x:hidden;}
   letter-spacing:1px;
 }
 
-/* ================= SEÇÕES ================= */
+/* ================= SEÇÕES / TEXTO ================= */
 .section{padding:70px 0;background:#fff;}
 .section--claro{background:#fafafa;}
+
 .container{
   max-width:900px;
   margin:0 auto;
@@ -120,6 +124,7 @@ p{
 /* ================= BOTÕES ================= */
 .btn{
   display:inline-block;
+  margin:20px 0;
   padding:14px 38px;
   border-radius:40px;
   background:var(--verde);
@@ -127,7 +132,6 @@ p{
   text-decoration:none;
   letter-spacing:2px;
   font-size:13px;
-  margin:20px 0;
   text-transform:uppercase;
 }
 
@@ -137,49 +141,40 @@ p{
   color:var(--verde);
 }
 
-/* ================= BANNER ================= */
+/* ================= BANNER (FIXO, SEM SLIDER) ================= */
 .banner-full{
+  width:100%;
   max-width:1200px;
   margin:60px auto;
   overflow:hidden;
   border-radius:22px;
 }
+
 .banner-full img{
   width:100%;
+  height:auto;
   display:block;
+  object-fit:cover;
 }
 
-/* ================= GALERIA (BOLAS) ================= */
-.circulos{
-  background:var(--verde);
-  padding:70px 0;
+/* ================= GALERIA (MOSAICO, LEVE E BONITO) ================= */
+.mosaico{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  text-align:left;
 }
 
-.circulos-inner{
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 20px;
-  position:relative;
-}
-
-.circulos-track{
-  display:flex;
-  gap:34px;
-  align-items:center;
-  justify-content:center;
+.mosaico-item{
+  border-radius:18px;
   overflow:hidden;
+  border:1px solid var(--borda);
+  background:#eee;
+  height:220px;
 }
 
-.bola{
-  width:320px;
-  height:320px;
-  border-radius:50%;
-  overflow:hidden;
-  flex:0 0 auto;
-  background:#22301f;
-  box-shadow:0 14px 40px rgba(0,0,0,.25);
-}
-.bola img{
+.mosaico-item img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -196,7 +191,7 @@ p{
 }
 
 .card{
-  border:1px solid rgba(0,0,0,.08);
+  border:1px solid var(--borda);
   border-radius:18px;
   overflow:hidden;
   background:#fff;
@@ -213,19 +208,35 @@ p{
   margin-top:22px;
   border-radius:18px;
   overflow:hidden;
-  border:1px solid rgba(0,0,0,.08);
+  border:1px solid var(--borda);
 }
 .mapa iframe{width:100%;height:360px;border:0;display:block;}
 
 /* ================= RODAPÉ ================= */
-.rodape{background:var(--bege);padding:80px 40px;}
-.rodape-container{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;
+.rodape{
+  background:var(--bege);
+  padding:80px 40px;
 }
-.rodape-copy{text-align:center;margin-top:40px;font-size:14px;color:#333;}
 
-/* WhatsApp flutuante */
+.rodape-container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.rodape-logo img{max-width:180px;margin-bottom:14px;}
+.rodape-texto{font-size:15px;line-height:1.7;color:#333;}
+
+.rodape-copy{
+  text-align:center;
+  margin-top:50px;
+  font-size:14px;
+  color:#333;
+}
+
+/* ================= WhatsApp flutuante ================= */
 .whats-float{
   position:fixed;
   right:18px;
@@ -245,21 +256,21 @@ p{
 /* ================= RESPONSIVO ================= */
 @media(max-width:900px){
   .menu{display:none;}
-  .hero-slide{flex:0 0 100%;}
-  .hero-slider{height:420px;}
   h1{font-size:34px;}
 
-  .circulos-track{
-    justify-content:flex-start;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-    padding:0 10px;
-  }
-  .bola{width:72vw;height:72vw;scroll-snap-align:center;}
+  /* Hero em mobile: 1 por vez */
+  .hero-slide{flex:0 0 100%;}
+  .hero-slider{height:420px;}
+
+  .mosaico{grid-template-columns:1fr;}
+  .mosaico-item{height:240px;}
 
   .grid-3{grid-template-columns:1fr;gap:14px;}
-  .rodape-container{grid-template-columns:1fr;text-align:center;}
+
+  .rodape-container{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
 }
 </style>
 </head>
@@ -283,9 +294,22 @@ p{
     </ul>
   </nav>
 
-  <!-- HERO (preenchido via Drive) -->
+  <!-- HERO (mantém 3 visíveis e permite arrastar para ver mais fotos) -->
   <div class="hero-wrap">
-    <section class="hero-slider" id="heroSlider"></section>
+    <section class="hero-slider" id="heroSlider">
+      <!-- Coloque aqui quantas HERO você quiser (10, 15...). Mantém 3 visíveis. -->
+      <div class="hero-slide"><img src="assets/hero-1.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-2.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-3.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-4.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-5.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-6.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-7.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-8.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-9.jpg" alt=""></div>
+      <div class="hero-slide"><img src="assets/hero-10.jpg" alt=""></div>
+    </section>
+
     <div class="hero-hint">Arraste para o lado</div>
   </div>
 </header>
@@ -300,16 +324,16 @@ p{
     <p>
       Chalé com estrutura moderna, aconchegante e integrado à natureza.
       O deck de madeira amplo se estende para fora, integrando-se ao gramado e criando um ambiente convidativo.
-      Um balanço de madeira rústica sob uma charmosa estrutura de pergolado complementa a experiência.
+      Um balanço de madeira rústica, sob uma charmosa estrutura de pergolado, complementa a experiência com leveza e encanto.
       Durante o dia, o chalé se mistura à paisagem verde; à noite, é iluminado pela lua e pelas estrelas, criando um clima mágico.
       Viva a experiência de desfrutar da natureza com conforto, privacidade e silêncio.
     </p>
 
     <a href="reservas.html#acomodacoes" class="btn btn-outline">Acomodações</a>
 
+    <!-- BANNER FIXO (nome confirmado: banner-destaque.jpg) -->
     <div class="banner-full">
-      <!-- Banner preenchido via Drive -->
-      <img id="bannerDestaque" src="assets/banner-destaque.jpg" alt="Banner Chalé Fulô de Pequi">
+      <img src="assets/banner-destaque.jpg" alt="Chalé Fulô de Pequi">
     </div>
 
     <p>
@@ -321,35 +345,101 @@ p{
   </div>
 </section>
 
-<!-- GALERIA (fotos redondas, preenchido via Drive) -->
-<section class="circulos" aria-label="Galeria">
-  <div class="circulos-inner">
-    <div class="circulos-track" id="galeriaTrack"></div>
+<!-- GALERIA BONITA (SEM SLIDER) -->
+<section class="section section--claro" id="galeria">
+  <div class="container">
+    <h2>Galeria</h2>
+    <div class="sub">Alguns detalhes do chalé e da experiência</div>
+
+    <div class="mosaico">
+      <!-- Troque os nomes conforme suas imagens reais -->
+      <div class="mosaico-item"><img src="assets/galeria-1.jpg" alt=""></div>
+      <div class="mosaico-item"><img src="assets/galeria-2.jpg" alt=""></div>
+      <div class="mosaico-item"><img src="assets/galeria-3.jpg" alt=""></div>
+      <div class="mosaico-item"><img src="assets/galeria-4.jpg" alt=""></div>
+      <div class="mosaico-item"><img src="assets/galeria-5.jpg" alt=""></div>
+      <div class="mosaico-item"><img src="assets/galeria-6.jpg" alt=""></div>
+    </div>
+
+    <a href="reservas.html" class="btn">Reservar</a>
   </div>
 </section>
 
 <!-- CACHOEIRAS + MAPA -->
-<section class="section section--claro">
+<section class="section">
   <div class="container">
     <h2>Cachoeiras em Cavalcante</h2>
-    <div class="sub">Algumas das mais procuradas na região</div>
+    <div class="sub">Sugestões de passeio na região</div>
 
-    <div class="grid-3" id="cachoeirasGrid"></div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="thumb"><img src="assets/cachoeira-1.jpg" alt="Cachoeira Santa Bárbara"></div>
+        <div class="body">
+          <div class="title">Cachoeira Santa Bárbara</div>
+          <div class="desc">Famosa pelas águas azul-turquesa e cenário preservado no território Kalunga.</div>
+        </div>
+      </div>
 
+      <div class="card">
+        <div class="thumb"><img src="assets/cachoeira-2.jpg" alt="Cachoeira da Capivara"></div>
+        <div class="body">
+          <div class="title">Cachoeira da Capivara</div>
+          <div class="desc">Uma das mais procuradas para banho refrescante, com paisagem exuberante.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="assets/cachoeira-3.jpg" alt="Cachoeira Candaru"></div>
+        <div class="body">
+          <div class="title">Cachoeira Candaru</div>
+          <div class="desc">Boa opção para quem busca uma experiência mais reservada e contato com o Cerrado.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAPA (VOCÊ VAI ME MANDAR O ENDEREÇO/CORDENADA CERTA PARA TROCAR AQUI) -->
     <div class="mapa" aria-label="Mapa do Chalé Fulô de Pequi">
-      <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps?q=-13.735808,-47.458567&output=embed"></iframe>
+      <iframe
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=R.%20241,%20qd%2001%20-%20LT%2006%20-%20Vila%20morro%20encantado,%20Cavalcante%20-%20GO,%2073790-000&output=embed"
+
+      </iframe>
     </div>
   </div>
 </section>
 
-<!-- ACOMODAÇÕES -->
-<section class="section">
+<!-- ACOMODAÇÕES (cards simples — você troca as imagens e textos depois) -->
+<section class="section section--claro">
   <div class="container">
     <h2>Acomodações</h2>
     <div class="sub">Detalhes do chalé para sua estadia</div>
 
-    <div class="grid-3" id="acomodacoesGrid"></div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="thumb"><img src="assets/acomodacao-1.jpg" alt=""></div>
+        <div class="body">
+          <div class="title">Conforto e privacidade</div>
+          <div class="desc">Ambiente pensado para descanso, tranquilidade e conexão com a natureza.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="assets/acomodacao-2.jpg" alt=""></div>
+        <div class="body">
+          <div class="title">Deck integrado ao verde</div>
+          <div class="desc">Espaço externo amplo para relaxar e aproveitar o clima de Cavalcante.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="assets/acomodacao-3.jpg" alt=""></div>
+        <div class="body">
+          <div class="title">Detalhes que acolhem</div>
+          <div class="desc">Experiência cuidadosamente preparada para uma estadia memorável.</div>
+        </div>
+      </div>
+    </div>
 
     <a href="reservas.html" class="btn">Reservar</a>
   </div>
@@ -357,17 +447,20 @@ p{
 
 <footer class="rodape">
   <div class="rodape-container">
-    <div>
-      <img src="assets/logo.png" alt="Fulô de Pequi" style="height:60px">
-      <p style="margin-top:12px;color:#333;">
-        Hospedagem integrada à natureza, conforto e tranquilidade.
-      </p>
+    <div class="rodape-logo">
+      <img src="assets/logo.png" alt="Fulô de Pequi">
+      <div class="rodape-texto">
+        Chalé Fulô de Pequi<br>
+        Hospedagem integrada à natureza,<br>
+        conforto e tranquilidade.
+      </div>
     </div>
 
-    <div>
-      <p style="color:#333;margin-bottom:10px;">WhatsApp: (62) 99935-0693</p>
-      <p style="color:#333;margin-bottom:10px;">Email: contato@fulodpequi.com</p>
-      <p style="color:#333;">Instagram: @fulodpequi</p>
+    <div class="rodape-texto">
+      <strong>Contato</strong><br><br>
+      WhatsApp: <a href="https://wa.me/5562999350693" target="_blank" style="color:#000;text-decoration:none;">(62) 99935-0693</a><br>
+      E-mail: <a href="mailto:contato@fulodpequi.com" style="color:#000;text-decoration:none;">contato@fulodpequi.com</a><br>
+      Instagram: <a href="https://www.instagram.com/fulodpequi/" target="_blank" style="color:#000;text-decoration:none;">@fulodpequi</a>
     </div>
   </div>
 
@@ -384,100 +477,22 @@ p{
 </a>
 
 <script>
-/* ================= CONFIG API ================= */
-const API = "https://script.google.com/macros/s/AKfycbxq7FWItI-Df25JBQ6VsAXXPQMKn0fazSVLRls3x8dx2CukL6TAHrXN3Qe873EglYiP_g/exec";
+/* HERO drag mouse (arrastar com mouse) */
+const slider = document.getElementById('heroSlider');
+let isDown=false,startX=0,scrollLeft=0;
 
-/* ================= FETCH ================= */
-async function getDriveBlock(action){
-  const r = await fetch(`${API}?action=${action}`);
-  return await r.json();
-}
-
-/* ================= RENDER ================= */
-function renderHero(items){
-  const hero = document.getElementById("heroSlider");
-  if(!hero) return;
-  hero.innerHTML = (items || []).map(i => `
-    <div class="hero-slide"><img src="${i.url}" alt="${i.name}"></div>
-  `).join("");
-}
-
-function applyBanner(items){
-  const img = document.getElementById("bannerDestaque");
-  if(!img) return;
-  if(items && items.length) img.src = items[0].url;
-}
-
-function renderGaleria(items){
-  const track = document.getElementById("galeriaTrack");
-  if(!track) return;
-  track.innerHTML = (items || []).map(i => `
-    <div class="bola"><img src="${i.url}" alt="${i.name}"></div>
-  `).join("");
-}
-
-function renderGridCards(containerId, items, descDefault){
-  const el = document.getElementById(containerId);
-  if(!el) return;
-
-  el.innerHTML = (items || []).map(i => `
-    <div class="card">
-      <div class="thumb"><img src="${i.url}" alt="${i.name}"></div>
-      <div class="body">
-        <div class="title">${formatTitle(i.name)}</div>
-        <div class="desc">${descDefault}</div>
-      </div>
-    </div>
-  `).join("");
-}
-
-function formatTitle(filename){
-  return filename.replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ").trim();
-}
-
-/* ================= HERO DRAG (mouse) ================= */
-(function(){
-  const el = document.getElementById('heroSlider');
-  let isDown=false,startX=0,scrollLeft=0;
-
-  el.addEventListener('mousedown',(e)=>{
-    isDown=true;
-    startX=e.pageX - el.offsetLeft;
-    scrollLeft=el.scrollLeft;
-  });
-
-  window.addEventListener('mouseup',()=>isDown=false);
-
-  window.addEventListener('mousemove',(e)=>{
-    if(!isDown) return;
-    e.preventDefault();
-    const x=e.pageX - el.offsetLeft;
-    const walk=(x - startX) * 1.2;
-    el.scrollLeft=scrollLeft - walk;
-  });
-})();
-
-/* ================= INIT ================= */
-(async function init(){
-  try{
-    const hero = await getDriveBlock("hero");
-    renderHero(hero.items);
-
-    const banner = await getDriveBlock("banner");
-    applyBanner(banner.items);
-
-    const galeria = await getDriveBlock("galeria");
-    renderGaleria(galeria.items);
-
-    const cach = await getDriveBlock("cachoeiras");
-    renderGridCards("cachoeirasGrid", cach.items, "Sugestão de passeio na região de Cavalcante para curtir natureza e água fresca.");
-
-    const acom = await getDriveBlock("acomodacoes");
-    renderGridCards("acomodacoesGrid", acom.items, "Detalhes do chalé para uma estadia confortável, com privacidade e conexão com a natureza.");
-  }catch(e){
-    console.log("Erro ao carregar imagens do Drive:", e);
-  }
-})();
+slider.addEventListener('mousedown',(e)=>{
+  isDown=true;
+  startX=e.pageX - slider.offsetLeft;
+  scrollLeft=slider.scrollLeft;
+});
+window.addEventListener('mouseup',()=>isDown=false);
+window.addEventListener('mousemove',(e)=>{
+  if(!isDown) return;
+  e.preventDefault();
+  const x=e.pageX - slider.offsetLeft;
+  slider.scrollLeft = scrollLeft - (x - startX) * 1.2;
+});
 </script>
 
 </body>
