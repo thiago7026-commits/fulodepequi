@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulô de Pequi • Administração de Fotos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Voltar para a home">
+        <img src="assets/logo.png" alt="Fulô de Pequi" />
+        <div>
+          <strong>Fulô de Pequi</strong>
+          <span>Área de administração</span>
+        </div>
+      </a>
+      <nav class="top-actions">
+        <a class="btn btn-outline" href="index.html">Voltar ao site</a>
+        <button class="btn btn-ghost hidden" id="logoutButton" type="button">Sair</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <h1>Fotos do chalé de um jeito simples</h1>
+      <p>
+        Aqui o administrador consegue adicionar fotos por blocos, com visual limpo e organizado.
+        As imagens ficam salvas neste navegador (não é um sistema de nuvem).
+      </p>
+    </section>
+
+    <section class="card" id="loginCard">
+      <div class="card-header">
+        <h2>Login do administrador</h2>
+        <p>Use o usuário e senha combinados. Para trocar, edite o arquivo <code>js/admin.js</code>.</p>
+      </div>
+
+      <form class="login-form" id="loginForm">
+        <label>
+          Usuário
+          <input type="text" name="usuario" placeholder="Digite o usuário" required />
+        </label>
+        <label>
+          Senha
+          <input type="password" name="senha" placeholder="Digite a senha" required />
+        </label>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+        <p class="form-note" id="loginFeedback" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card hidden" id="adminPanel">
+      <div class="card-header">
+        <div>
+          <h2>Blocos de fotos</h2>
+          <p>Divida as imagens para manter o site organizado. O bloco 1 é o principal (10 a 12 fotos).</p>
+        </div>
+        <div class="export-actions">
+          <button class="btn btn-outline" type="button" id="copyJson">Copiar JSON</button>
+          <button class="btn btn-primary" type="button" id="downloadJson">Baixar JSON</button>
+        </div>
+      </div>
+
+      <div class="blocks">
+        <article class="block" data-block="bloco1">
+          <header>
+            <h3>Bloco 1 • 10 a 12 fotos</h3>
+            <p class="block-meta" id="countBloco1">0 imagens</p>
+          </header>
+
+          <div class="drop-area" data-drop="bloco1">
+            <p>Arraste e solte as fotos aqui ou clique para escolher.</p>
+            <input type="file" accept="image/*" multiple data-input="bloco1" />
+          </div>
+
+          <div class="thumb-grid" data-grid="bloco1"></div>
+          <div class="block-actions">
+            <button class="btn btn-ghost" type="button" data-clear="bloco1">Limpar bloco</button>
+          </div>
+        </article>
+
+        <article class="block" data-block="bloco2">
+          <header>
+            <h3>Bloco 2 • fotos complementares</h3>
+            <p class="block-meta" id="countBloco2">0 imagens</p>
+          </header>
+
+          <div class="drop-area" data-drop="bloco2">
+            <p>Arraste e solte as fotos aqui ou clique para escolher.</p>
+            <input type="file" accept="image/*" multiple data-input="bloco2" />
+          </div>
+
+          <div class="thumb-grid" data-grid="bloco2"></div>
+          <div class="block-actions">
+            <button class="btn btn-ghost" type="button" data-clear="bloco2">Limpar bloco</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="helper">
+        <h3>Como usar o JSON</h3>
+        <ol>
+          <li>Adicione as fotos nos blocos acima.</li>
+          <li>Clique em “Baixar JSON” ou “Copiar JSON”.</li>
+          <li>Envie esse arquivo para quem cuida do site ou para a integração com o Google Drive/Apps Script.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Fulô de Pequi • Área administrativa simples para controle das fotos.</p>
+  </footer>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+:root {
+  --verde:#2f3b2a;
+  --dourado:#c9a24d;
+  --fundo:#f7f6f3;
+  --texto:#2a2a2a;
+  --muted:#6c6c6c;
+  --card:#ffffff;
+  --borda:rgba(0,0,0,0.08);
+  --shadow:0 16px 30px rgba(0,0,0,0.08);
+  --radius:18px;
+  --max:1100px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins", sans-serif}
+body{background:var(--fundo);color:var(--texto);min-height:100vh}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:var(--verde);
+  box-shadow:0 6px 18px rgba(0,0,0,0.12);
+}
+.topbar-inner{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.brand{display:flex;align-items:center;gap:14px;color:#fff}
+.brand img{width:56px;height:56px;object-fit:contain}
+.brand span{display:block;font-size:12px;opacity:0.8}
+.brand strong{font-family:"Playfair Display", serif;font-size:20px;display:block}
+
+.page{max-width:var(--max);margin:0 auto;padding:32px 20px 60px}
+.intro{margin-bottom:24px}
+.intro h1{font-family:"Playfair Display", serif;font-size:32px;margin-bottom:8px}
+.intro p{color:var(--muted);max-width:720px}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px;
+  margin-bottom:26px;
+  border:1px solid var(--borda);
+}
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:20px;
+}
+.card-header h2{font-family:"Playfair Display", serif;font-size:24px;margin-bottom:6px}
+.card-header p{color:var(--muted)}
+
+.login-form{display:grid;gap:16px;max-width:420px}
+.login-form label{display:grid;gap:8px;font-weight:500}
+.login-form input{
+  border:1px solid var(--borda);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:14px;
+}
+.form-note{color:var(--muted);font-size:13px;min-height:20px}
+
+.btn{
+  border:none;
+  border-radius:999px;
+  padding:12px 18px;
+  font-size:13px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.7px;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:active{transform:scale(0.98)}
+.btn-primary{background:var(--dourado);color:#fff;box-shadow:0 12px 18px rgba(201,162,77,0.25)}
+.btn-outline{background:#fff;border:1px solid rgba(255,255,255,0.4);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--borda);color:var(--texto)}
+.top-actions{display:flex;gap:12px;align-items:center}
+
+.blocks{display:grid;gap:22px}
+.block{
+  border:1px solid var(--borda);
+  border-radius:var(--radius);
+  padding:20px;
+  background:#fff;
+}
+.block header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.block h3{font-family:"Playfair Display", serif;font-size:20px}
+.block-meta{color:var(--muted);font-size:13px}
+
+.drop-area{
+  border:2px dashed rgba(47,59,42,0.2);
+  border-radius:16px;
+  padding:22px;
+  text-align:center;
+  color:var(--muted);
+  background:rgba(255,255,255,0.6);
+  position:relative;
+  cursor:pointer;
+}
+.drop-area input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.drop-area.dragover{border-color:var(--dourado);background:rgba(201,162,77,0.12);color:var(--texto)}
+
+.thumb-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+.thumb{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--borda);
+}
+.thumb img{width:100%;height:120px;object-fit:cover}
+.thumb button{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:rgba(0,0,0,0.6);
+  border:none;
+  color:#fff;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.block-actions{margin-top:16px}
+.export-actions{display:flex;gap:12px;flex-wrap:wrap}
+.helper{margin-top:24px;background:rgba(47,59,42,0.05);padding:18px;border-radius:14px}
+.helper h3{font-family:"Playfair Display", serif;margin-bottom:10px}
+.helper ol{padding-left:18px;color:var(--muted)}
+
+.footer{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+
+.hidden{display:none}
+
+@media (max-width: 800px){
+  .topbar-inner{flex-direction:column;align-items:flex-start}
+  .top-actions{width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .card-header{flex-direction:column;align-items:flex-start}
+}
