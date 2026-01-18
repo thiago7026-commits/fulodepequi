@@ -1,565 +1,848 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Fulô de Pequi</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fulô de Pequi • Chalé em Cavalcante</title>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-html,body{width:100%;overflow-x:hidden;}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-:root{
-  --verde:#2f3b2a;
-  --bege:#C2C1BB;
-  --texto:#555;
-  --cinza:#777;
-}
+  <style>
+    :root{
+      --verde:#2f3b2a;
+      --dourado:#c9a24d;
+      --fundo:#fafafa;
+      --texto:#2a2a2a;
+      --muted:#6c6c6c;
+      --card:#ffffff;
+      --borda:rgba(0,0,0,0.08);
+      --shadow:0 12px 30px rgba(0,0,0,0.10);
+      --radius:16px;
+      --max:1120px;
+    }
 
-/* ================= TOPO ================= */
-.topo{
-  height:90px;
-  background:var(--verde);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 40px;
-  gap:24px;
-}
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
+    html,body{ width:100%; overflow-x:hidden; background:var(--fundo); color:var(--texto); }
+    a{ color:inherit; text-decoration:none; }
+    h1,h2,h3{ font-family:"Playfair Display", serif; }
+    img{ max-width:100%; display:block; }
 
-.logo{height:60px;display:flex;align-items:center;flex:0 0 auto;}
-.logo img{max-height:100%;max-width:180px;object-fit:contain;display:block;}
+    /* ================= HEADER ================= */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      height:90px;
+      background:var(--verde);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .topo{
+      width:min(var(--max), 92vw);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:200px;
+    }
+    .logo img{ height:64px; width:auto; }
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    nav a{
+      color:#fff;
+      text-transform:uppercase;
+      font-size:13px;
+      letter-spacing:1px;
+      font-weight:500;
+      opacity:0.95;
+      padding:8px 6px;
+    }
+    nav a:hover{ opacity:1; }
 
-.menu{
-  list-style:none;
-  display:flex;
-  align-items:center;
-  gap:22px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
+    /* Botão reserva (fora do menu) */
+    .cta-topo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-end;
+      min-width:200px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:12px 18px;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.7px;
+      text-transform:uppercase;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:transform .15s ease, opacity .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{ transform:scale(0.98); }
+    .btn-dourado{ background:var(--dourado); color:#fff; }
+    .btn-outline{
+      background:transparent;
+      border-color:rgba(255,255,255,0.22);
+      color:#fff;
+      opacity:0.95;
+    }
 
-.menu a{
-  color:#fff;
-  text-decoration:none;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  font-size:13px;
-  opacity:.95;
-}
-.menu a:hover{opacity:1;text-decoration:underline;}
+    /* ================= HERO (TOPO - 10 FOTOS) ================= */
+    .hero{
+      position:relative;
+      height:76vh;
+      min-height:520px;
+      overflow:hidden;
+      background:#111;
+    }
+    .hero-track{
+      height:100%;
+      display:flex;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .hero-track::-webkit-scrollbar{ display:none; }
+    .hero-slide{
+      width:100%;
+      min-width:100%;
+      height:100%;
+      scroll-snap-align:start;
+      position:relative;
+    }
+    .hero-slide img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:saturate(1.02) contrast(1.02);
+    }
+    .hero-gradient{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.55) 100%);
+      pointer-events:none;
+    }
+    .hero-content{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+    }
+    .hero-box{
+      width:min(820px, 92vw);
+      color:#fff;
+    }
+    .hero-box h1{
+      font-size:46px;
+      line-height:1.05;
+      margin-bottom:10px;
+    }
+    .hero-box p{
+      font-size:16px;
+      line-height:1.7;
+      opacity:0.95;
+      margin:0 auto 22px;
+      max-width:640px;
+    }
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
 
-/* ================= BOTÕES (padrão reservas) ================= */
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-size:13px;
-  padding:14px 38px;
-  border-radius:999px;
-  transition:.2s ease;
-  border:1px solid transparent;
-  cursor:pointer;
-}
-.btn--primario{background:var(--verde);color:#fff;}
-.btn--primario:hover{transform:translateY(-1px);filter:brightness(1.05);}
-.btn--outline{background:transparent;color:var(--verde);border-color:var(--verde);}
-.btn--outline:hover{background:rgba(47,59,42,.07);transform:translateY(-1px);}
+    /* Indicadores do hero */
+    .hero-dots{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+    .dot{
+      width:8px; height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.45);
+      border:1px solid rgba(255,255,255,0.10);
+      cursor:pointer;
+    }
+    .dot.active{ background:#fff; }
 
-/* ================= HERO (3 fotos FIXAS + arrastar com mouse) ================= */
-.hero-wrap{background:#111;position:relative;}
-.hero-slider{
-  height:calc(100vh - 90px);
-  display:flex;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
-  cursor:grab;
-  user-select:none;
-}
-.hero-slider:active{cursor:grabbing;}
-.hero-slide{flex:0 0 33.3333%;scroll-snap-align:start;}
-.hero-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+    /* ================= SEÇÕES (BASE) ================= */
+    .wrap{ width:min(var(--max), 92vw); margin:0 auto; }
+    .section{ padding:72px 0; }
+    .section h2{
+      font-size:36px;
+      text-align:center;
+      margin-bottom:18px;
+    }
+    .section .sub{
+      text-align:center;
+      color:var(--muted);
+      max-width:860px;
+      margin:0 auto 40px;
+      line-height:1.8;
+      font-size:16px;
+    }
 
-.hero-hint{
-  position:absolute;
-  bottom:18px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(0,0,0,.45);
-  color:#fff;
-  padding:10px 14px;
-  border-radius:999px;
-  font-size:12px;
-  letter-spacing:1px;
-}
+    /* ================= BLOCO “BOTÕES” (ACOMODAÇÕES / SERVIÇOS / POLÍTICAS) ================= */
+    .quick-actions{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .qa{
+      background:var(--card);
+      border:1px solid var(--borda);
+      border-radius:999px;
+      padding:12px 18px;
+      box-shadow:0 10px 20px rgba(0,0,0,0.06);
+      font-weight:600;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.7px;
+      cursor:pointer;
+      transition:transform .15s ease;
+    }
+    .qa:hover{ transform:translateY(-1px); }
+    .qa strong{ color:var(--verde); }
 
-/* ================= SEÇÕES ================= */
-.section{padding:70px 0;background:#fff;}
-.section--claro{background:#fafafa;}
-.container{
-  max-width:980px;
-  margin:0 auto;
-  padding:0 20px;
-  text-align:center;
-}
+    /* ================= SUBSTITUTO PROFISSIONAL DO “BANNER” ================= */
+    .highlights{
+      margin-top:26px;
+      background:linear-gradient(180deg, rgba(201,162,77,0.14) 0%, rgba(255,255,255,0.0) 100%);
+      border:1px solid rgba(201,162,77,0.30);
+      border-radius:24px;
+      padding:26px;
+      box-shadow:0 14px 34px rgba(0,0,0,0.06);
+    }
+    .highlights-grid{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .high-left{
+      background:#fff;
+      border-radius:20px;
+      border:1px solid var(--borda);
+      padding:22px;
+    }
+    .high-left h3{ font-size:22px; margin-bottom:10px; }
+    .high-left p{ color:var(--muted); line-height:1.8; margin-bottom:16px; }
+    .high-left .mini-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .high-right{
+      display:grid;
+      gap:12px;
+    }
+    .pill{
+      background:#fff;
+      border:1px solid var(--borda);
+      border-radius:18px;
+      padding:16px 16px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .pill b{ display:block; }
+    .pill span{ display:block; color:var(--muted); line-height:1.6; font-size:14px; }
+    .icon{
+      width:42px; height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(47,59,42,0.10);
+      border:1px solid rgba(47,59,42,0.10);
+      flex:0 0 42px;
+      font-weight:800;
+      color:var(--verde);
+    }
 
-h1{font-size:42px;margin:14px 0 10px;}
-h2{font-size:30px;margin:0 0 10px;}
-.sub{font-size:16px;color:var(--cinza);margin-bottom:26px;}
-p{font-size:16px;line-height:1.9;color:var(--texto);}
+    /* ================= CACHOEIRAS (MAIORES E BONITAS) ================= */
+    .cachoeiras-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:22px;
+    }
+    .cach-card{
+      background:var(--card);
+      border:1px solid var(--borda);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform .18s ease;
+    }
+    .cach-card:hover{ transform:translateY(-2px); }
+    .cach-card .img{
+      height:340px;
+      background:#ddd;
+      overflow:hidden;
+    }
+    .cach-card .img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.02);
+    }
+    .cach-card .txt{
+      padding:18px 18px 20px;
+    }
+    .cach-card h3{
+      font-size:20px;
+      margin-bottom:8px;
+    }
+    .cach-card p{
+      color:var(--muted);
+      line-height:1.75;
+      font-size:14.5px;
+    }
 
-.sp-12{height:12px;}
-.sp-18{height:18px;}
-.sp-24{height:24px;}
-.sp-30{height:30px;}
-.sp-40{height:40px;}
+    /* ================= MAPA / LOCALIZAÇÃO ================= */
+    .mapa-wrap{
+      display:grid;
+      grid-template-columns:1fr 1.2fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    .mapa-card{
+      background:var(--card);
+      border:1px solid var(--borda);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.08);
+    }
+    .mapa-card h3{ font-size:22px; margin-bottom:10px; }
+    .mapa-card p{ color:var(--muted); line-height:1.8; margin-bottom:14px; }
+    .mapa-embed{
+      background:var(--card);
+      border:1px solid var(--borda);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 14px 30px rgba(0,0,0,0.08);
+      min-height:380px;
+    }
+    .mapa-embed iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      min-height:380px;
+    }
 
-/* ================= BANNER ================= */
-.banner-full{
-  width:100%;
-  max-width:1200px;
-  max-height:420px;
-  margin:55px auto 0;
-  overflow:hidden;
-  border-radius:22px;
-}
-.banner-full img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+    /* ================= CARROSSEL REDONDINHO (10 FOTOS) ================= */
+    .thumb-carousel{
+      background:#f2f2f2;
+      padding:56px 0 72px;
+      border-top:1px solid rgba(0,0,0,0.05);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+    .thumb-track{
+      display:flex;
+      gap:14px;
+      overflow-x:auto;
+      padding:14px 6px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .thumb-track::-webkit-scrollbar{ display:none; }
+    .thumb{
+      flex:0 0 auto;
+      width:88px;
+      height:88px;
+      border-radius:999px;
+      overflow:hidden;
+      border:3px solid rgba(255,255,255,0.9);
+      box-shadow:0 12px 24px rgba(0,0,0,0.12);
+      scroll-snap-align:start;
+      cursor:pointer;
+      background:#ddd;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .thumb-title{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+    }
 
-/* ================= BLOCO “FOTOS REDONDAS” (estilo Macoã) ================= */
-.circulos{
-  background:var(--verde);
-  padding:70px 0;
-}
-.circulos-inner{
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 20px;
-  position:relative;
-}
+    /* ================= LIGHTBOX ================= */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.78);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      padding:18px;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox-inner{
+      width:min(980px, 94vw);
+      border-radius:18px;
+      overflow:hidden;
+      background:#111;
+      box-shadow:0 24px 60px rgba(0,0,0,0.55);
+      position:relative;
+    }
+    .lightbox-inner img{
+      width:100%;
+      height:min(82vh, 720px);
+      object-fit:contain;
+      background:#111;
+    }
+    .lb-close{
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.22);
+      color:#fff;
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:700;
+    }
 
-/* trilho horizontal */
-.circulos-track{
-  display:flex;
-  gap:34px;
-  overflow:hidden;
-  align-items:center;
-  justify-content:center;
-}
+    /* ================= WHATSAPP FLUTUANTE ================= */
+    .whats{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:120;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#25D366;
+      color:#fff;
+      padding:12px 14px;
+      border-radius:999px;
+      box-shadow:0 18px 34px rgba(0,0,0,0.20);
+      font-weight:700;
+      letter-spacing:0.4px;
+    }
+    .whats span{
+      font-size:14px;
+    }
 
-/* bolas */
-.bola{
-  width:320px;
-  height:320px;
-  border-radius:50%;
-  overflow:hidden;
-  flex:0 0 auto;
-  background:#22301f;
-  box-shadow:0 14px 40px rgba(0,0,0,.25);
-}
-.bola img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+    /* ================= FOOTER ================= */
+    footer{
+      background:var(--verde);
+      color:#fff;
+      padding:44px 0;
+      text-align:center;
+      margin-top:0;
+    }
+    footer p{
+      opacity:0.92;
+      font-size:14px;
+      line-height:1.8;
+      width:min(var(--max), 92vw);
+      margin:0 auto;
+    }
 
-/* setas */
-.circulo-btn{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  width:56px;
-  height:56px;
-  border-radius:999px;
-  border:0;
-  cursor:pointer;
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  font-size:30px;
-  line-height:56px;
-  text-align:center;
-  transition:.2s ease;
-}
-.circulo-btn:hover{background:rgba(255,255,255,.22);transform:translateY(-50%) scale(1.03);}
-.circulo-btn.prev{left:8px;}
-.circulo-btn.next{right:8px;}
-
-/* ================= CACHOEIRAS ================= */
-.grid-3{
-  margin-top:26px;
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:18px;
-  text-align:left;
-}
-.card{
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:18px;
-  overflow:hidden;
-  background:#fff;
-}
-.card .thumb{height:160px;background:#eee;}
-.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.card .body{padding:16px;}
-.card .title{font-weight:700;margin-bottom:8px;color:#111;}
-.card .desc{font-size:14px;line-height:1.7;color:#555;}
-
-/* ================= MAPA ================= */
-.mapa{
-  margin-top:22px;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(0,0,0,.08);
-}
-.mapa iframe{width:100%;height:360px;border:0;display:block;}
-
-/* ================= VIDEO FULL ================= */
-.video-full{
-  width:100vw;
-  height:560px;
-  position:relative;
-  left:50%;
-  transform:translateX(-50%);
-  overflow:hidden;
-  margin-top:60px;
-}
-.video-full video{width:100%;height:100%;object-fit:cover;}
-
-/* ================= RODAPÉ ================= */
-.rodape{background:var(--bege);padding:80px 40px;}
-.rodape-container{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;
-}
-.rodape-logo img{max-width:180px;margin-bottom:20px;}
-.rodape-texto{font-size:15px;line-height:1.7;color:#333;}
-.rodape-contato h3{font-size:26px;margin-bottom:20px;color:var(--verde);}
-.rodape-item{display:flex;align-items:center;gap:14px;margin-bottom:16px;font-size:16px;}
-.rodape-item svg{width:26px;height:26px;fill:var(--verde);}
-.rodape-item a{color:#000;text-decoration:none;}
-.rodape-item a:hover{text-decoration:underline;}
-.rodape-copy{text-align:center;margin-top:60px;font-size:14px;color:#333;}
-
-/* WhatsApp flutuante */
-.whats-float{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  width:56px;height:56px;
-  border-radius:999px;
-  background:#25D366;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.22);
-  z-index:999;
-  text-decoration:none;
-}
-.whats-float svg{width:28px;height:28px;fill:#fff;}
-
-/* ================= RESPONSIVO ================= */
-@media(max-width:980px){
-  .topo{padding:0 18px;}
-  .menu{display:none;}
-  .hero-slide{flex:0 0 100%;}
-  .hero-slider{height:460px;}
-  h1{font-size:34px;}
-  .banner-full{border-radius:16px;}
-
-  .circulos-track{justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:0 10px;}
-  .bola{width:72vw;height:72vw;scroll-snap-align:center;}
-  .circulo-btn{display:none;}
-
-  .grid-3{grid-template-columns:1fr;gap:14px;}
-  .video-full{height:380px;}
-  .rodape-container{grid-template-columns:1fr;text-align:center;}
-  .rodape-item{justify-content:center;}
-}
-</style>
+    /* ================= RESPONSIVO ================= */
+    @media (max-width: 980px){
+      .highlights-grid{ grid-template-columns:1fr; }
+      .cachoeiras-grid{ grid-template-columns:1fr; }
+      .mapa-wrap{ grid-template-columns:1fr; }
+      .hero{ min-height:520px; height:72vh; }
+      .hero-box h1{ font-size:36px; }
+      header{ height:auto; padding:14px 0; }
+      .topo{ flex-direction:column; align-items:center; }
+      .logo, .cta-topo{ min-width:auto; }
+      nav ul{ justify-content:center; }
+    }
+    @media (max-width: 520px){
+      .hero{ min-height:540px; }
+      .hero-box h1{ font-size:30px; }
+      .hero-box p{ font-size:15px; }
+      .thumb{ width:78px; height:78px; }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <nav class="topo">
-    <div class="logo">
-      <a href="index.html" style="display:flex;align-items:center;">
-        <img src="assets/logo.png" alt="Fulô de Pequi">
-      </a>
+  <!-- HEADER -->
+  <header>
+    <div class="topo">
+      <div class="logo">
+        <a href="index.html" aria-label="Fulô de Pequi">
+          <img src="assets/logo.png" alt="Fulô de Pequi">
+        </a>
+      </div>
+
+      <nav aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="acomodacoes.html">Acomodações</a></li>
+          <li><a href="servicos.html">Serviços</a></li>
+          <li><a href="politica.html">Políticas</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta-topo">
+        <a class="btn btn-outline" href="#mapa">Localização</a>
+        <a class="btn btn-dourado" href="reservas.html">Reservar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO (TOPO) - 10 FOTOS -->
+  <section class="hero" aria-label="Galeria principal">
+    <div class="hero-track" id="heroTrack">
+      <!-- Slides inseridos via JS (10 fotos do Drive/FluxPig) -->
+    </div>
+    <div class="hero-gradient"></div>
+
+    <div class="hero-content">
+      <div class="hero-box">
+        <h1>Chalé Fulô de Pequi</h1>
+        <p>
+          Conforto, natureza e exclusividade em Cavalcante – Chapada dos Veadeiros.
+          Arraste para o lado e veja mais fotos.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-dourado" href="reservas.html">Reservar agora</a>
+          <a class="btn btn-outline" href="acomodacoes.html">Ver acomodações</a>
+        </div>
+      </div>
     </div>
 
-    <!-- MENU (linkado) -->
-    <ul class="menu">
-      <li><a href="index.html">Início</a></li>
-      <li><a href="reservas.html#acomodacoes">Acomodações</a></li>
-      <li><a href="servicos.html">Serviços</a></li>
-      <li><a href="politica.html">Política</a></li>
-      <li><a class="btn btn--outline" href="reservas.html">Reservar</a></li>
-    </ul>
-  </nav>
+    <div class="hero-dots" id="heroDots" aria-label="Indicadores do carrossel"></div>
+  </section>
 
-  <!-- HERO (3 fotos fixas + arrastar com mouse) -->
-  <div class="hero-wrap">
-    <section class="hero-slider" id="heroSlider" aria-label="Fotos do chalé">
-      <div class="hero-slide"><img src="assets/hero-1.jpg" alt="Chalé Fulô de Pequi 1"></div>
-      <div class="hero-slide"><img src="assets/hero-2.jpg" alt="Chalé Fulô de Pequi 2"></div>
-      <div class="hero-slide"><img src="assets/hero-3.jpg" alt="Chalé Fulô de Pequi 3"></div>
-    </section>
-    <div class="hero-hint">Arraste para o lado</div>
-  </div>
-</header>
+  <!-- APRESENTAÇÃO + BOTÕES -->
+  <section class="section">
+    <div class="wrap">
+      <h2>Viva a Chapada com exclusividade</h2>
+      <p class="sub">
+        O Fulô de Pequi é um refúgio para casais que buscam tranquilidade, paisagens marcantes e uma experiência bem cuidada do início ao fim.
+      </p>
 
-<!-- BLOCO: Botão reservar + texto (no estilo do Macoã, adaptado ao Fulô) -->
-<section class="section">
-  <div class="container">
-    <a class="btn btn--primario" href="reservas.html">Reservar</a>
+      <div class="quick-actions" aria-label="Atalhos">
+        <a class="qa" href="acomodacoes.html">Acomodações</a>
+        <a class="qa" href="servicos.html">Serviços</a>
+        <a class="qa" href="politica.html">Políticas</a>
+      </div>
 
-    <h1>Chalé Fulô de Pequi</h1>
-    <div class="sub">Conforto, natureza e tranquilidade</div>
+      <!-- SUBSTITUTO PROFISSIONAL DO BANNER (sem quebrar estrutura) -->
+      <div class="highlights" aria-label="Destaques profissionais">
+        <div class="highlights-grid">
+          <div class="high-left">
+            <h3>Uma experiência completa, sem complicação</h3>
+            <p>
+              Em vez de um “banner” que bagunça o layout, esta área funciona como um bloco elegante de destaque:
+              reforça valor, orienta o cliente e melhora conversão sem pesar o site.
+            </p>
+            <div class="mini-actions">
+              <a class="btn btn-dourado" href="reservas.html">Fazer reserva</a>
+              <a class="btn btn-outline" style="color:var(--verde); border-color:rgba(47,59,42,0.20); background:#fff;" href="servicos.html">Ver extras</a>
+            </div>
+          </div>
 
+          <div class="high-right">
+            <div class="pill">
+              <div class="icon">✓</div>
+              <div>
+                <b>Check-in e Check-out claros</b>
+                <span>Check-in a partir das 16h e check-out até 12h (ver detalhes em Políticas).</span>
+              </div>
+            </div>
+            <div class="pill">
+              <div class="icon">★</div>
+              <div>
+                <b>Indicado para casais</b>
+                <span>Ambiente pensado para descanso e privacidade. Regras e condições na página Políticas.</span>
+              </div>
+            </div>
+            <div class="pill">
+              <div class="icon">↗</div>
+              <div>
+                <b>Localização estratégica</b>
+                <span>Fácil acesso para explorar cachoeiras e pontos especiais da região.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CACHOEIRAS (GRANDES E VALORIZADAS) -->
+  <section class="section" aria-label="Cachoeiras">
+    <div class="wrap">
+      <h2>Cachoeiras da região</h2>
+      <p class="sub">
+        Você pediu para não ficar “pequeno lado a lado”. Aqui elas ficam maiores, com cards premium e imagens grandes.
+      </p>
+
+      <div class="cachoeiras-grid">
+        <article class="cach-card">
+          <div class="img">
+            <img src="assets/cachoeira-santa-barbara.jpg" alt="Cachoeira Santa Bárbara">
+          </div>
+          <div class="txt">
+            <h3>Cachoeira Santa Bárbara</h3>
+            <p>Águas cristalinas e um cenário impressionante, um dos destaques mais desejados da Chapada.</p>
+          </div>
+        </article>
+
+        <article class="cach-card">
+          <div class="img">
+            <img src="assets/cachoeira-candaru.jpg" alt="Cachoeira Candaru">
+          </div>
+          <div class="txt">
+            <h3>Cachoeira Candaru</h3>
+            <p>Uma opção excelente para quem quer natureza e trilha com visual marcante e boas fotos.</p>
+          </div>
+        </article>
+
+        <article class="cach-card">
+          <div class="img">
+            <img src="assets/cachoeira-fronteira-go-to.jpg" alt="Cachoeira com acesso por Cavalcante (TO)">
+          </div>
+          <div class="txt">
+            <h3>Cachoeira com acesso por Cavalcante (TO)</h3>
+            <p>Localizada no Tocantins, mas com acesso por Cavalcante — perfeita para incluir no roteiro.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARROSSEL REDONDINHO (10 FOTOS) -->
+  <section class="thumb-carousel" aria-label="Galeria complementar">
+    <div class="wrap">
+      <h2>Mais fotos do chalé</h2>
+      <p class="sub">Carrossel redondinho com 10 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
+
+      <div class="thumb-track" id="thumbTrack">
+        <!-- Thumbs inseridos via JS (10 fotos do Drive/FluxPig) -->
+      </div>
+
+      <div class="thumb-title">Arraste para o lado</div>
+    </div>
+  </section>
+
+  <!-- MAPA / LOCALIZAÇÃO NA HOME -->
+  <section class="section" id="mapa" aria-label="Localização">
+    <div class="wrap">
+      <h2>Localização do chalé</h2>
+      <p class="sub">
+        Endereço: <b>R. 241, Qd 01 - Lt 06 - Vila Morro Encantado, Cavalcante - GO, 73790-000</b>
+      </p>
+
+      <div class="mapa-wrap">
+        <div class="mapa-card">
+          <h3>Como chegar</h3>
+          <p>
+            Use o mapa ao lado para traçar a rota. Assim que a reserva for concluída, a localização também poderá ser enviada por WhatsApp e e-mail (configuração feita na página de reservas).
+          </p>
+          <p style="color:var(--muted);">
+            Dica: se você quiser, podemos trocar este embed por um ponto exato (lat/long) quando você confirmar a posição final.
+          </p>
+          <a class="btn btn-dourado" href="reservas.html">Ir para reservas</a>
+        </div>
+
+        <div class="mapa-embed">
+          <!-- Embed por endereço (estável). Se você preferir embed por coordenadas, eu ajusto depois. -->
+          <iframe
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=R.%20241,%20Qd%2001%20-%20Lt%2006%20-%20Vila%20Morro%20Encantado,%20Cavalcante%20-%20GO,%2073790-000&output=embed">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
     <p>
-      Chalé com estrutura moderna, aconchegante e integrado à natureza.
-      Viva a experiência de descansar com privacidade, silêncio e um céu cheio de estrelas.
+      © Fulô de Pequi • Cavalcante – GO • Chapada dos Veadeiros<br/>
+      Reservas e informações: WhatsApp
     </p>
+  </footer>
 
-    <div class="sp-30"></div>
-    <a class="btn btn--outline" href="reservas.html#acomodacoes">Acomodações</a>
+  <!-- WhatsApp flutuante (ajuste o número abaixo) -->
+  <a class="whats" href="https://wa.me/55SEUNUMEROAQUI" target="_blank" rel="noopener">
+    <span>WhatsApp</span>
+  </a>
 
-    <!-- BANNER (sua foto da rede) -->
-    <div class="banner-full">
-      <!-- Se o seu banner tiver outro nome, troque aqui. Ex.: banner.jpg -->
-      <img src="assets/banner-full.jpg" alt="Banner destaque">
-    </div>
-
-    <div class="sp-30"></div>
-    <p>
-      Um refúgio pensado para casais que buscam desacelerar e se conectar com a natureza.
-      Ideal para fins de semana, datas especiais e momentos de descanso.
-    </p>
-
-    <div class="sp-30"></div>
-    <a class="btn btn--outline" href="servicos.html">Serviços</a>
-  </div>
-</section>
-
-<!-- BLOCO: FOTOS REDONDAS (estilo Macoã) -->
-<section class="circulos" aria-label="Galeria em destaque">
-  <div class="circulos-inner">
-
-    <!-- Setas (desktop) -->
-    <button class="circulo-btn prev" id="cirPrev" type="button" aria-label="Anterior">‹</button>
-    <button class="circulo-btn next" id="cirNext" type="button" aria-label="Próximo">›</button>
-
-    <div class="circulos-track" id="cirTrack">
-      <!-- IMPORTANTE:
-           Como você disse que não tem fotos de "serviços" ainda,
-           eu usei as HERO aqui para não quebrar nada.
-           Quando você quiser, troque por:
-           assets/servico-1.jpg, servico-2.jpg, etc.
-      -->
-      <div class="bola"><img src="assets/hero-1.jpg" alt="Destaque 1"></div>
-      <div class="bola"><img src="assets/hero-2.jpg" alt="Destaque 2"></div>
-      <div class="bola"><img src="assets/hero-3.jpg" alt="Destaque 3"></div>
-    </div>
-
-  </div>
-</section>
-
-<!-- BLOCO: reservar novamente + texto -->
-<section class="section">
-  <div class="container">
-    <a class="btn btn--primario" href="reservas.html">Reservar</a>
-    <div class="sp-18"></div>
-    <p style="max-width:760px;margin:0 auto;">
-      Reserve com antecedência para garantir as melhores datas, especialmente em fins de semana e feriados.
-    </p>
-
-    <!-- VIDEO (mantive seu bloco, sem mexer) -->
-    <div class="video-full">
-      <video autoplay loop muted playsinline>
-        <source src="assets/video-destaque.mp4" type="video/mp4">
-      </video>
-    </div>
-  </div>
-</section>
-
-<!-- CACHOEIRAS (3 principais) + MAPA -->
-<section class="section section--claro">
-  <div class="container">
-    <h2>Cachoeiras em Cavalcante</h2>
-    <div class="sub">Algumas das mais procuradas por turistas na região</div>
-
-    <div class="grid-3">
-      <div class="card">
-        <div class="thumb">
-          <!-- Troque por assets/cachoeira-1.jpg quando tiver -->
-          <img src="assets/hero-1.jpg" alt="Cachoeira Santa Bárbara">
-        </div>
-        <div class="body">
-          <div class="title">Cachoeira Santa Bárbara</div>
-          <div class="desc">
-            Famosa pelas águas azul-turquesa e pelo cenário preservado no território Kalunga.
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="thumb">
-          <!-- Troque por assets/cachoeira-2.jpg quando tiver -->
-          <img src="assets/hero-2.jpg" alt="Cachoeira da Capivara">
-        </div>
-        <div class="body">
-          <div class="title">Cachoeira da Capivara</div>
-          <div class="desc">
-            Uma das mais visitadas, ótima para combinar no mesmo roteiro da região Kalunga.
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="thumb">
-          <!-- Troque por assets/cachoeira-3.jpg quando tiver -->
-          <img src="assets/hero-3.jpg" alt="Cachoeira Candaru">
-        </div>
-        <div class="body">
-          <div class="title">Cachoeira Candaru</div>
-          <div class="desc">
-            Opção mais “exclusiva”, indicada para quem quer natureza forte e menos movimento.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="sp-30"></div>
-
-    <!-- MAPA (placeholder: Cavalcante GO). Você vai me mandar a localização exata e eu troco aqui. -->
-    <div class="mapa" aria-label="Mapa da região">
-      <iframe
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps?q=Cavalcante%2C%20GO&output=embed">
-      </iframe>
-    </div>
-  </div>
-</section>
-
-<footer class="rodape">
-  <div class="rodape-container">
-
-    <div class="rodape-logo">
-      <img src="assets/logo.png" alt="Fulô de Pequi">
-      <div class="rodape-texto">
-        Chalé Fulô de Pequi<br>
-        Hospedagem integrada à natureza,<br>
-        conforto e tranquilidade.
-      </div>
-    </div>
-
-    <div class="rodape-contato">
-      <h3>CONTATO</h3>
-
-      <div class="rodape-item">
-        <!-- WhatsApp -->
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16.7 13.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 .9-.2.1-.4.1-.7-.1-.3-.2-1.3-.5-2.5-1.6z"/>
-        </svg>
-        <a href="https://wa.me/5562999350693" target="_blank" rel="noopener">(62) 99935-0693</a>
-      </div>
-
-      <div class="rodape-item">
-        <!-- Email -->
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20 4H4v16h16V4zm0 4-8 5-8-5"/>
-        </svg>
-        <a href="mailto:contato@fulodpequi.com">contato@fulodpequi.com</a>
-      </div>
-
-      <div class="rodape-item">
-        <!-- Instagram -->
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
-        </svg>
-        <a href="https://www.instagram.com/fulodpequi/" target="_blank" rel="noopener">@fulodpequi</a>
-      </div>
-
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-label="Visualizador de imagem">
+    <div class="lightbox-inner">
+      <button class="lb-close" id="lbClose" aria-label="Fechar">X</button>
+      <img id="lbImg" alt="Imagem ampliada">
     </div>
   </div>
 
-  <div class="rodape-copy">
-    © 2026 • Fulô de Pequi • Todos os direitos reservados
-  </div>
-</footer>
+  <script>
+    /**
+     * INTEGRAÇÃO GOOGLE DRIVE / FLUXPIG
+     * - Coloque aqui a URL do seu endpoint (Apps Script / FluxPig) que devolve JSON com as fotos.
+     * - Formato esperado (exemplo):
+     *   { "images": [ "https://.../foto1.jpg", "https://.../foto2.jpg", ... ] }
+     *   ou simplesmente: [ "url1", "url2", ... ]
+     *
+     * Se não houver endpoint ainda, o site usa placeholders e continua estável.
+     */
+    const FOTOS_API_URL = ""; // <- COLE AQUI a URL do seu FluxPig / Apps Script (web app)
 
-<!-- WhatsApp flutuante -->
-<a class="whats-float" href="https://wa.me/5562999350693" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2zm5.8 14.4c-.2.6-1.1 1.1-1.5 1.2-.4.1-.9.1-1.4 0-1.8-.6-3.2-1.6-4.5-2.8-1.1-1.1-2.2-2.7-2.7-4.5-.2-.5-.2-1 0-1.4.1-.4.6-1.3 1.2-1.5.3-.1.6 0 .8.2l.9 1.3c.2.3.2.6.1.9l-.4.9c-.1.2-.1.5 0 .7.3.6.8 1.3 1.4 1.9.6.6 1.3 1.1 1.9 1.4.2.1.5.1.7 0l.9-.4c.3-.1.6-.1.9.1l1.3.9c.2.2.3.5.2.8z"/>
-  </svg>
-</a>
+    // Placeholders (até você colar a URL real)
+    const FALLBACK_IMAGES = [
+      "assets/hero1.jpg","assets/hero2.jpg","assets/hero3.jpg",
+      "assets/hero4.jpg","assets/hero5.jpg","assets/hero6.jpg",
+      "assets/hero7.jpg","assets/hero8.jpg","assets/hero9.jpg",
+      "assets/hero10.jpg",
+    ];
 
-<script>
-/* ================= HERO drag-to-scroll (mouse) ================= */
-(function(){
-  const el = document.getElementById('heroSlider');
-  if(!el) return;
+    const HERO_QTD = 10;
+    const THUMB_QTD = 10;
 
-  let isDown = false;
-  let startX = 0;
-  let scrollLeft = 0;
+    const heroTrack = document.getElementById("heroTrack");
+    const heroDots  = document.getElementById("heroDots");
+    const thumbTrack = document.getElementById("thumbTrack");
 
-  el.addEventListener('mousedown', (e) => {
-    isDown = true;
-    startX = e.pageX - el.offsetLeft;
-    scrollLeft = el.scrollLeft;
-  });
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
 
-  window.addEventListener('mouseup', () => isDown = false);
+    function normalizeApiResponse(data){
+      if (!data) return [];
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data.images)) return data.images;
+      if (Array.isArray(data.fotos)) return data.fotos;
+      if (Array.isArray(data.urls)) return data.urls;
+      return [];
+    }
 
-  window.addEventListener('mousemove', (e) => {
-    if(!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - el.offsetLeft;
-    const walk = (x - startX) * 1.2;
-    el.scrollLeft = scrollLeft - walk;
-  });
-})();
+    async function carregarImagens(){
+      if (!FOTOS_API_URL) return FALLBACK_IMAGES;
 
-/* ================= CÍRCULOS (setas no desktop) ================= */
-(function(){
-  const track = document.getElementById('cirTrack');
-  const prev = document.getElementById('cirPrev');
-  const next = document.getElementById('cirNext');
-  if(!track || !prev || !next) return;
+      try{
+        const res = await fetch(FOTOS_API_URL, { cache:"no-store" });
+        const data = await res.json();
+        const imgs = normalizeApiResponse(data);
+        return imgs.length ? imgs : FALLBACK_IMAGES;
+      }catch(e){
+        return FALLBACK_IMAGES;
+      }
+    }
 
-  function step(){
-    const item = track.querySelector('.bola');
-    if(!item) return 0;
-    const gap = 34;
-    return item.getBoundingClientRect().width + gap;
-  }
+    function buildHero(images){
+      heroTrack.innerHTML = "";
+      heroDots.innerHTML = "";
 
-  prev.addEventListener('click', () => {
-    track.scrollBy({ left: -step(), behavior: 'smooth' });
-  });
-  next.addEventListener('click', () => {
-    track.scrollBy({ left: step(), behavior: 'smooth' });
-  });
+      const imgs = images.slice(0, HERO_QTD);
 
-  /* garante scroll no desktop também */
-  track.style.overflowX = 'auto';
-  track.style.scrollBehavior = 'smooth';
-})();
-</script>
+      imgs.forEach((src, idx) => {
+        const slide = document.createElement("div");
+        slide.className = "hero-slide";
+        slide.innerHTML = `<img src="${src}" alt="Foto ${idx+1} do chalé">`;
+        heroTrack.appendChild(slide);
+
+        const d = document.createElement("div");
+        d.className = "dot" + (idx === 0 ? " active" : "");
+        d.addEventListener("click", () => {
+          heroTrack.scrollTo({ left: idx * heroTrack.clientWidth, behavior: "smooth" });
+        });
+        heroDots.appendChild(d);
+      });
+
+      // Atualiza dot ativo ao rolar
+      heroTrack.addEventListener("scroll", () => {
+        const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth);
+        [...heroDots.children].forEach((dot, i) => {
+          dot.classList.toggle("active", i === idx);
+        });
+      }, { passive:true });
+    }
+
+    function buildThumbs(images){
+      thumbTrack.innerHTML = "";
+      const imgs = images.slice(0, THUMB_QTD);
+
+      imgs.forEach((src, idx) => {
+        const t = document.createElement("div");
+        t.className = "thumb";
+        t.innerHTML = `<img src="${src}" alt="Miniatura ${idx+1}">`;
+        t.addEventListener("click", () => openLightbox(src));
+        thumbTrack.appendChild(t);
+      });
+    }
+
+    function openLightbox(src){
+      lbImg.src = src;
+      lightbox.classList.add("open");
+    }
+    function closeLightbox(){
+      lightbox.classList.remove("open");
+      lbImg.src = "";
+    }
+
+    lbClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    // Init
+    (async function init(){
+      const images = await carregarImagens();
+
+      // Garante que existam ao menos 10
+      const safe = images.length >= 10 ? images : [...images, ...FALLBACK_IMAGES].slice(0, 10);
+
+      buildHero(safe);
+      buildThumbs(safe);
+    })();
+  </script>
 
 </body>
 </html>
