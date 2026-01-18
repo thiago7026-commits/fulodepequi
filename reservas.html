@@ -13,9 +13,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
 body{ background:#f3e2be; }
-h1, h2, h3{
-  font-family:"Playfair Display", serif;
-}
+h1, h2, h3{ font-family:"Playfair Display", serif; }
 
 /* ===== TOPO ===== */
 .topo{
@@ -35,9 +33,7 @@ h1, h2, h3{
   margin:0;
   padding:0;
 }
-.menu li{
-  position:relative;
-}
+.menu li{ position:relative; }
 .menu a{
   color:#fff;
   text-decoration:none;
@@ -58,9 +54,7 @@ h1, h2, h3{
   background:rgba(255,255,255,0.5);
   transform:translateX(-50%);
 }
-.menu a.ativo{
-  opacity:1;
-}
+.menu a.ativo{ opacity:1; }
 
 /* ===== ÁREA ===== */
 .reserva{
@@ -129,9 +123,7 @@ h1, h2, h3{
   object-fit:cover;
   display:block;
 }
-.thumb.active{
-  outline:2px solid rgba(47,59,42,0.6);
-}
+.thumb.active{ outline:2px solid rgba(47,59,42,0.6); }
 
 /* ===== COLUNA DIREITA ===== */
 .form h2{
@@ -270,9 +262,7 @@ h1, h2, h3{
   background:rgba(34,139,34,0.12);
   color:#1f6f2a;
 }
-#totalBox.com-desconto .linha-total{
-  color:#1f6f2a;
-}
+#totalBox.com-desconto .linha-total{ color:#1f6f2a; }
 
 /* ===================
    LIGHTBOX / MODAL
@@ -422,9 +412,12 @@ h1, h2, h3{
         </ul>
 
         <strong>📅 Finais de semana</strong>
-        <p>Reservas apenas com <strong>sábado + domingo juntos</strong>.</p>
+        <p>Reservas apenas com <strong>sexta + sábado juntos</strong>.</p>
 
-        <small>* O total com desconto aparece automaticamente ao selecionar as datas.</small>
+        <small>
+          * Após concluir a reserva, você recebe confirmação por WhatsApp e por e-mail.
+          A localização do chalé também é enviada automaticamente.
+        </small>
       </div>
 
       <label>Período da estadia</label>
@@ -440,7 +433,7 @@ h1, h2, h3{
 
       <div class="info">
         Valor da diária: <strong>R$ 340,00</strong><br>
-        Confirmação via WhatsApp
+        Confirmação e envio de localização após concluir a reserva (WhatsApp e e-mail).
         <div id="totalBox"></div>
       </div>
 
@@ -578,15 +571,16 @@ function noites(inicio, fim){
   return Math.round((fim - inicio) / (1000 * 60 * 60 * 24));
 }
 
+/* Regra: sexta + sábado juntos (e não sábado + domingo) */
 function fimDeSemanaOk(inicio, fim){
-  let sab=false, dom=false;
+  let sex=false, sab=false;
   const d = new Date(inicio);
   while(d <= fim){
-    if(d.getDay() === 6) sab = true;
-    if(d.getDay() === 0) dom = true;
+    if(d.getDay() === 5) sex = true; // sexta
+    if(d.getDay() === 6) sab = true; // sábado
     d.setDate(d.getDate() + 1);
   }
-  return !(sab ^ dom);
+  return !(sex ^ sab);
 }
 
 function desconto(n){
@@ -643,7 +637,7 @@ flatpickr("#datas", {
     }
 
     if(!fimDeSemanaOk(selectedDates[0], selectedDates[1])){
-      alert("Nos finais de semana, a reserva deve incluir SÁBADO e DOMINGO juntos.");
+      alert("Nos finais de semana, a reserva deve incluir SEXTA e SÁBADO juntos.");
       this.clear();
       totalBox.innerHTML = "";
       totalBox.classList.remove("com-desconto");
@@ -674,7 +668,7 @@ function reservar(){
   }
 
   if(!fimDeSemanaOk(selected[0], selected[1])){
-    alert("Nos finais de semana, a reserva deve incluir SÁBADO e DOMINGO juntos.");
+    alert("Nos finais de semana, a reserva deve incluir SEXTA e SÁBADO juntos.");
     return;
   }
 
@@ -696,6 +690,7 @@ function reservar(){
     `Diária: R$ ${formatBR(VALOR_DIARIA)}\n` +
     `Subtotal: R$ ${formatBR(subtotal)}\n` +
     (d > 0 ? `Desconto: ${pct}%\nTotal com desconto: R$ ${formatBR(total)}\n\n` : `Total: R$ ${formatBR(total)}\n\n`) +
+    `Ao confirmar a reserva, você recebe a confirmação e a localização por WhatsApp e e-mail.\n\n` +
     `Pode confirmar disponibilidade e forma de pagamento?`;
 
   window.open(`https://wa.me/5562999350693?text=${encodeURIComponent(msg)}`, "_blank");
