@@ -178,6 +178,45 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
   color:#666;
 }
 
+/* Confirmações e integração */
+.confirmacoes{
+  margin:14px 0 18px;
+  padding:14px 16px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.15);
+  border-radius:6px;
+  font-size:14px;
+  color:#444;
+  line-height:1.6;
+}
+.confirmacoes strong{ color:#2f3b2a; }
+.confirmacoes ul{ margin:8px 0 0 18px; }
+.confirmacoes li{ margin-bottom:4px; }
+
+.airbnb-sync{
+  margin:12px 0 18px;
+  padding:14px 16px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.15);
+  border-radius:6px;
+  font-size:14px;
+  color:#444;
+  line-height:1.6;
+}
+.airbnb-sync a{
+  color:#2f3b2a;
+  font-weight:600;
+  text-decoration:none;
+}
+.airbnb-sync a:hover{ text-decoration:underline; }
+.airbnb-sync ul{ margin:8px 0 8px 18px; }
+.airbnb-sync li{ margin-bottom:6px; }
+.airbnb-sync small{
+  display:block;
+  color:#666;
+  margin-top:8px;
+}
+
 /* Form */
 .form label{
   display:block;
@@ -420,6 +459,44 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
         </small>
       </div>
 
+      <div class="confirmacoes">
+        <strong>📲 Confirmações automáticas</strong>
+        <ul>
+          <li>Cliente recebe confirmação por <strong>WhatsApp</strong> e <strong>e-mail</strong>.</li>
+          <li>O proprietário (Floyd Pique) recebe a notificação da reserva.</li>
+        </ul>
+      </div>
+
+      <div class="airbnb-sync">
+        <strong>🗓️ Calendário integrado ao Airbnb</strong>
+        <p>
+          Use os links abaixo para sincronização entre Airbnb e site.
+        </p>
+        <ul>
+          <li>
+            <strong>iCal do Airbnb (importar no site):</strong>
+            <a href="https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6" target="_blank" rel="noopener noreferrer">Abrir link iCal do Airbnb</a>
+          </li>
+          <li>
+            <strong>iCal do site (importar no Airbnb):</strong>
+            <a href="calendario.ics" target="_blank" rel="noopener noreferrer">Abrir link iCal do site</a>
+          </li>
+        </ul>
+        <small>
+          * O iCal do site precisa ser atualizado conforme novas reservas forem confirmadas.
+          Para automação completa, podemos integrar um sistema de reservas com atualização automática.
+        </small>
+      </div>
+
+      <label>Nome completo</label>
+      <input type="text" id="nome" placeholder="Digite seu nome">
+
+      <label>E-mail</label>
+      <input type="email" id="email" placeholder="seuemail@exemplo.com">
+
+      <label>WhatsApp</label>
+      <input type="tel" id="telefone" placeholder="(DDD) 9 9999-9999">
+
       <label>Período da estadia</label>
       <input type="text" id="datas" placeholder="Selecione as datas">
 
@@ -563,6 +640,9 @@ setFoto(0);
    ========================= */
 const VALOR_DIARIA = 340;
 
+const inputNome = document.getElementById("nome");
+const inputEmail = document.getElementById("email");
+const inputTelefone = document.getElementById("telefone");
 const inputDatas = document.getElementById("datas");
 const hospedesEl = document.getElementById("hospedes");
 const totalBox = document.getElementById("totalBox");
@@ -652,8 +732,26 @@ flatpickr("#datas", {
 });
 
 function reservar(){
+  const nome = inputNome.value.trim();
+  const email = inputEmail.value.trim();
+  const telefone = inputTelefone.value.trim();
   const datas = inputDatas.value;
   const hospedes = hospedesEl.value;
+
+  if(!nome){
+    alert("Informe o nome completo.");
+    return;
+  }
+
+  if(!email){
+    alert("Informe um e-mail para confirmação.");
+    return;
+  }
+
+  if(!telefone){
+    alert("Informe um WhatsApp para confirmação.");
+    return;
+  }
 
   if(!datas){
     alert("Selecione o período da estadia.");
@@ -684,6 +782,9 @@ function reservar(){
 
   const msg =
     `Olá! Gostaria de reservar o Chalé Fulô de Pequi.\n\n` +
+    `Nome: ${nome}\n` +
+    `E-mail: ${email}\n` +
+    `WhatsApp: ${telefone}\n` +
     `Período: ${datas}\n` +
     `Hóspedes: ${hospedes}\n` +
     `Noites: ${n}\n` +
