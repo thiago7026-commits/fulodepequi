@@ -209,6 +209,13 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
   text-decoration:none;
 }
 .airbnb-sync a:hover{ text-decoration:underline; }
+.airbnb-sync ul{ margin:8px 0 8px 18px; }
+.airbnb-sync li{ margin-bottom:6px; }
+.airbnb-sync small{
+  display:block;
+  color:#666;
+  margin-top:8px;
+}
 
 /* Form */
 .form label{
@@ -463,9 +470,22 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
       <div class="airbnb-sync">
         <strong>🗓️ Calendário integrado ao Airbnb</strong>
         <p>
-          As datas reservadas aqui e no Airbnb ficam sincronizadas para evitar conflito.
-          <a href="https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6" target="_blank" rel="noopener noreferrer">Abrir link iCal do Airbnb</a>
+          Use os links abaixo para sincronização entre Airbnb e site.
         </p>
+        <ul>
+          <li>
+            <strong>iCal do Airbnb (importar no site):</strong>
+            <a href="https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6" target="_blank" rel="noopener noreferrer">Abrir link iCal do Airbnb</a>
+          </li>
+          <li>
+            <strong>iCal do site (importar no Airbnb):</strong>
+            <a href="calendario.ics" target="_blank" rel="noopener noreferrer">Abrir link iCal do site</a>
+          </li>
+        </ul>
+        <small>
+          * O iCal do site precisa ser atualizado conforme novas reservas forem confirmadas.
+          Para automação completa, podemos integrar um sistema de reservas com atualização automática.
+        </small>
       </div>
 
       <label>Nome completo</label>
