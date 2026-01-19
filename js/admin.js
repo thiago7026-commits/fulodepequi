@@ -46,10 +46,17 @@ async function api_(action, payload = {}) {
   body.set("action", action);
   body.set("payload", JSON.stringify(payload));
 
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body,
-  });
+  let res;
+  try {
+    res = await fetch(API_URL, {
+      method: "POST",
+      body,
+    });
+  } catch (error) {
+    throw new Error(
+      "Falha ao conectar ao servidor de imagens. Verifique se o Apps Script está publicado como “Qualquer pessoa” e se o link está correto."
+    );
+  }
 
   // Se o navegador bloquear leitura por CORS, isso vai falhar.
   // Porém em muitos cenários com Apps Script funciona normalmente.
