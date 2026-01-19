@@ -247,6 +247,17 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
   border-radius:6px;
 }
 
+.form-hint{
+  margin:10px 0 14px;
+  font-size:14px;
+  color:#555;
+  line-height:1.6;
+  padding:10px 12px;
+  border:1px dashed rgba(0,0,0,0.15);
+  border-radius:6px;
+  background:#fff;
+}
+
 /* Resumo total */
 .info{
   margin-top:16px;
@@ -254,6 +265,8 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
   color:#555;
   line-height:1.6;
 }
+
+.hidden{ display:none !important; }
 
 /* ===== TotalBox estilo Airbnb (verde suave quando há desconto) ===== */
 #totalBox{
@@ -459,7 +472,7 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
         </small>
       </div>
 
-      <div class="confirmacoes">
+      <div class="confirmacoes hidden">
         <strong>📲 Confirmações automáticas</strong>
         <ul>
           <li>Cliente recebe confirmação por <strong>WhatsApp</strong> e <strong>e-mail</strong>.</li>
@@ -467,7 +480,7 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
         </ul>
       </div>
 
-      <div class="airbnb-sync">
+      <div class="airbnb-sync hidden">
         <strong>🗓️ Calendário integrado ao Airbnb</strong>
         <p>
           Use os links abaixo para sincronização entre Airbnb e site.
@@ -488,25 +501,29 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
         </small>
       </div>
 
-      <label>Nome completo</label>
-      <input type="text" id="nome" placeholder="Digite seu nome">
-
-      <label>E-mail</label>
-      <input type="email" id="email" placeholder="seuemail@exemplo.com">
-
-      <label>WhatsApp</label>
-      <input type="tel" id="telefone" placeholder="(DDD) 9 9999-9999">
-
       <label>Período da estadia</label>
       <input type="text" id="datas" placeholder="Selecione as datas">
 
-      <label>Número de hóspedes</label>
-      <select id="hospedes">
-        <option value="1">1 hóspede</option>
-        <option value="2">2 hóspedes</option>
-      </select>
+      <div class="form-hint" id="dadosHint">Após selecionar as datas, preencha seus dados para solicitar a reserva.</div>
 
-      <button onclick="reservar()">Solicitar reserva</button>
+      <div id="dadosReserva" class="hidden">
+        <label>Nome completo</label>
+        <input type="text" id="nome" placeholder="Digite seu nome">
+
+        <label>E-mail</label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com">
+
+        <label>WhatsApp</label>
+        <input type="tel" id="telefone" placeholder="(DDD) 9 9999-9999">
+
+        <label>Número de hóspedes</label>
+        <select id="hospedes">
+          <option value="1">1 hóspede</option>
+          <option value="2">2 hóspedes</option>
+        </select>
+
+        <button onclick="reservar()">Solicitar reserva</button>
+      </div>
 
       <div class="info">
         Valor da diária: <strong>R$ 340,00</strong><br>
@@ -646,6 +663,8 @@ const inputTelefone = document.getElementById("telefone");
 const inputDatas = document.getElementById("datas");
 const hospedesEl = document.getElementById("hospedes");
 const totalBox = document.getElementById("totalBox");
+const dadosReserva = document.getElementById("dadosReserva");
+const dadosHint = document.getElementById("dadosHint");
 
 function noites(inicio, fim){
   return Math.round((fim - inicio) / (1000 * 60 * 60 * 24));
@@ -678,6 +697,8 @@ function atualizarResumo(selectedDates){
   if(!selectedDates || selectedDates.length < 2){
     totalBox.innerHTML = "";
     totalBox.classList.remove("com-desconto");
+    dadosReserva.classList.add("hidden");
+    dadosHint.classList.remove("hidden");
     return;
   }
 
@@ -685,6 +706,8 @@ function atualizarResumo(selectedDates){
   if(n <= 0){
     totalBox.innerHTML = "";
     totalBox.classList.remove("com-desconto");
+    dadosReserva.classList.add("hidden");
+    dadosHint.classList.remove("hidden");
     return;
   }
 
@@ -703,6 +726,9 @@ function atualizarResumo(selectedDates){
     ${d > 0 ? `<div><strong>Desconto:</strong> ${pct}%</div>` : ``}
     <div class="linha-total"><strong>Total:</strong> R$ ${formatBR(total)}</div>
   `;
+
+  dadosReserva.classList.remove("hidden");
+  dadosHint.classList.add("hidden");
 }
 
 flatpickr("#datas", {
@@ -721,6 +747,8 @@ flatpickr("#datas", {
       this.clear();
       totalBox.innerHTML = "";
       totalBox.classList.remove("com-desconto");
+      dadosReserva.classList.add("hidden");
+      dadosHint.classList.remove("hidden");
       return;
     }
 
