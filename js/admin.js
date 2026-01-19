@@ -13,6 +13,7 @@ const SESSION_KEY = "fulo-admin-auth";
 const LIMITS = {
   bloco1: 12,
   bloco2: 12,
+  bloco3: 12,
 };
 
 const loginForm = document.getElementById("loginForm");
@@ -68,15 +69,16 @@ async function api_(action, payload = {}) {
 // ======= CACHE LOCAL (FALLBACK) =======
 function loadStateCache_() {
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return { bloco1: [], bloco2: [] };
+  if (!stored) return { bloco1: [], bloco2: [], bloco3: [] };
   try {
     const data = JSON.parse(stored);
     return {
       bloco1: Array.isArray(data.bloco1) ? data.bloco1 : [],
       bloco2: Array.isArray(data.bloco2) ? data.bloco2 : [],
+      bloco3: Array.isArray(data.bloco3) ? data.bloco3 : [],
     };
   } catch (e) {
-    return { bloco1: [], bloco2: [] };
+    return { bloco1: [], bloco2: [], bloco3: [] };
   }
 }
 
@@ -103,6 +105,7 @@ function saveCalendarCache_() {
 function updateCounts() {
   document.getElementById("countBloco1").textContent = `${state.bloco1.length} imagens`;
   document.getElementById("countBloco2").textContent = `${state.bloco2.length} imagens`;
+  document.getElementById("countBloco3").textContent = `${state.bloco3.length} imagens`;
 }
 
 function renderBlock(block) {
@@ -131,6 +134,7 @@ function renderBlock(block) {
 function renderAll() {
   renderBlock("bloco1");
   renderBlock("bloco2");
+  renderBlock("bloco3");
   updateCounts();
 }
 
@@ -167,6 +171,7 @@ async function syncFromServer_() {
       state = {
         bloco1: Array.isArray(gal.data.bloco1) ? gal.data.bloco1 : [],
         bloco2: Array.isArray(gal.data.bloco2) ? gal.data.bloco2 : [],
+        bloco3: Array.isArray(gal.data.bloco3) ? gal.data.bloco3 : [],
       };
       saveStateCache_();
       renderAll();
@@ -204,6 +209,7 @@ async function persistGaleria_() {
   await api_("saveGaleria", {
     bloco1: state.bloco1,
     bloco2: state.bloco2,
+    bloco3: state.bloco3,
   });
 }
 
@@ -267,6 +273,7 @@ function buildExport() {
     atualizadoEm: new Date().toISOString(),
     bloco1: state.bloco1,
     bloco2: state.bloco2,
+    bloco3: state.bloco3,
   };
 }
 
