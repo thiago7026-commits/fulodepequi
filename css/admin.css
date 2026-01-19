@@ -349,6 +349,118 @@ body{
   gap:10px;
 }
 
+/* ===== Calendar Airbnb ===== */
+.calendar-card{ margin-top:18px; }
+
+.calendar-grid{
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:18px;
+}
+
+.calendar-box{
+  background:rgba(250,250,250,0.9);
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.calendar-label{
+  font-size:13px;
+  font-weight:600;
+  color:rgba(0,0,0,0.72);
+}
+
+.calendar-input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,0.14);
+  font-size:14px;
+}
+
+.calendar-summary{
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.10);
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.calendar-summary h3{
+  margin:0;
+  font-size:18px;
+}
+
+.calendar-subtitle{
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.calendar-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.calendar-empty{
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+  padding:10px 4px;
+}
+
+.calendar-item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(47,59,42,0.06);
+  border:1px solid rgba(47,59,42,0.18);
+  font-size:13px;
+}
+
+.calendar-item strong{
+  display:block;
+  font-size:14px;
+  color:var(--verde);
+}
+
+.calendar-item span{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.calendar-item button{
+  border:0;
+  background:#fff;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  cursor:pointer;
+  border:1px solid rgba(0,0,0,0.12);
+}
+
+.flatpickr-calendar{
+  border-radius:16px;
+  box-shadow:0 12px 26px rgba(0,0,0,0.08);
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.inRange{
+  background:var(--verde);
+  border-color:var(--verde);
+  color:#fff;
+}
+
 /* ===== Helper ===== */
 .helper{
   margin-top:16px;
@@ -387,6 +499,7 @@ body{
   .card-header p{ text-align:left; }
   .blocks{ grid-template-columns:1fr; }
   .thumb-grid{ grid-template-columns:repeat(5, 1fr); }
+  .calendar-grid{ grid-template-columns:1fr; }
 }
 
 @media (max-width: 620px){

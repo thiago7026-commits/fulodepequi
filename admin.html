@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
@@ -31,8 +32,9 @@
     <section class="intro">
       <h1>Fotos do chalé de um jeito simples</h1>
       <p>
-        Aqui o administrador consegue adicionar fotos por blocos, com visual limpo e organizado.
-        As imagens ficam salvas neste navegador (não é um sistema de nuvem).
+        Aqui o administrador consegue adicionar fotos por blocos, com visual limpo e organizado,
+        além de controlar a disponibilidade com um calendário no estilo Airbnb.
+        As imagens e o calendário ficam salvos neste navegador (não é um sistema de nuvem).
       </p>
     </section>
 
@@ -113,12 +115,44 @@
         </ol>
       </div>
     </section>
+
+    <section class="card calendar-card hidden" id="calendarPanel">
+      <div class="card-header">
+        <div>
+          <h2>Calendário no estilo Airbnb</h2>
+          <p>Bloqueie datas indisponíveis e mantenha o cliente familiarizado com o calendário.</p>
+        </div>
+        <div class="export-actions">
+          <button class="btn btn-outline" type="button" id="calendarCopy">Copiar JSON</button>
+          <button class="btn btn-ghost" type="button" id="calendarClear">Limpar bloqueios</button>
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="calendar-box">
+          <label class="calendar-label">Selecione um período para bloquear</label>
+          <input type="text" id="calendarRange" class="calendar-input" placeholder="Selecione as datas">
+          <label class="calendar-label" for="calendarNote">Observação (opcional)</label>
+          <input type="text" id="calendarNote" class="calendar-input" placeholder="Ex: reserva Airbnb, manutenção">
+          <button class="btn btn-primary" type="button" id="calendarAdd">Adicionar bloqueio</button>
+          <p class="form-note" id="calendarFeedback" aria-live="polite"></p>
+        </div>
+
+        <div class="calendar-summary">
+          <h3>Bloqueios cadastrados</h3>
+          <p class="calendar-subtitle">Use esta lista para sincronizar com seu calendário do Airbnb.</p>
+          <div id="calendarList" class="calendar-list"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
     <p>Fulô de Pequi • Área administrativa simples para controle das fotos.</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>
