@@ -1,46 +1,63 @@
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "1234";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzxVqe7L7jW4gizF1YUChx-Ya4qh6CJ-7YwF3Q-gryAmDxiLQZZY7Y_zVNfrqcXkrgf6Q/exec";
-
-const STORAGE_KEY = "fulo-galeria-cache";
 const SESSION_KEY = "fulo-admin-auth";
-
-const LIMITS = { bloco1: 12, bloco2: 12, bloco3: 12 };
+const CALENDAR_STORAGE_KEY = "fulo-calendar-blocks";
+const SETTINGS_STORAGE_KEY = "fulo-calendar-settings";
 
 const loginForm = document.getElementById("loginForm");
 const loginCard = document.getElementById("loginCard");
-const adminPanel = document.getElementById("adminPanel");
-const calendarPanel = document.getElementById("calendarPanel"); // pode existir, não usamos aqui
+const calendarPanel = document.getElementById("calendarPanel");
 const loginFeedback = document.getElementById("loginFeedback");
 const logoutButton = document.getElementById("logoutButton");
 
-const fileInputs = document.querySelectorAll("[data-input]");
-const dropAreas = document.querySelectorAll("[data-drop]");
-const clearButtons = document.querySelectorAll("[data-clear]");
-const copyJsonButton = document.getElementById("copyJson");
-const downloadJsonButton = document.getElementById("downloadJson");
+const calendarRangeInput = document.getElementById("calendarRange");
+const calendarNoteInput = document.getElementById("calendarNote");
+const calendarAddButton = document.getElementById("calendarAdd");
+const calendarFeedback = document.getElementById("calendarFeedback");
+const calendarList = document.getElementById("calendarList");
+const calendarCopyButton = document.getElementById("calendarCopy");
+const calendarClearButton = document.getElementById("calendarClear");
+const calendarDownloadButton = document.getElementById("calendarDownload");
+const airbnbLinkInput = document.getElementById("airbnbLink");
+const floatLinkInput = document.getElementById("floatLink");
+const siteLinkInput = document.getElementById("siteLink");
+const calendarLinkCopyButton = document.getElementById("calendarLinkCopy");
 
-let state = loadStateCache_();
+let calendarBlocks = loadCalendarBlocks_();
+let calendarPicker = null;
 
-function loadStateCache_() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return { bloco1: [], bloco2: [], bloco3: [] };
+function loadCalendarBlocks_() {
+  const stored = localStorage.getItem(CALENDAR_STORAGE_KEY);
+  if (!stored) return [];
   try {
-    const data = JSON.parse(stored);
-    return {
-      bloco1: Array.isArray(data.bloco1) ? data.bloco1 : [],
-      bloco2: Array.isArray(data.bloco2) ? data.bloco2 : [],
-      bloco3: Array.isArray(data.bloco3) ? data.bloco3 : [],
-    };
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return { bloco1: [], bloco2: [], bloco3: [] };
+    return [];
   }
 }
 
-function saveStateCache_() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+function saveCalendarBlocks_() {
+  localStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(calendarBlocks));
+}
+
+function loadSettings_() {
+  const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
+  if (!stored) return { airbnbLink: "", floatLink: "" };
+  try {
+    const parsed = JSON.parse(stored);
+    return {
+      airbnbLink: typeof parsed.airbnbLink === "string" ? parsed.airbnbLink : "",
+      floatLink: typeof parsed.floatLink === "string" ? parsed.floatLink : "",
+    };
+  } catch {
+    return { airbnbLink: "", floatLink: "" };
+  }
+}
+
+function saveSettings_(settings) {
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
 }
 
 function setLoginFeedback_(msg, color) {
@@ -48,155 +65,163 @@ function setLoginFeedback_(msg, color) {
   loginFeedback.style.color = color;
 }
 
+function setCalendarFeedback_(msg, color) {
+  if (!calendarFeedback) return;
+  calendarFeedback.textContent = msg;
+  calendarFeedback.style.color = color;
+}
+
 function updateAuthView(isAuthenticated) {
   if (isAuthenticated) {
     loginCard.classList.add("hidden");
-    adminPanel.classList.remove("hidden");
     if (calendarPanel) calendarPanel.classList.remove("hidden");
     logoutButton.classList.remove("hidden");
   } else {
     loginCard.classList.remove("hidden");
-    adminPanel.classList.add("hidden");
     if (calendarPanel) calendarPanel.classList.add("hidden");
     logoutButton.classList.add("hidden");
   }
-}
 
-function updateCounts() {
-  const c1 = document.getElementById("countBloco1");
-  const c2 = document.getElementById("countBloco2");
-  const c3 = document.getElementById("countBloco3");
-  if (c1) c1.textContent = `${state.bloco1.length} imagens`;
-  if (c2) c2.textContent = `${state.bloco2.length} imagens`;
-  if (c3) c3.textContent = `${state.bloco3.length} imagens`;
-}
-
-function renderBlock(block) {
-  const grid = document.querySelector(`[data-grid="${block}"]`);
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  (state[block] || []).forEach((src, index) => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "thumb";
-    wrapper.innerHTML = `
-      <img src="${src}" alt="Foto ${index + 1} do ${block}">
-      <button type="button" aria-label="Remover foto">×</button>
-    `;
-    wrapper.querySelector("button").addEventListener("click", async () => {
-      state[block].splice(index, 1);
-      saveStateCache_();
-      renderAll();
-      await saveGalleryToServer_();
-    });
-    grid.appendChild(wrapper);
-  });
-}
-
-function renderAll() {
-  renderBlock("bloco1");
-  renderBlock("bloco2");
-  renderBlock("bloco3");
-  updateCounts();
-}
-
-async function getGalleryFromServer_() {
-  const res = await fetch(`${API_URL}?action=GET_GALLERY`, { method: "GET", cache: "no-store" });
-  if (!res.ok) throw new Error("Falha ao carregar galeria do servidor.");
-  return res.json();
-}
-
-async function saveGalleryToServer_() {
-  const payload = {
-    action: "SAVE_GALLERY",
-    gallery: {
-      blocks: {
-        bloco1: state.bloco1,
-        bloco2: state.bloco2,
-        bloco3: state.bloco3,
-      },
-    },
-  };
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  const json = await res.json();
-  if (json.ok === false) throw new Error(json.error || "Falha ao salvar galeria.");
-}
-
-function fileToDataUrl_(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || ""));
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
-}
-
-async function uploadImages_(block, files) {
-  const encoded = [];
-  for (const file of files) {
-    const dataUrl = await fileToDataUrl_(file);
-    const base64 = dataUrl.split("base64,")[1] || "";
-    encoded.push({
-      name: file.name || "foto.jpg",
-      type: file.type || "image/jpeg",
-      dataBase64: base64,
-    });
-  }
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "UPLOAD_IMAGES",
-      block,
-      files: encoded,
-    }),
-  });
-
-  const json = await res.json();
-  if (json.ok === false) throw new Error(json.error || "Falha ao enviar imagens.");
-
-  // backend devolve gallery atualizado
-  const blocks = json.gallery && json.gallery.blocks ? json.gallery.blocks : null;
-  if (blocks) {
-    state = {
-      bloco1: Array.isArray(blocks.bloco1) ? blocks.bloco1 : [],
-      bloco2: Array.isArray(blocks.bloco2) ? blocks.bloco2 : [],
-      bloco3: Array.isArray(blocks.bloco3) ? blocks.bloco3 : [],
-    };
-    saveStateCache_();
-    renderAll();
+  if (loginCard.classList.contains("hidden") && (!calendarPanel || calendarPanel.classList.contains("hidden"))) {
+    loginCard.classList.remove("hidden");
   }
 }
 
-async function handleFiles(block, files) {
-  const available = (LIMITS[block] ?? 999) - (state[block]?.length ?? 0);
-  const selected = Array.from(files).slice(0, Math.max(0, available));
+function toLocalISODate_(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
-  if (!selected.length) {
-    alert(`Limite do ${block} atingido.`);
+function formatDateLabel_(dateStr) {
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
+}
+
+function formatRangeLabel_(block) {
+  if (!block) return "";
+  if (block.start === block.end) {
+    return formatDateLabel_(block.start);
+  }
+  return `${formatDateLabel_(block.start)} — ${formatDateLabel_(block.end)}`;
+}
+
+function renderCalendarList_() {
+  if (!calendarList) return;
+
+  if (!calendarBlocks.length) {
+    calendarList.innerHTML = `<p class="calendar-empty">Nenhum bloqueio cadastrado ainda.</p>`;
     return;
   }
 
-  try {
-    document.body.classList.add("is-loading");
-    await uploadImages_(block, selected);
-  } catch (e) {
-    alert("Falha ao subir imagens: " + (e.message || e));
-  } finally {
-    document.body.classList.remove("is-loading");
-  }
+  calendarList.innerHTML = "";
+  calendarBlocks.forEach((block, index) => {
+    const item = document.createElement("div");
+    item.className = "calendar-item";
+    const note = block.note ? `<span>${block.note}</span>` : "";
+    item.innerHTML = `
+      <div>
+        <strong>${formatRangeLabel_(block)}</strong>
+        ${note}
+      </div>
+      <button type="button" data-index="${index}">Remover</button>
+    `;
+    item.querySelector("button").addEventListener("click", () => {
+      calendarBlocks.splice(index, 1);
+      saveCalendarBlocks_();
+      renderCalendarList_();
+      setCalendarFeedback_("Bloqueio removido.", "#2f3b2a");
+    });
+    calendarList.appendChild(item);
+  });
 }
 
-// ===== Eventos =====
-loginForm.addEventListener("submit", async (event) => {
+function addDays_(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function formatDateForIcs_(dateStr) {
+  return dateStr.replace(/-/g, "");
+}
+
+function escapeIcsText_(text) {
+  return text.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,");
+}
+
+function buildIcs_() {
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Fulo de Pequi//Reservas//PT-BR",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "X-WR-CALNAME:Reservas - Chalé Fulô de Pequi",
+    "X-WR-TIMEZONE:America/Sao_Paulo",
+  ];
+
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+  calendarBlocks.forEach((block, index) => {
+    const startDate = new Date(`${block.start}T00:00:00`);
+    const endDate = new Date(`${block.end}T00:00:00`);
+    const endExclusive = addDays_(endDate, 1);
+    const summary = block.note ? `Bloqueado - ${block.note}` : "Bloqueado";
+
+    lines.push("BEGIN:VEVENT");
+    lines.push(`UID:bloqueio-${block.start}-${index}@fulodepequi`);
+    lines.push(`DTSTAMP:${stamp}`);
+    lines.push(`DTSTART;VALUE=DATE:${formatDateForIcs_(block.start)}`);
+    lines.push(`DTEND;VALUE=DATE:${formatDateForIcs_(toLocalISODate_(endExclusive))}`);
+    lines.push(`SUMMARY:${escapeIcsText_(summary)}`);
+    if (block.note) {
+      lines.push(`DESCRIPTION:${escapeIcsText_(block.note)}`);
+    }
+    lines.push("END:VEVENT");
+  });
+
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n");
+}
+
+function initCalendarPicker_() {
+  if (!calendarRangeInput || typeof flatpickr === "undefined") return;
+  calendarPicker = flatpickr(calendarRangeInput, {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    locale: "pt",
+    minDate: "today",
+  });
+}
+
+function addCalendarBlock_() {
+  if (!calendarPicker || !calendarPicker.selectedDates.length) {
+    setCalendarFeedback_("Selecione as datas para bloquear.", "#b34b39");
+    return;
+  }
+
+  const [startDate, endDate] = calendarPicker.selectedDates;
+  if (!startDate) {
+    setCalendarFeedback_("Selecione as datas para bloquear.", "#b34b39");
+    return;
+  }
+
+  const start = toLocalISODate_(startDate);
+  const end = toLocalISODate_(endDate || startDate);
+  const note = String(calendarNoteInput.value || "").trim();
+
+  calendarBlocks.push({ start, end, note });
+  saveCalendarBlocks_();
+  renderCalendarList_();
+  setCalendarFeedback_("Bloqueio adicionado.", "#2f3b2a");
+
+  calendarNoteInput.value = "";
+  calendarPicker.clear();
+}
+
+loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = new FormData(loginForm);
   const usuario = String(data.get("usuario") || "");
@@ -204,25 +229,8 @@ loginForm.addEventListener("submit", async (event) => {
 
   if (usuario === ADMIN_USER && senha === ADMIN_PASS) {
     sessionStorage.setItem(SESSION_KEY, "true");
-    setLoginFeedback_("Login autorizado. Sincronizando…", "#2f3b2a");
+    setLoginFeedback_("Login autorizado.", "#2f3b2a");
     updateAuthView(true);
-
-    try {
-      const gal = await getGalleryFromServer_();
-      if (gal && gal.blocks) {
-        state = {
-          bloco1: Array.isArray(gal.blocks.bloco1) ? gal.blocks.bloco1 : [],
-          bloco2: Array.isArray(gal.blocks.bloco2) ? gal.blocks.bloco2 : [],
-          bloco3: Array.isArray(gal.blocks.bloco3) ? gal.blocks.bloco3 : [],
-        };
-        saveStateCache_();
-      }
-      renderAll();
-      setLoginFeedback_("Dados sincronizados.", "#2f3b2a");
-    } catch (e) {
-      renderAll();
-      setLoginFeedback_("Login OK, mas falhou ao sincronizar: " + (e.message || e), "#b34b39");
-    }
   } else {
     setLoginFeedback_("Usuário ou senha incorretos.", "#b34b39");
   }
@@ -233,87 +241,77 @@ logoutButton.addEventListener("click", () => {
   updateAuthView(false);
 });
 
-// input file
-fileInputs.forEach((input) => {
-  input.addEventListener("change", async (event) => {
-    const block = event.target.dataset.input;
-    await handleFiles(block, event.target.files);
-    event.target.value = "";
+if (calendarAddButton) {
+  calendarAddButton.addEventListener("click", addCalendarBlock_);
+}
+
+if (calendarClearButton) {
+  calendarClearButton.addEventListener("click", () => {
+    if (!confirm("Deseja remover todos os bloqueios?")) return;
+    calendarBlocks = [];
+    saveCalendarBlocks_();
+    renderCalendarList_();
+    setCalendarFeedback_("Bloqueios removidos.", "#2f3b2a");
   });
-});
+}
 
-// drag and drop
-dropAreas.forEach((area) => {
-  area.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    area.classList.add("is-drag");
+if (calendarCopyButton) {
+  calendarCopyButton.addEventListener("click", async () => {
+    const settings = loadSettings_();
+    const payload = {
+      updatedAt: new Date().toISOString(),
+      airbnbLink: settings.airbnbLink,
+      floatLink: settings.floatLink,
+      blocks: calendarBlocks,
+    };
+    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+    setCalendarFeedback_("JSON copiado.", "#2f3b2a");
   });
-  area.addEventListener("dragleave", () => area.classList.remove("is-drag"));
-  area.addEventListener("drop", async (event) => {
-    event.preventDefault();
-    area.classList.remove("is-drag");
-    const block = area.dataset.drop;
-    await handleFiles(block, event.dataTransfer.files);
+}
+
+if (calendarDownloadButton) {
+  calendarDownloadButton.addEventListener("click", () => {
+    const ics = buildIcs_();
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "calendario.ics";
+    link.click();
+    URL.revokeObjectURL(url);
+    setCalendarFeedback_("Arquivo iCal gerado.", "#2f3b2a");
   });
+}
 
-  // clique para abrir input
-  area.addEventListener("click", () => {
-    const block = area.dataset.drop;
-    const input = document.querySelector(`[data-input="${block}"]`);
-    if (input) input.click();
+if (airbnbLinkInput) {
+  const settings = loadSettings_();
+  airbnbLinkInput.value = settings.airbnbLink;
+  airbnbLinkInput.addEventListener("input", () => {
+    saveSettings_({
+      airbnbLink: airbnbLinkInput.value.trim(),
+      floatLink: floatLinkInput ? floatLinkInput.value.trim() : settings.floatLink,
+    });
   });
-});
+}
 
-// limpar bloco
-clearButtons.forEach((button) => {
-  button.addEventListener("click", async (event) => {
-    const block = event.target.dataset.clear;
-    if (!block) return;
-
-    if (!confirm("Tem certeza que deseja limpar este bloco?")) return;
-
-    state[block] = [];
-    saveStateCache_();
-    renderAll();
-
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "CLEAR_BLOCK", block }),
-      });
-      const json = await res.json();
-      if (json.ok === false) throw new Error(json.error || "Falha ao limpar no servidor.");
-    } catch (e) {
-      alert("Limpou localmente, mas falhou no servidor: " + (e.message || e));
-    }
+if (floatLinkInput) {
+  const settings = loadSettings_();
+  floatLinkInput.value = settings.floatLink;
+  floatLinkInput.addEventListener("input", () => {
+    saveSettings_({
+      airbnbLink: airbnbLinkInput ? airbnbLinkInput.value.trim() : settings.airbnbLink,
+      floatLink: floatLinkInput.value.trim(),
+    });
   });
-});
+}
 
-// export JSON
-copyJsonButton.addEventListener("click", async () => {
-  const payload = {
-    updatedAt: new Date().toISOString(),
-    blocks: { bloco1: state.bloco1, bloco2: state.bloco2, bloco3: state.bloco3 },
-  };
-  await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-  alert("JSON copiado!");
-});
+if (calendarLinkCopyButton && siteLinkInput) {
+  calendarLinkCopyButton.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(siteLinkInput.value);
+    setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
+  });
+}
 
-downloadJsonButton.addEventListener("click", () => {
-  const payload = {
-    updatedAt: new Date().toISOString(),
-    blocks: { bloco1: state.bloco1, bloco2: state.bloco2, bloco3: state.bloco3 },
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "fulo-galeria.json";
-  link.click();
-  URL.revokeObjectURL(url);
-});
-
-// init
-renderAll();
+initCalendarPicker_();
+renderCalendarList_();
 updateAuthView(sessionStorage.getItem(SESSION_KEY) === "true");
