@@ -27,6 +27,14 @@ const calendarLinkCopyButton = document.getElementById("calendarLinkCopy");
 let calendarBlocks = loadCalendarBlocks_();
 let calendarPicker = null;
 
+function getSiteCalendarLink_() {
+  try {
+    return new URL("/calendario.ics", window.location.origin).href;
+  } catch {
+    return "calendario.ics";
+  }
+}
+
 function loadCalendarBlocks_() {
   const stored = localStorage.getItem(CALENDAR_STORAGE_KEY);
   if (!stored) return [];
@@ -310,6 +318,10 @@ if (calendarLinkCopyButton && siteLinkInput) {
     await navigator.clipboard.writeText(siteLinkInput.value);
     setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
   });
+}
+
+if (siteLinkInput) {
+  siteLinkInput.value = getSiteCalendarLink_();
 }
 
 initCalendarPicker_();
