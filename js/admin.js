@@ -4,6 +4,8 @@ const ADMIN_PASS = "1234";
 const SESSION_KEY = "fulo-admin-auth";
 const CALENDAR_STORAGE_KEY = "fulo-calendar-blocks";
 const SETTINGS_STORAGE_KEY = "fulo-calendar-settings";
+const DEFAULT_AIRBNB_LINK =
+  "https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6";
 
 const loginForm = document.getElementById("loginForm");
 const loginCard = document.getElementById("loginCard");
@@ -23,6 +25,7 @@ const airbnbLinkInput = document.getElementById("airbnbLink");
 const floatLinkInput = document.getElementById("floatLink");
 const siteLinkInput = document.getElementById("siteLink");
 const calendarLinkCopyButton = document.getElementById("calendarLinkCopy");
+const calendarInline = document.getElementById("calendarInline");
 
 let calendarBlocks = loadCalendarBlocks_();
 let calendarPicker = null;
@@ -197,9 +200,12 @@ function buildIcs_() {
 function initCalendarPicker_() {
   if (!calendarRangeInput || typeof flatpickr === "undefined") return;
   calendarPicker = flatpickr(calendarRangeInput, {
+    inline: true,
+    appendTo: calendarInline || undefined,
     mode: "range",
     dateFormat: "Y-m-d",
     locale: "pt",
+    showMonths: 2,
     minDate: "today",
   });
 }
@@ -293,7 +299,7 @@ if (calendarDownloadButton) {
 
 if (airbnbLinkInput) {
   const settings = loadSettings_();
-  airbnbLinkInput.value = settings.airbnbLink;
+  airbnbLinkInput.value = settings.airbnbLink || DEFAULT_AIRBNB_LINK;
   airbnbLinkInput.addEventListener("input", () => {
     saveSettings_({
       airbnbLink: airbnbLinkInput.value.trim(),

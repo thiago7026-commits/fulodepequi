@@ -86,7 +86,8 @@
             Depois de baixar o iCal, substitua o arquivo <strong>calendario.ics</strong> no site para manter a sincronização.
           </p>
           <label class="calendar-label">Selecione um período para bloquear</label>
-          <input type="text" id="calendarRange" class="calendar-input" placeholder="Selecione as datas">
+          <input type="text" id="calendarRange" class="calendar-input is-hidden" placeholder="Selecione as datas">
+          <div class="calendar-inline" id="calendarInline"></div>
           <label class="calendar-label" for="calendarNote">Observação (opcional)</label>
           <input type="text" id="calendarNote" class="calendar-input" placeholder="Ex: reserva Airbnb, manutenção">
           <button class="btn btn-primary" type="button" id="calendarAdd">Adicionar bloqueio</button>
