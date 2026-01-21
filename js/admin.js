@@ -1,6 +1,5 @@
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "1234";
-const DEBUG_PREVIEW = true;
 
 const SESSION_KEY = "fulo-admin-auth";
 const CALENDAR_STORAGE_KEY = "fulo-calendar-blocks";
@@ -333,4 +332,4 @@ if (siteLinkInput) {
 
 initCalendarPicker_();
 renderCalendarList_();
-updateAuthView(DEBUG_PREVIEW || sessionStorage.getItem(SESSION_KEY) === "true");
+updateAuthView(sessionStorage.getItem(SESSION_KEY) === "true");
