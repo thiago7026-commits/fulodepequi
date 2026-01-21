@@ -4,8 +4,7 @@ const ADMIN_PASS = "1234";
 const SESSION_KEY = "fulo-admin-auth";
 const CALENDAR_STORAGE_KEY = "fulo-calendar-blocks";
 const SETTINGS_STORAGE_KEY = "fulo-calendar-settings";
-const DEFAULT_AIRBNB_LINK =
-  "https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6";
+
 
 const loginForm = document.getElementById("loginForm");
 const loginCard = document.getElementById("loginCard");
@@ -22,21 +21,11 @@ const calendarCopyButton = document.getElementById("calendarCopy");
 const calendarClearButton = document.getElementById("calendarClear");
 const calendarDownloadButton = document.getElementById("calendarDownload");
 const airbnbLinkInput = document.getElementById("airbnbLink");
-const floatLinkInput = document.getElementById("floatLink");
-const siteLinkInput = document.getElementById("siteLink");
-const calendarLinkCopyButton = document.getElementById("calendarLinkCopy");
-const calendarInline = document.getElementById("calendarInline");
+
 
 let calendarBlocks = loadCalendarBlocks_();
 let calendarPicker = null;
 
-function getSiteCalendarLink_() {
-  try {
-    return new URL("/calendario.ics", window.location.origin).href;
-  } catch {
-    return "calendario.ics";
-  }
-}
 
 function loadCalendarBlocks_() {
   const stored = localStorage.getItem(CALENDAR_STORAGE_KEY);
@@ -55,37 +44,18 @@ function saveCalendarBlocks_() {
 
 function loadSettings_() {
   const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-  if (!stored) return { airbnbLink: "", floatLink: "" };
+
   try {
     const parsed = JSON.parse(stored);
     return {
       airbnbLink: typeof parsed.airbnbLink === "string" ? parsed.airbnbLink : "",
-      floatLink: typeof parsed.floatLink === "string" ? parsed.floatLink : "",
-    };
-  } catch {
-    return { airbnbLink: "", floatLink: "" };
+
   }
 }
 
 function saveSettings_(settings) {
   localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
-}
 
-function copyToClipboard_(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text);
-  }
-
-  const temp = document.createElement("textarea");
-  temp.value = text;
-  temp.setAttribute("readonly", "");
-  temp.style.position = "absolute";
-  temp.style.left = "-9999px";
-  document.body.appendChild(temp);
-  temp.select();
-  document.execCommand("copy");
-  document.body.removeChild(temp);
-  return Promise.resolve();
 }
 
 function setLoginFeedback_(msg, color) {
@@ -120,20 +90,6 @@ function toLocalISODate_(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
-}
-
-function formatDateLabel_(dateStr) {
-  const [year, month, day] = dateStr.split("-");
-  return `${day}/${month}/${year}`;
-}
-
-function formatRangeLabel_(block) {
-  if (!block) return "";
-  if (block.start === block.end) {
-    return formatDateLabel_(block.start);
-  }
-  return `${formatDateLabel_(block.start)} — ${formatDateLabel_(block.end)}`;
-}
 
 function renderCalendarList_() {
   if (!calendarList) return;
@@ -169,15 +125,6 @@ function addDays_(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
-}
-
-function formatDateForIcs_(dateStr) {
-  return dateStr.replace(/-/g, "");
-}
-
-function escapeIcsText_(text) {
-  return text.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,");
-}
 
 function buildIcs_() {
   const lines = [
@@ -217,12 +164,7 @@ function buildIcs_() {
 function initCalendarPicker_() {
   if (!calendarRangeInput || typeof flatpickr === "undefined") return;
   calendarPicker = flatpickr(calendarRangeInput, {
-    inline: true,
-    appendTo: calendarInline || undefined,
-    mode: "range",
-    dateFormat: "Y-m-d",
-    locale: "pt",
-    showMonths: 2,
+
     minDate: "today",
   });
 }
@@ -292,15 +234,7 @@ if (calendarCopyButton) {
     const payload = {
       updatedAt: new Date().toISOString(),
       airbnbLink: settings.airbnbLink,
-      floatLink: settings.floatLink,
-      blocks: calendarBlocks,
-    };
-    try {
-      await copyToClipboard_(JSON.stringify(payload, null, 2));
-      setCalendarFeedback_("JSON copiado.", "#2f3b2a");
-    } catch (error) {
-      setCalendarFeedback_("Não foi possível copiar o JSON.", "#b34b39");
-    }
+
   });
 }
 
@@ -315,44 +249,7 @@ if (calendarDownloadButton) {
     link.click();
     URL.revokeObjectURL(url);
     setCalendarFeedback_("Arquivo iCal gerado.", "#2f3b2a");
-  });
-}
 
-if (airbnbLinkInput) {
-  const settings = loadSettings_();
-  airbnbLinkInput.value = settings.airbnbLink || DEFAULT_AIRBNB_LINK;
-  airbnbLinkInput.addEventListener("input", () => {
-    saveSettings_({
-      airbnbLink: airbnbLinkInput.value.trim(),
-      floatLink: floatLinkInput ? floatLinkInput.value.trim() : settings.floatLink,
-    });
-  });
-}
-
-if (floatLinkInput) {
-  const settings = loadSettings_();
-  floatLinkInput.value = settings.floatLink;
-  floatLinkInput.addEventListener("input", () => {
-    saveSettings_({
-      airbnbLink: airbnbLinkInput ? airbnbLinkInput.value.trim() : settings.airbnbLink,
-      floatLink: floatLinkInput.value.trim(),
-    });
-  });
-}
-
-if (calendarLinkCopyButton && siteLinkInput) {
-  calendarLinkCopyButton.addEventListener("click", async () => {
-    try {
-      await copyToClipboard_(siteLinkInput.value);
-      setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
-    } catch (error) {
-      setCalendarFeedback_("Não foi possível copiar o link.", "#b34b39");
-    }
-  });
-}
-
-if (siteLinkInput) {
-  siteLinkInput.value = getSiteCalendarLink_();
 }
 
 initCalendarPicker_();
