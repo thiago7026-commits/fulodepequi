@@ -71,6 +71,23 @@ function saveSettings_(settings) {
   localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
 }
 
+function copyToClipboard_(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+
+  const temp = document.createElement("textarea");
+  temp.value = text;
+  temp.setAttribute("readonly", "");
+  temp.style.position = "absolute";
+  temp.style.left = "-9999px";
+  document.body.appendChild(temp);
+  temp.select();
+  document.execCommand("copy");
+  document.body.removeChild(temp);
+  return Promise.resolve();
+}
+
 function setLoginFeedback_(msg, color) {
   loginFeedback.textContent = msg;
   loginFeedback.style.color = color;
@@ -278,8 +295,12 @@ if (calendarCopyButton) {
       floatLink: settings.floatLink,
       blocks: calendarBlocks,
     };
-    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-    setCalendarFeedback_("JSON copiado.", "#2f3b2a");
+    try {
+      await copyToClipboard_(JSON.stringify(payload, null, 2));
+      setCalendarFeedback_("JSON copiado.", "#2f3b2a");
+    } catch (error) {
+      setCalendarFeedback_("Não foi possível copiar o JSON.", "#b34b39");
+    }
   });
 }
 
@@ -321,8 +342,12 @@ if (floatLinkInput) {
 
 if (calendarLinkCopyButton && siteLinkInput) {
   calendarLinkCopyButton.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(siteLinkInput.value);
-    setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
+    try {
+      await copyToClipboard_(siteLinkInput.value);
+      setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
+    } catch (error) {
+      setCalendarFeedback_("Não foi possível copiar o link.", "#b34b39");
+    }
   });
 }
 
