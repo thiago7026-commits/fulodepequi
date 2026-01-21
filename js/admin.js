@@ -5,6 +5,7 @@ const SESSION_KEY = "fulo-admin-auth";
 const CALENDAR_STORAGE_KEY = "fulo-calendar-blocks";
 const SETTINGS_STORAGE_KEY = "fulo-calendar-settings";
 
+
 const loginForm = document.getElementById("loginForm");
 const loginCard = document.getElementById("loginCard");
 const calendarPanel = document.getElementById("calendarPanel");
@@ -20,11 +21,11 @@ const calendarCopyButton = document.getElementById("calendarCopy");
 const calendarClearButton = document.getElementById("calendarClear");
 const calendarDownloadButton = document.getElementById("calendarDownload");
 const airbnbLinkInput = document.getElementById("airbnbLink");
-const siteLinkInput = document.getElementById("siteLink");
-const calendarLinkCopyButton = document.getElementById("calendarLinkCopy");
+
 
 let calendarBlocks = loadCalendarBlocks_();
 let calendarPicker = null;
+
 
 function loadCalendarBlocks_() {
   const stored = localStorage.getItem(CALENDAR_STORAGE_KEY);
@@ -43,19 +44,18 @@ function saveCalendarBlocks_() {
 
 function loadSettings_() {
   const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-  if (!stored) return { airbnbLink: "" };
+
   try {
     const parsed = JSON.parse(stored);
     return {
       airbnbLink: typeof parsed.airbnbLink === "string" ? parsed.airbnbLink : "",
-    };
-  } catch {
-    return { airbnbLink: "" };
+
   }
 }
 
 function saveSettings_(settings) {
   localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+
 }
 
 function setLoginFeedback_(msg, color) {
@@ -79,6 +79,10 @@ function updateAuthView(isAuthenticated) {
     if (calendarPanel) calendarPanel.classList.add("hidden");
     logoutButton.classList.add("hidden");
   }
+
+  if (loginCard.classList.contains("hidden") && (!calendarPanel || calendarPanel.classList.contains("hidden"))) {
+    loginCard.classList.remove("hidden");
+  }
 }
 
 function toLocalISODate_(date) {
@@ -86,20 +90,6 @@ function toLocalISODate_(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
-}
-
-function formatDateLabel_(dateStr) {
-  const [year, month, day] = dateStr.split("-");
-  return `${day}/${month}/${year}`;
-}
-
-function formatRangeLabel_(block) {
-  if (!block) return "";
-  if (block.start === block.end) {
-    return formatDateLabel_(block.start);
-  }
-  return `${formatDateLabel_(block.start)} — ${formatDateLabel_(block.end)}`;
-}
 
 function renderCalendarList_() {
   if (!calendarList) return;
@@ -135,15 +125,6 @@ function addDays_(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
-}
-
-function formatDateForIcs_(dateStr) {
-  return dateStr.replace(/-/g, "");
-}
-
-function escapeIcsText_(text) {
-  return text.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,");
-}
 
 function buildIcs_() {
   const lines = [
@@ -183,9 +164,7 @@ function buildIcs_() {
 function initCalendarPicker_() {
   if (!calendarRangeInput || typeof flatpickr === "undefined") return;
   calendarPicker = flatpickr(calendarRangeInput, {
-    mode: "range",
-    dateFormat: "Y-m-d",
-    locale: "pt",
+
     minDate: "today",
   });
 }
@@ -255,10 +234,7 @@ if (calendarCopyButton) {
     const payload = {
       updatedAt: new Date().toISOString(),
       airbnbLink: settings.airbnbLink,
-      blocks: calendarBlocks,
-    };
-    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-    setCalendarFeedback_("JSON copiado.", "#2f3b2a");
+
   });
 }
 
@@ -273,22 +249,7 @@ if (calendarDownloadButton) {
     link.click();
     URL.revokeObjectURL(url);
     setCalendarFeedback_("Arquivo iCal gerado.", "#2f3b2a");
-  });
-}
 
-if (airbnbLinkInput) {
-  const settings = loadSettings_();
-  airbnbLinkInput.value = settings.airbnbLink;
-  airbnbLinkInput.addEventListener("input", () => {
-    saveSettings_({ airbnbLink: airbnbLinkInput.value.trim() });
-  });
-}
-
-if (calendarLinkCopyButton && siteLinkInput) {
-  calendarLinkCopyButton.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(siteLinkInput.value);
-    setCalendarFeedback_("Link do site copiado.", "#2f3b2a");
-  });
 }
 
 initCalendarPicker_();

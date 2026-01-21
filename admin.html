@@ -75,16 +75,15 @@
         <div class="calendar-box">
           <label class="calendar-label" for="airbnbLink">Link iCal do Airbnb (importar no site)</label>
           <input type="url" id="airbnbLink" class="calendar-input" placeholder="Cole o link do Airbnb aqui">
-          <label class="calendar-label" for="siteLink">Link iCal do site (importar no Airbnb)</label>
-          <div class="calendar-link-row">
-            <input type="text" id="siteLink" class="calendar-input" value="calendario.ics" readonly>
+
             <button class="btn btn-outline" type="button" id="calendarLinkCopy">Copiar link</button>
           </div>
           <p class="calendar-helper">
             Depois de baixar o iCal, substitua o arquivo <strong>calendario.ics</strong> no site para manter a sincronização.
           </p>
           <label class="calendar-label">Selecione um período para bloquear</label>
-          <input type="text" id="calendarRange" class="calendar-input" placeholder="Selecione as datas">
+          <input type="text" id="calendarRange" class="calendar-input is-hidden" placeholder="Selecione as datas">
+          <div class="calendar-inline" id="calendarInline"></div>
           <label class="calendar-label" for="calendarNote">Observação (opcional)</label>
           <input type="text" id="calendarNote" class="calendar-input" placeholder="Ex: reserva Airbnb, manutenção">
           <button class="btn btn-primary" type="button" id="calendarAdd">Adicionar bloqueio</button>

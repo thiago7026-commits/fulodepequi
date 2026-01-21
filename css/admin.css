@@ -382,6 +382,7 @@ body{
   font-size:14px;
 }
 
+
 .calendar-link-row{
   display:flex;
   gap:10px;
@@ -398,6 +399,7 @@ body{
   color:var(--muted);
   line-height:1.5;
 }
+
 
 .calendar-summary{
   background:#fff;
