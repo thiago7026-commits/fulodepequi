@@ -354,8 +354,8 @@ body{
 
 .calendar-grid{
   display:grid;
-  grid-template-columns:1.1fr 0.9fr;
-  gap:18px;
+  grid-template-columns:1.6fr 0.9fr;
+  gap:16px;
 }
 
 .calendar-box{
@@ -365,7 +365,7 @@ body{
   padding:16px;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
 }
 
 .calendar-label{
@@ -380,6 +380,95 @@ body{
   border-radius:14px;
   border:1px solid rgba(0,0,0,0.14);
   font-size:14px;
+}
+
+.calendar-input--compact{
+  background:#fff;
+  font-size:13px;
+  color:rgba(0,0,0,0.7);
+}
+
+.calendar-input.is-hidden{
+  display:none;
+}
+
+.calendar-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.calendar-link-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.calendar-link-row .calendar-input{
+  flex:1;
+}
+
+.calendar-helper{
+  margin:0;
+  font-size:12.5px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.calendar-inline{
+  display:flex;
+  justify-content:center;
+  padding:2px 0 6px;
+}
+
+.calendar-inline .flatpickr-calendar{
+  width:100%;
+  max-width:720px;
+  box-shadow:none;
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:16px;
+}
+
+.calendar-inline .flatpickr-months{
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  padding:8px 8px 0;
+}
+
+.calendar-inline .flatpickr-weekdays{
+  padding:6px 10px 0;
+}
+
+.calendar-inline .flatpickr-days{
+  padding:8px 10px 14px;
+}
+
+.price-card{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(0,0,0,0.08);
+}
+
+.price-card h4{
+  margin:0 0 6px;
+  font-size:16px;
+  color:var(--verde);
+}
+
+.price-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+}
+
+.price-prefix{
+  font-weight:700;
+  color:var(--verde);
+}
+
+.price-input{
+  max-width:140px;
 }
 
 .calendar-summary{

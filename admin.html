@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fulô de Pequi • Administração de Fotos</title>
+  <title>Fulô de Pequi • Administração do Calendário</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,11 +30,11 @@
 
   <main class="page">
     <section class="intro">
-      <h1>Fotos do chalé de um jeito simples</h1>
+      <h1>Calendário do chalé em um só lugar</h1>
       <p>
-        Aqui o administrador consegue adicionar fotos por blocos, com visual limpo e organizado,
-        além de controlar a disponibilidade com um calendário no estilo Airbnb.
-        As imagens e o calendário ficam salvos neste navegador (não é um sistema de nuvem).
+        Esta área é dedicada apenas ao calendário. As fotos serão gerenciadas manualmente pela equipe,
+        então o cliente não tem acesso a essa parte.
+        Aqui você bloqueia datas, sincroniza com o Airbnb e baixa o arquivo iCal do site.
       </p>
     </section>
 
@@ -58,97 +58,40 @@
       </form>
     </section>
 
-    <section class="card hidden" id="adminPanel">
-      <div class="card-header">
-        <div>
-          <h2>Blocos de fotos</h2>
-          <p>Divida as imagens para manter o site organizado. Bloco 1: topo da home, Bloco 2: cachoeiras, Bloco 3: galeria final.</p>
-        </div>
-        <div class="export-actions">
-          <button class="btn btn-outline" type="button" id="copyJson">Copiar JSON</button>
-          <button class="btn btn-primary" type="button" id="downloadJson">Baixar JSON</button>
-        </div>
-      </div>
-
-      <div class="blocks">
-        <article class="block" data-block="bloco1">
-          <header>
-            <h3>Bloco 1 • 10 a 12 fotos</h3>
-            <p class="block-meta" id="countBloco1">0 imagens</p>
-          </header>
-
-          <div class="drop-area" data-drop="bloco1">
-            <p>Arraste e solte as fotos aqui ou clique para escolher.</p>
-            <input type="file" accept="image/*" multiple data-input="bloco1" />
-          </div>
-
-          <div class="thumb-grid" data-grid="bloco1"></div>
-          <div class="block-actions">
-            <button class="btn btn-ghost" type="button" data-clear="bloco1">Limpar bloco</button>
-          </div>
-        </article>
-
-        <article class="block" data-block="bloco2">
-          <header>
-            <h3>Bloco 2 • cachoeiras</h3>
-            <p class="block-meta" id="countBloco2">0 imagens</p>
-          </header>
-
-          <div class="drop-area" data-drop="bloco2">
-            <p>Arraste e solte as fotos aqui ou clique para escolher.</p>
-            <input type="file" accept="image/*" multiple data-input="bloco2" />
-          </div>
-
-          <div class="thumb-grid" data-grid="bloco2"></div>
-          <div class="block-actions">
-            <button class="btn btn-ghost" type="button" data-clear="bloco2">Limpar bloco</button>
-          </div>
-        </article>
-
-        <article class="block" data-block="bloco3">
-          <header>
-            <h3>Bloco 3 • galeria final</h3>
-            <p class="block-meta" id="countBloco3">0 imagens</p>
-          </header>
-
-          <div class="drop-area" data-drop="bloco3">
-            <p>Arraste e solte as fotos aqui ou clique para escolher.</p>
-            <input type="file" accept="image/*" multiple data-input="bloco3" />
-          </div>
-
-          <div class="thumb-grid" data-grid="bloco3"></div>
-          <div class="block-actions">
-            <button class="btn btn-ghost" type="button" data-clear="bloco3">Limpar bloco</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="helper">
-        <h3>Como usar o JSON</h3>
-        <ol>
-          <li>Adicione as fotos nos blocos acima.</li>
-          <li>Clique em “Baixar JSON” ou “Copiar JSON”.</li>
-          <li>Envie esse arquivo para quem cuida do site ou para a integração com o Google Drive/Apps Script.</li>
-        </ol>
-      </div>
-    </section>
-
     <section class="card calendar-card hidden" id="calendarPanel">
       <div class="card-header">
         <div>
           <h2>Calendário no estilo Airbnb</h2>
-          <p>Bloqueie datas indisponíveis e mantenha o cliente familiarizado com o calendário.</p>
+          <p>Bloqueie datas, sincronize com o Airbnb e compartilhe o iCal do site.</p>
         </div>
         <div class="export-actions">
           <button class="btn btn-outline" type="button" id="calendarCopy">Copiar JSON</button>
+          <button class="btn btn-primary" type="button" id="calendarDownload">Baixar iCal</button>
           <button class="btn btn-ghost" type="button" id="calendarClear">Limpar bloqueios</button>
         </div>
       </div>
 
       <div class="calendar-grid">
         <div class="calendar-box">
+          <div class="calendar-row">
+            <label class="calendar-label" for="siteLink">Link iCal do site (enviar ao Airbnb)</label>
+            <button class="btn btn-outline" type="button" id="calendarLinkCopy">Copiar link</button>
+          </div>
+          <input type="text" id="siteLink" class="calendar-input calendar-input--compact" readonly>
+          <p class="calendar-helper">
+            Use este link no Airbnb. Depois de baixar o iCal, substitua o arquivo <strong>calendario.ics</strong> no site.
+          </p>
+          <div class="calendar-row">
+            <label class="calendar-label" for="airbnbLink">Link iCal do Airbnb (importar no site)</label>
+          </div>
+          <input type="url" id="airbnbLink" class="calendar-input" placeholder="Cole o link do Airbnb aqui">
+          <div class="calendar-row">
+            <label class="calendar-label" for="floatLink">Link do Float Piqui (onde o cliente reserva)</label>
+          </div>
+          <input type="url" id="floatLink" class="calendar-input" placeholder="Cole o link do Float Piqui aqui">
           <label class="calendar-label">Selecione um período para bloquear</label>
-          <input type="text" id="calendarRange" class="calendar-input" placeholder="Selecione as datas">
+          <input type="text" id="calendarRange" class="calendar-input is-hidden" placeholder="Selecione as datas">
+          <div class="calendar-inline" id="calendarInline"></div>
           <label class="calendar-label" for="calendarNote">Observação (opcional)</label>
           <input type="text" id="calendarNote" class="calendar-input" placeholder="Ex: reserva Airbnb, manutenção">
           <button class="btn btn-primary" type="button" id="calendarAdd">Adicionar bloqueio</button>
@@ -159,13 +102,23 @@
           <h3>Bloqueios cadastrados</h3>
           <p class="calendar-subtitle">Use esta lista para sincronizar com seu calendário do Airbnb.</p>
           <div id="calendarList" class="calendar-list"></div>
+          <div class="price-card">
+            <h4>Valor da diária</h4>
+            <p class="calendar-subtitle">Atualize o preço que aparece no site.</p>
+            <div class="price-row">
+              <span class="price-prefix">R$</span>
+              <input type="number" id="dailyRate" class="calendar-input price-input" min="0" step="1" placeholder="Ex: 340">
+              <button class="btn btn-primary" type="button" id="priceSave">Salvar</button>
+            </div>
+            <p class="form-note" id="priceFeedback" aria-live="polite"></p>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Fulô de Pequi • Área administrativa simples para controle das fotos.</p>
+    <p>Fulô de Pequi • Área administrativa simples para controle do calendário.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
