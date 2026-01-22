@@ -215,7 +215,7 @@
       font-size:16px;
     }
 
-    /* ================= BLOCO “BOTÕES” (ACOMODAÇÕES / SERVIÇOS / POLÍTICAS) ================= */
+    /* ================= BLOCO “BOTÕES” ================= */
     .quick-actions{
       display:flex;
       gap:14px;
@@ -287,7 +287,7 @@
       color:var(--verde);
     }
 
-    /* ================= CACHOEIRAS (MAIORES E BONITAS) ================= */
+    /* ================= CACHOEIRAS ================= */
     .cachoeiras-grid{
       display:grid;
       grid-template-columns:repeat(3, 1fr);
@@ -303,7 +303,7 @@
     }
     .cach-card:hover{ transform:translateY(-2px); }
     .cach-card .img{
-      height:340px;
+      height:340px; /* referência: tamanho das cachoeiras */
       background:#ddd;
       overflow:hidden;
     }
@@ -348,18 +348,18 @@
       min-height:380px;
     }
 
-    /* ================= CARROSSEL REDONDINHO (10 FOTOS) ================= */
+    /* ================= CARROSSEL REDONDINHO (AGORA DO TAMANHO DAS CACHOEIRAS) ================= */
     .thumb-carousel{
       background:#f2f2f2;
-      padding:90px 0 100px; /* ⬅️ AUMENTADO */
+      padding:110px 0 120px; /* ⬅️ mais presença */
       border-top:1px solid rgba(0,0,0,0.05);
       border-bottom:1px solid rgba(0,0,0,0.05);
     }
     .thumb-track{
       display:flex;
-      gap:18px;            /* ⬅️ mais espaçamento */
+      gap:26px;            /* ⬅️ mais espaço entre bolas grandes */
       overflow-x:auto;
-      padding:22px 8px;    /* ⬅️ mais altura */
+      padding:30px 10px;   /* ⬅️ mais respiro vertical */
       scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
@@ -368,18 +368,18 @@
 
     .thumb{
       flex:0 0 auto;
-      width:130px;          /* ⬅️ AUMENTADO */
-      height:130px;         /* ⬅️ AUMENTADO */
+      width:320px;          /* ⬅️ grande (próximo de 340px das cachoeiras) */
+      height:320px;         /* ⬅️ grande */
       border-radius:999px;
       overflow:hidden;
-      border:4px solid rgba(255,255,255,0.95);
-      box-shadow:0 18px 36px rgba(0,0,0,0.18);
+      border:6px solid rgba(255,255,255,0.95);
+      box-shadow:0 22px 46px rgba(0,0,0,0.20);
       scroll-snap-align:start;
       cursor:pointer;
       background:#ddd;
       transition:transform .25s ease;
     }
-    .thumb:hover{ transform:scale(1.06); }
+    .thumb:hover{ transform:scale(1.03); }
 
     .thumb img{
       width:100%;
@@ -389,9 +389,10 @@
     .thumb-title{
       text-align:center;
       color:var(--muted);
-      font-size:15px;     /* ⬅️ maior */
-      margin-top:12px;    /* ⬅️ mais respiro */
+      font-size:16px;
+      margin-top:14px;
       font-weight:600;
+      letter-spacing:0.2px;
     }
 
     /* ================= LIGHTBOX ================= */
@@ -484,12 +485,22 @@
       .hero{ min-height:540px; }
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
+
+      /* ⬅️ mobile: grande, mas usável */
       .thumb{
-        width:105px;  /* ⬅️ maior no mobile */
-        height:105px; /* ⬅️ maior no mobile */
+        width:190px;
+        height:190px;
+        border-width:5px;
       }
+      .thumb-track{
+        gap:18px;
+        padding:22px 8px;
+      }
+      .thumb-carousel{
+        padding:80px 0 90px;
+      }
+
       .dot{ width:10px; height:10px; }
-      .thumb-carousel{ padding:70px 0 80px; } /* ⬅️ ajustado para mobile */
     }
     @media (min-width: 981px){
       .hero{ height:68vh; min-height:480px; }
@@ -527,9 +538,7 @@
 
   <!-- HERO (TOPO) - 10 FOTOS -->
   <section class="hero" aria-label="Galeria principal">
-    <div class="hero-track" id="heroTrack">
-      <!-- Slides inseridos via JS -->
-    </div>
+    <div class="hero-track" id="heroTrack"></div>
     <div class="hero-gradient"></div>
 
     <div class="hero-content">
@@ -563,7 +572,6 @@
         <a class="qa" href="politica.html">Políticas</a>
       </div>
 
-      <!-- SUBSTITUTO PROFISSIONAL DO BANNER -->
       <div class="highlights" aria-label="Destaques profissionais">
         <div class="highlights-grid">
           <div class="high-left">
@@ -649,15 +657,13 @@
     </div>
   </section>
 
-  <!-- CARROSSEL REDONDINHO (AUMENTADO) -->
+  <!-- CARROSSEL REDONDINHO (GRANDE) -->
   <section class="thumb-carousel" aria-label="Galeria complementar">
     <div class="wrap">
       <h2>Mais fotos do chalé</h2>
       <p class="sub">Carrossel redondinho com 10 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
 
-      <div class="thumb-track" id="thumbTrack">
-        <!-- Thumbs inseridos via JS -->
-      </div>
+      <div class="thumb-track" id="thumbTrack"></div>
 
       <div class="thumb-title">Arraste para o lado</div>
     </div>
