@@ -74,6 +74,7 @@
     }
     nav a:hover{ opacity:1; }
 
+    /* Botão reserva (fora do menu) */
     .cta-topo{
       display:flex;
       align-items:center;
@@ -106,7 +107,7 @@
       opacity:0.95;
     }
 
-    /* ================= HERO ================= */
+    /* ================= HERO (TOPO) ================= */
     .hero{
       position:relative;
       height:76vh;
@@ -139,7 +140,8 @@
     .hero-gradient{
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.55) 100%);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.55) 100%);
       pointer-events:none;
     }
     .hero-content{
@@ -174,6 +176,7 @@
       flex-wrap:wrap;
     }
 
+    /* Indicadores do hero */
     .hero-dots{
       position:absolute;
       left:50%;
@@ -195,7 +198,7 @@
     }
     .dot.active{ background:#fff; }
 
-    /* ================= SEÇÕES ================= */
+    /* ================= SEÇÕES (BASE) ================= */
     .wrap{ width:min(var(--max), 92vw); margin:0 auto; }
     .section{ padding:72px 0; }
     .section h2{
@@ -212,6 +215,7 @@
       font-size:16px;
     }
 
+    /* ================= BLOCO “BOTÕES” ================= */
     .quick-actions{
       display:flex;
       gap:14px;
@@ -234,6 +238,7 @@
     }
     .qa:hover{ transform:translateY(-1px); }
 
+    /* ================= DESTAQUES ================= */
     .highlights{
       margin-top:26px;
       background:linear-gradient(180deg, rgba(201,162,77,0.14) 0%, rgba(255,255,255,0.0) 100%);
@@ -344,6 +349,7 @@
       transition:transform .25s ease;
     }
     .thumb:hover{ transform:scale(1.03); }
+
     .thumb img{
       width:100%;
       height:100%;
@@ -480,7 +486,6 @@
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
 
-      /* Mobile: mantém “perfeito” e usável */
       .thumb{
         width:190px;
         height:190px;
@@ -530,7 +535,7 @@
     </div>
   </header>
 
-  <!-- HERO (10 FOTOS - LOCAL) -->
+  <!-- HERO (TOPO) -->
   <section class="hero" aria-label="Galeria principal">
     <div class="hero-track" id="heroTrack"></div>
     <div class="hero-gradient"></div>
@@ -566,12 +571,12 @@
         <a class="qa" href="politica.html">Políticas</a>
       </div>
 
-      <div class="highlights" aria-label="Destaques">
+      <div class="highlights" aria-label="Destaques profissionais">
         <div class="highlights-grid">
           <div class="high-left">
             <h3>Uma experiência completa, sem complicação</h3>
             <p>
-              Conforto, privacidade e natureza em um só lugar. Um chalé completo, pensado para relaxar,
+              Conforto, privacidade e natureza em um só lugar. Aqui você encontra um chalé completo, pensado para relaxar,
               aproveitar a Chapada e viver momentos especiais.
             </p>
             <div class="mini-actions">
@@ -606,10 +611,11 @@
 
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- CACHOEIRAS (LOCAL) -->
+  <!-- CACHOEIRAS -->
   <section class="section" aria-label="Cachoeiras">
     <div class="wrap">
       <h2>Cachoeiras da região</h2>
@@ -651,18 +657,18 @@
     </div>
   </section>
 
-  <!-- CARROSSEL REDONDINHO (LOCAL) -->
+  <!-- CARROSSEL REDONDINHO (SOMENTE BLOCO-3 / 8 FOTOS) -->
   <section class="thumb-carousel" aria-label="Galeria complementar">
     <div class="wrap">
       <h2>Mais fotos do chalé</h2>
-      <p class="sub">Carrossel redondinho com 10 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
+      <p class="sub">Carrossel redondinho com 8 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
 
       <div class="thumb-track" id="thumbTrack"></div>
       <div class="thumb-title">Arraste para o lado</div>
     </div>
   </section>
 
-  <!-- MAPA / LOCALIZAÇÃO -->
+  <!-- MAPA -->
   <section class="section" id="mapa" aria-label="Localização">
     <div class="wrap">
       <h2>Localização do chalé</h2>
@@ -673,9 +679,7 @@
       <div class="mapa-wrap">
         <div class="mapa-card">
           <h3>Como chegar</h3>
-          <p>
-            Use o mapa ao lado para traçar a rota. Assim que a reserva for concluída, a localização também poderá ser enviada por WhatsApp e e-mail.
-          </p>
+          <p>Use o mapa ao lado para traçar a rota.</p>
           <a class="btn btn-dourado" href="reservas.html">Ir para reservas</a>
         </div>
 
@@ -698,7 +702,7 @@
     </p>
   </footer>
 
-  <!-- WhatsApp flutuante (ajuste o número) -->
+  <!-- WhatsApp flutuante -->
   <a class="whats" href="https://wa.me/55SEUNUMEROAQUI" target="_blank" rel="noopener">
     <span>WhatsApp</span>
   </a>
@@ -713,15 +717,10 @@
 
   <script>
     // ==========================================================
-    // FOTOS 100% LOCAIS (sem API / sem blocos)
-    // Desktop: assets/img-para-pc/
-    // Mobile:  assets/bloco-1/
+    // HERO: 10 FOTOS (Mobile = bloco-1, Desktop = img-para-pc)
     // ==========================================================
+    const HERO_QTD = 10;
 
-    const HERO_QTD  = 10;
-    const THUMB_QTD = 10;
-
-    // Mobile (mantém seu padrão atual)
     const HERO_MOBILE = [
       "assets/bloco-1/hero-1.jpg","assets/bloco-1/hero-2.jpg","assets/bloco-1/hero-3.jpg",
       "assets/bloco-1/hero-4.jpg","assets/bloco-1/hero-5.jpg","assets/bloco-1/hero-6.jpg",
@@ -729,7 +728,6 @@
       "assets/bloco-1/hero-10.jpg"
     ];
 
-    // Desktop (apenas img-para-pc)
     const HERO_DESKTOP = [
       "assets/img-para-pc/img-para-pc_1.jpg",
       "assets/img-para-pc/img-para-pc_2.jpg",
@@ -743,8 +741,20 @@
       "assets/img-para-pc/img-para-pc_10.jpg"
     ];
 
-    const THUMBS_MOBILE  = HERO_MOBILE;
-    const THUMBS_DESKTOP = HERO_DESKTOP;
+    // ==========================================================
+    // THUMBS: SOMENTE BLOCO-3 / 8 FOTOS
+    // ==========================================================
+    const THUMB_QTD = 8;
+    const THUMBS_BLOCO3 = [
+      "assets/bloco-3/g1.jpg",
+      "assets/bloco-3/g2.jpg",
+      "assets/bloco-3/g3.jpg",
+      "assets/bloco-3/g4.jpg",
+      "assets/bloco-3/g5.jpg",
+      "assets/bloco-3/g6.jpg",
+      "assets/bloco-3/g7.jpg",
+      "assets/bloco-3/g8.jpg"
+    ];
 
     const heroTrack  = document.getElementById("heroTrack");
     const heroDots   = document.getElementById("heroDots");
@@ -810,17 +820,16 @@
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
-    function renderGaleriaLocal(){
-      const hero   = isDesktop() ? HERO_DESKTOP : HERO_MOBILE;
-      const thumbs = isDesktop() ? THUMBS_DESKTOP : THUMBS_MOBILE;
-
+    function render(){
+      const hero = isDesktop() ? HERO_DESKTOP : HERO_MOBILE;
       buildHero(hero);
-      buildThumbs(thumbs);
+
+      // Ponto principal: SEMPRE bloco-3 (8 fotos), sem misturar pasta nenhuma
+      buildThumbs(THUMBS_BLOCO3);
     }
 
-    // Init + troca automática ao mudar o tamanho da tela
-    renderGaleriaLocal();
-    window.matchMedia("(min-width: 981px)").addEventListener("change", renderGaleriaLocal);
+    render();
+    window.matchMedia("(min-width: 981px)").addEventListener("change", render);
   </script>
 
 </body>
