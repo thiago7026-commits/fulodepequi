@@ -523,7 +523,7 @@
       <nav aria-label="Menu principal">
         <ul>
           <li><a href="index.html">Início</a></li>
-          <li><a href="acomodacoes.html">Acomodações</a></li>
+          <li><a href="https://fulodepequi.com.br/reservas.html">Acomodações</a></li>
           <li><a href="servicos.html">Serviços</a></li>
           <li><a href="politica.html">Políticas</a></li>
         </ul>
@@ -550,7 +550,7 @@
         </p>
         <div class="hero-actions">
           <a class="btn btn-dourado" href="reservas.html">Reservar agora</a>
-          <a class="btn btn-outline" href="acomodacoes.html">Ver acomodações</a>
+          <a class="btn btn-outline" href="https://fulodepequi.com.br/reservas.html">Ver acomodações</a>
         </div>
       </div>
     </div>
@@ -567,7 +567,7 @@
       </p>
 
       <div class="quick-actions" aria-label="Atalhos">
-        <a class="qa" href="acomodacoes.html">Acomodações</a>
+        <a class="qa" href="https://fulodepequi.com.br/reservas.html">Acomodações</a>
         <a class="qa" href="servicos.html">Serviços</a>
         <a class="qa" href="politica.html">Políticas</a>
       </div>
@@ -690,11 +690,7 @@
         </div>
 
         <div class="mapa-embed">
-          <iframe
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=R.%20241,%20Qd%2001%20-%20Lt%2006%20-%20Vila%20Morro%20Encantado,%20Cavalcante%20-%20GO,%2073790-000&output=embed">
-          </iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.6404248701006!2d-47.44170599999999!3d-13.800536800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x934f6109fb594c41%3A0xbc180ccf60ee1252!2sFul%C3%B4%20de%20pequi!5e0!3m2!1spt-BR!2sbr!4v1769113588134!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </div>
@@ -724,11 +720,24 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzZCgaa35xExbHyGGvlOobsM2ARy9jwYYmYgBWVB3ZimueqxESZPtLeOljzbNweZ9iU/exec";
 
-    const HERO_FALLBACK = [
+    const HERO_FALLBACK_MOBILE = [
       "assets/bloco-1/hero-1.jpg","assets/bloco-1/hero-2.jpg","assets/bloco-1/hero-3.jpg",
       "assets/bloco-1/hero-4.jpg","assets/bloco-1/hero-5.jpg","assets/bloco-1/hero-6.jpg",
       "assets/bloco-1/hero-7.jpg","assets/bloco-1/hero-8.jpg","assets/bloco-1/hero-9.jpg",
       "assets/bloco-1/hero-10.jpg",
+    ];
+
+    const HERO_FALLBACK_DESKTOP = [
+      "assets/img-para-pc/img-para-pc_1.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_2.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_3.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_4.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_5.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_6.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_7.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_8.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_9.jpg.jpg",
+      "assets/img-para-pc/img-para-pc_1.jpg.jpg",
     ];
 
     const CACHOEIRAS_FALLBACK = [
@@ -737,7 +746,8 @@
       "assets/cachoeiras/guardiao.jpg",
     ];
 
-    const THUMB_FALLBACK = HERO_FALLBACK;
+    const THUMB_FALLBACK_MOBILE = HERO_FALLBACK_MOBILE;
+    const THUMB_FALLBACK_DESKTOP = HERO_FALLBACK_DESKTOP;
 
     const HERO_QTD = 10;
     const THUMB_QTD = 10;
@@ -829,15 +839,19 @@
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
-    (async function init(){
-      const galeria = await carregarGaleria();
+    const desktopMedia = window.matchMedia("(min-width: 981px)");
+    let galeriaCache = { bloco1: [], bloco2: [], bloco3: [] };
 
-      const heroBase   = galeria.bloco1.length ? galeria.bloco1 : HERO_FALLBACK;
-      const thumbsBase = galeria.bloco3.length ? galeria.bloco3 : THUMB_FALLBACK;
-      const cachBase   = galeria.bloco2.length ? galeria.bloco2 : CACHOEIRAS_FALLBACK;
+    function renderGaleria({ bloco1, bloco2, bloco3 }, isDesktop){
+      const heroFallback = isDesktop ? HERO_FALLBACK_DESKTOP : HERO_FALLBACK_MOBILE;
+      const thumbFallback = isDesktop ? THUMB_FALLBACK_DESKTOP : THUMB_FALLBACK_MOBILE;
 
-      const heroSafe  = heroBase.length  >= HERO_QTD  ? heroBase  : [...heroBase,  ...HERO_FALLBACK].slice(0, HERO_QTD);
-      const thumbSafe = thumbsBase.length >= THUMB_QTD ? thumbsBase : [...thumbsBase, ...THUMB_FALLBACK].slice(0, THUMB_QTD);
+      const heroBase   = bloco1.length ? bloco1 : heroFallback;
+      const thumbsBase = bloco3.length ? bloco3 : thumbFallback;
+      const cachBase   = bloco2.length ? bloco2 : CACHOEIRAS_FALLBACK;
+
+      const heroSafe  = heroBase.length  >= HERO_QTD  ? heroBase  : [...heroBase,  ...heroFallback].slice(0, HERO_QTD);
+      const thumbSafe = thumbsBase.length >= THUMB_QTD ? thumbsBase : [...thumbsBase, ...thumbFallback].slice(0, THUMB_QTD);
 
       buildHero(heroSafe);
       buildThumbs(thumbSafe);
@@ -846,7 +860,16 @@
         const idx = Number(img.dataset.cachoeira || 0);
         if (cachBase[idx]) img.src = cachBase[idx];
       });
+    }
+
+    (async function init(){
+      galeriaCache = await carregarGaleria();
+      renderGaleria(galeriaCache, desktopMedia.matches);
     })();
+
+    desktopMedia.addEventListener("change", (event) => {
+      renderGaleria(galeriaCache, event.matches);
+    });
   </script>
 
 </body>
