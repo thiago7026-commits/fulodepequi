@@ -632,7 +632,9 @@
       <div class="cachoeiras-grid">
         <article class="cach-card">
           <div class="img">
-
+            <!-- IMPORTANTE: "santa barbara.jpg" tem espaço. Mantive com %20.
+                 Se você renomear para santa-barbara.jpg, troque aqui também. -->
+            <img data-cachoeira="0" src="assets/cachoeiras/santa%20barbara.jpg" alt="Cachoeira Santa Bárbara">
           </div>
           <div class="txt">
             <h3>Cachoeira Santa Bárbara</h3>
@@ -642,7 +644,7 @@
 
         <article class="cach-card">
           <div class="img">
-
+            <img data-cachoeira="1" src="assets/cachoeiras/canjica.jpg" alt="Cachoeira Canjica">
           </div>
           <div class="txt">
             <h3>Cachoeira Canjica</h3>
@@ -652,7 +654,7 @@
 
         <article class="cach-card">
           <div class="img">
-
+            <img data-cachoeira="2" src="assets/cachoeiras/guardiao.jpg" alt="Cachoeira Guardião">
           </div>
           <div class="txt">
             <h3>Cachoeira Guardião</h3>
@@ -745,9 +747,15 @@
       "assets/bloco-1/hero-7.jpg","assets/bloco-1/hero-8.jpg","assets/bloco-1/hero-9.jpg",
       "assets/bloco-1/hero-10.jpg",
     ];
-    const CACHOEIRAS_FALLBACK = [
 
+    // ✅ AQUI está o ponto principal da correção (cachoeiras)
+    // Se você renomear "santa barbara.jpg" para "santa-barbara.jpg", ajuste este caminho.
+    const CACHOEIRAS_FALLBACK = [
+      "assets/cachoeiras/santa%20barbara.jpg",
+      "assets/cachoeiras/canjica.jpg",
+      "assets/cachoeiras/guardiao.jpg",
     ];
+
     const THUMB_FALLBACK = HERO_FALLBACK;
 
     const HERO_QTD = 10;
@@ -849,22 +857,23 @@
     (async function init(){
       const galeria = await carregarGaleria();
 
-      const heroBase = galeria.bloco1.length ? galeria.bloco1 : HERO_FALLBACK;
+      const heroBase   = galeria.bloco1.length ? galeria.bloco1 : HERO_FALLBACK;
       const thumbsBase = galeria.bloco3.length ? galeria.bloco3 : THUMB_FALLBACK;
-      const cachBase = galeria.bloco2.length ? galeria.bloco2 : CACHOEIRAS_FALLBACK;
+
+      // ✅ cachoeiras: se vier do Apps Script (bloco2), usa; senão usa fallback local
+      const cachBase   = galeria.bloco2.length ? galeria.bloco2 : CACHOEIRAS_FALLBACK;
 
       // Garante que existam ao menos 10
-      const heroSafe = heroBase.length >= HERO_QTD ? heroBase : [...heroBase, ...HERO_FALLBACK].slice(0, HERO_QTD);
+      const heroSafe  = heroBase.length  >= HERO_QTD  ? heroBase  : [...heroBase,  ...HERO_FALLBACK].slice(0, HERO_QTD);
       const thumbSafe = thumbsBase.length >= THUMB_QTD ? thumbsBase : [...thumbsBase, ...THUMB_FALLBACK].slice(0, THUMB_QTD);
 
       buildHero(heroSafe);
       buildThumbs(thumbSafe);
 
+      // ✅ Agora funciona, porque existem <img data-cachoeira="0/1/2"> no HTML
       document.querySelectorAll("[data-cachoeira]").forEach((img) => {
         const idx = Number(img.dataset.cachoeira || 0);
-        if (cachBase[idx]) {
-          img.src = cachBase[idx];
-        }
+        if (cachBase[idx]) img.src = cachBase[idx];
       });
     })();
   </script>
