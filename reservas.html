@@ -268,7 +268,7 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
 
 .hidden{ display:none !important; }
 
-/* ===== TotalBox estilo Airbnb (verde suave quando há desconto) ===== */
+/* ===== TotalBox (verde suave quando há desconto) ===== */
 #totalBox{
   margin-top:14px;
   padding:16px 18px;
@@ -394,11 +394,65 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
   font-size:13px;
 }
 
+/* ===== RODAPÉ (IGUAL AO SERVIÇOS) ===== */
+.rodape{
+  background:#C2C1BB;
+  padding:80px 40px 40px;
+}
+
+.rodape-container{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.rodape-logo{
+  display:flex;
+  justify-content:center;
+}
+
+.rodape-logo img{
+  max-width:220px;
+  display:block;
+}
+
+.rodape-contato{
+  text-align:center;
+}
+
+.rodape-contato h3{
+  font-size:22px;
+  margin-bottom:20px;
+  color:#2f3b2a;
+}
+
+.rodape-item{
+  margin-bottom:14px;
+  font-size:15px;
+}
+
+.rodape-item a{
+  color:#333;
+  text-decoration:none;
+}
+
+.rodape-copy{
+  text-align:center;
+  margin-top:40px;
+  font-size:13px;
+  border-top:1px solid rgba(0,0,0,0.15);
+  padding-top:20px;
+}
+
 /* Responsivo */
 @media(max-width:900px){
   .card{ grid-template-columns:1fr; }
   .galeria-principal{ min-height:280px; }
   .galeria-thumbs{ grid-template-columns:repeat(5, 1fr); }
+  .rodape-container{ grid-template-columns:1fr; }
 }
 @media(max-width:520px){
   .galeria-thumbs{ grid-template-columns:repeat(4, 1fr); }
@@ -467,44 +521,14 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
         <p>Reservas apenas com <strong>sexta + sábado juntos</strong>.</p>
 
         <small>
-          * Após concluir a reserva, você recebe confirmação por WhatsApp e por e-mail.
-          A localização do chalé também é enviada automaticamente.
-        </small>
-      </div>
-
-      <div class="confirmacoes hidden">
-        <strong>📲 Confirmações automáticas</strong>
-        <ul>
-          <li>Cliente recebe confirmação por <strong>WhatsApp</strong> e <strong>e-mail</strong>.</li>
-          <li>O proprietário (Floyd Pique) recebe a notificação da reserva.</li>
-        </ul>
-      </div>
-
-      <div class="airbnb-sync hidden">
-        <strong>🗓️ Calendário integrado ao Airbnb</strong>
-        <p>
-          Use os links abaixo para sincronização entre Airbnb e site.
-        </p>
-        <ul>
-          <li>
-            <strong>iCal do Airbnb (importar no site):</strong>
-            <a href="https://www.airbnb.com.br/calendar/ical/635415619801096957.ics?t=90a368d943284d02938aebadc5628ed6" target="_blank" rel="noopener noreferrer">Abrir link iCal do Airbnb</a>
-          </li>
-          <li>
-            <strong>iCal do site (importar no Airbnb):</strong>
-            <a href="calendario.ics" target="_blank" rel="noopener noreferrer">Abrir link iCal do site</a>
-          </li>
-        </ul>
-        <small>
-          * O iCal do site precisa ser atualizado conforme novas reservas forem confirmadas.
-          Para automação completa, podemos integrar um sistema de reservas com atualização automática.
+          Reserve agora e receba confirmação rápida com todas as informações da sua estadia.
         </small>
       </div>
 
       <label>Período da estadia</label>
       <input type="text" id="datas" placeholder="Selecione as datas">
 
-      <div class="form-hint" id="dadosHint">Após selecionar as datas, preencha seus dados para solicitar a reserva.</div>
+      <div class="form-hint" id="dadosHint">Escolha o período da sua viagem e finalize sua reserva em poucos passos.</div>
 
       <div id="dadosReserva" class="hidden">
         <label>Nome completo</label>
@@ -527,7 +551,7 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
 
       <div class="info">
         Valor da diária: <strong>R$ 340,00</strong><br>
-        Confirmação e envio de localização após concluir a reserva (WhatsApp e e-mail).
+        Selecione as datas para ver o total da estadia.
         <div id="totalBox"></div>
       </div>
 
@@ -822,9 +846,32 @@ function reservar(){
     `Ao confirmar a reserva, você recebe a confirmação e a localização por WhatsApp e e-mail.\n\n` +
     `Pode confirmar disponibilidade e forma de pagamento?`;
 
-  window.open(`https://wa.me/5562999350693?text=${encodeURIComponent(msg)}`, "_blank");
+window.open(`https://wa.me/5562999350693?text=${encodeURIComponent(msg)}`, "_blank");
 }
 </script>
+
+<footer class="rodape">
+  <div class="rodape-container">
+    <div class="rodape-logo">
+      <img src="assets/logo2.png" alt="Fulô de Pequi">
+    </div>
+
+    <div class="rodape-contato">
+      <h3>CONTATO</h3>
+      <div class="rodape-item">📍 Cavalcante – GO</div>
+      <div class="rodape-item">
+        <a href="https://wa.me/5562999350693">📞 (62) 99935-0693</a>
+      </div>
+      <div class="rodape-item">
+        <a href="https://www.instagram.com/fulodpequi/">📷 @fulodpequi</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rodape-copy">
+    © 2026 • Fulô de Pequi • Todos os direitos reservados
+  </div>
+</footer>
 
 </body>
 </html>
