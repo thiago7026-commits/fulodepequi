@@ -74,7 +74,6 @@
     }
     nav a:hover{ opacity:1; }
 
-    /* Botão reserva (fora do menu) */
     .cta-topo{
       display:flex;
       align-items:center;
@@ -107,7 +106,7 @@
       opacity:0.95;
     }
 
-    /* ================= HERO (TOPO - 10 FOTOS) ================= */
+    /* ================= HERO ================= */
     .hero{
       position:relative;
       height:76vh;
@@ -140,8 +139,7 @@
     .hero-gradient{
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.55) 100%);
+      background:linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.55) 100%);
       pointer-events:none;
     }
     .hero-content{
@@ -176,7 +174,6 @@
       flex-wrap:wrap;
     }
 
-    /* Indicadores do hero */
     .hero-dots{
       position:absolute;
       left:50%;
@@ -198,7 +195,7 @@
     }
     .dot.active{ background:#fff; }
 
-    /* ================= SEÇÕES (BASE) ================= */
+    /* ================= SEÇÕES ================= */
     .wrap{ width:min(var(--max), 92vw); margin:0 auto; }
     .section{ padding:72px 0; }
     .section h2{
@@ -215,7 +212,6 @@
       font-size:16px;
     }
 
-    /* ================= BLOCO “BOTÕES” ================= */
     .quick-actions{
       display:flex;
       gap:14px;
@@ -238,7 +234,6 @@
     }
     .qa:hover{ transform:translateY(-1px); }
 
-    /* ================= SUBSTITUTO PROFISSIONAL DO “BANNER” ================= */
     .highlights{
       margin-top:26px;
       background:linear-gradient(180deg, rgba(201,162,77,0.14) 0%, rgba(255,255,255,0.0) 100%);
@@ -303,7 +298,7 @@
     }
     .cach-card:hover{ transform:translateY(-2px); }
     .cach-card .img{
-      height:340px; /* referência: tamanho das cachoeiras */
+      height:340px;
       background:#ddd;
       overflow:hidden;
     }
@@ -316,6 +311,52 @@
     .cach-card .txt{ padding:18px 18px 20px; }
     .cach-card h3{ font-size:20px; margin-bottom:8px; }
     .cach-card p{ color:var(--muted); line-height:1.75; font-size:14.5px; }
+
+    /* ================= CARROSSEL REDONDINHO (GRANDE) ================= */
+    .thumb-carousel{
+      background:#f2f2f2;
+      padding:110px 0 120px;
+      border-top:1px solid rgba(0,0,0,0.05);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+    .thumb-track{
+      display:flex;
+      gap:26px;
+      overflow-x:auto;
+      padding:30px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .thumb-track::-webkit-scrollbar{ display:none; }
+
+    .thumb{
+      flex:0 0 auto;
+      width:320px;
+      height:320px;
+      border-radius:999px;
+      overflow:hidden;
+      border:6px solid rgba(255,255,255,0.95);
+      box-shadow:0 22px 46px rgba(0,0,0,0.20);
+      scroll-snap-align:start;
+      cursor:pointer;
+      background:#ddd;
+      transition:transform .25s ease;
+    }
+    .thumb:hover{ transform:scale(1.03); }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .thumb-title{
+      text-align:center;
+      color:var(--muted);
+      font-size:16px;
+      margin-top:14px;
+      font-weight:600;
+      letter-spacing:0.2px;
+    }
 
     /* ================= MAPA / LOCALIZAÇÃO ================= */
     .mapa-wrap{
@@ -346,53 +387,6 @@
       height:100%;
       border:0;
       min-height:380px;
-    }
-
-    /* ================= CARROSSEL REDONDINHO (AGORA DO TAMANHO DAS CACHOEIRAS) ================= */
-    .thumb-carousel{
-      background:#f2f2f2;
-      padding:110px 0 120px; /* ⬅️ mais presença */
-      border-top:1px solid rgba(0,0,0,0.05);
-      border-bottom:1px solid rgba(0,0,0,0.05);
-    }
-    .thumb-track{
-      display:flex;
-      gap:26px;            /* ⬅️ mais espaço entre bolas grandes */
-      overflow-x:auto;
-      padding:30px 10px;   /* ⬅️ mais respiro vertical */
-      scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-    }
-    .thumb-track::-webkit-scrollbar{ display:none; }
-
-    .thumb{
-      flex:0 0 auto;
-      width:320px;          /* ⬅️ grande (próximo de 340px das cachoeiras) */
-      height:320px;         /* ⬅️ grande */
-      border-radius:999px;
-      overflow:hidden;
-      border:6px solid rgba(255,255,255,0.95);
-      box-shadow:0 22px 46px rgba(0,0,0,0.20);
-      scroll-snap-align:start;
-      cursor:pointer;
-      background:#ddd;
-      transition:transform .25s ease;
-    }
-    .thumb:hover{ transform:scale(1.03); }
-
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-    .thumb-title{
-      text-align:center;
-      color:var(--muted);
-      font-size:16px;
-      margin-top:14px;
-      font-weight:600;
-      letter-spacing:0.2px;
     }
 
     /* ================= LIGHTBOX ================= */
@@ -486,7 +480,7 @@
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
 
-      /* ⬅️ mobile: grande, mas usável */
+      /* Mobile: mantém “perfeito” e usável */
       .thumb{
         width:190px;
         height:190px;
@@ -523,7 +517,7 @@
       <nav aria-label="Menu principal">
         <ul>
           <li><a href="index.html">Início</a></li>
-          <li><a href="https://fulodepequi.com.br/reservas.html">Acomodações</a></li>
+          <li><a href="acomodacoes.html">Acomodações</a></li>
           <li><a href="servicos.html">Serviços</a></li>
           <li><a href="politica.html">Políticas</a></li>
         </ul>
@@ -536,7 +530,7 @@
     </div>
   </header>
 
-  <!-- HERO (TOPO) - 10 FOTOS -->
+  <!-- HERO (10 FOTOS - LOCAL) -->
   <section class="hero" aria-label="Galeria principal">
     <div class="hero-track" id="heroTrack"></div>
     <div class="hero-gradient"></div>
@@ -550,7 +544,7 @@
         </p>
         <div class="hero-actions">
           <a class="btn btn-dourado" href="reservas.html">Reservar agora</a>
-          <a class="btn btn-outline" href="https://fulodepequi.com.br/reservas.html">Ver acomodações</a>
+          <a class="btn btn-outline" href="acomodacoes.html">Ver acomodações</a>
         </div>
       </div>
     </div>
@@ -567,17 +561,17 @@
       </p>
 
       <div class="quick-actions" aria-label="Atalhos">
-        <a class="qa" href="https://fulodepequi.com.br/reservas.html">Acomodações</a>
+        <a class="qa" href="acomodacoes.html">Acomodações</a>
         <a class="qa" href="servicos.html">Serviços</a>
         <a class="qa" href="politica.html">Políticas</a>
       </div>
 
-      <div class="highlights" aria-label="Destaques profissionais">
+      <div class="highlights" aria-label="Destaques">
         <div class="highlights-grid">
           <div class="high-left">
             <h3>Uma experiência completa, sem complicação</h3>
             <p>
-              Conforto, privacidade e natureza em um só lugar. Aqui você encontra um chalé completo, pensado para relaxar,
+              Conforto, privacidade e natureza em um só lugar. Um chalé completo, pensado para relaxar,
               aproveitar a Chapada e viver momentos especiais.
             </p>
             <div class="mini-actions">
@@ -615,7 +609,7 @@
     </div>
   </section>
 
-  <!-- CACHOEIRAS -->
+  <!-- CACHOEIRAS (LOCAL) -->
   <section class="section" aria-label="Cachoeiras">
     <div class="wrap">
       <h2>Cachoeiras da região</h2>
@@ -626,7 +620,7 @@
       <div class="cachoeiras-grid">
         <article class="cach-card">
           <div class="img">
-            <img data-cachoeira="0" src="assets/cachoeiras/santa-barbara.jpg" alt="Cachoeira Santa Bárbara">
+            <img src="assets/cachoeiras/santa-barbara.jpg" alt="Cachoeira Santa Bárbara">
           </div>
           <div class="txt">
             <h3>Cachoeira Santa Bárbara</h3>
@@ -636,7 +630,7 @@
 
         <article class="cach-card">
           <div class="img">
-            <img data-cachoeira="1" src="assets/cachoeiras/canjica.jpg" alt="Cachoeira Canjica">
+            <img src="assets/cachoeiras/canjica.jpg" alt="Cachoeira Canjica">
           </div>
           <div class="txt">
             <h3>Cachoeira Canjica</h3>
@@ -646,7 +640,7 @@
 
         <article class="cach-card">
           <div class="img">
-            <img data-cachoeira="2" src="assets/cachoeiras/guardiao.jpg" alt="Cachoeira Guardião">
+            <img src="assets/cachoeiras/guardiao.jpg" alt="Cachoeira Guardião">
           </div>
           <div class="txt">
             <h3>Cachoeira Guardião</h3>
@@ -657,19 +651,18 @@
     </div>
   </section>
 
-  <!-- CARROSSEL REDONDINHO (GRANDE) -->
+  <!-- CARROSSEL REDONDINHO (LOCAL) -->
   <section class="thumb-carousel" aria-label="Galeria complementar">
     <div class="wrap">
       <h2>Mais fotos do chalé</h2>
       <p class="sub">Carrossel redondinho com 10 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
 
       <div class="thumb-track" id="thumbTrack"></div>
-
       <div class="thumb-title">Arraste para o lado</div>
     </div>
   </section>
 
-  <!-- MAPA -->
+  <!-- MAPA / LOCALIZAÇÃO -->
   <section class="section" id="mapa" aria-label="Localização">
     <div class="wrap">
       <h2>Localização do chalé</h2>
@@ -681,16 +674,17 @@
         <div class="mapa-card">
           <h3>Como chegar</h3>
           <p>
-            Use o mapa ao lado para traçar a rota. Assim que a reserva for concluída, a localização também poderá ser enviada por WhatsApp e e-mail (configuração feita na página de reservas).
-          </p>
-          <p style="color:var(--muted);">
-            Dica: se você quiser, podemos trocar este embed por um ponto exato (lat/long) quando você confirmar a posição final.
+            Use o mapa ao lado para traçar a rota. Assim que a reserva for concluída, a localização também poderá ser enviada por WhatsApp e e-mail.
           </p>
           <a class="btn btn-dourado" href="reservas.html">Ir para reservas</a>
         </div>
 
         <div class="mapa-embed">
-
+          <iframe
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=R.%20241,%20Qd%2001%20-%20Lt%2006%20-%20Vila%20Morro%20Encantado,%20Cavalcante%20-%20GO,%2073790-000&output=embed">
+          </iframe>
         </div>
       </div>
     </div>
@@ -704,7 +698,7 @@
     </p>
   </footer>
 
-  <!-- WhatsApp flutuante -->
+  <!-- WhatsApp flutuante (ajuste o número) -->
   <a class="whats" href="https://wa.me/55SEUNUMEROAQUI" target="_blank" rel="noopener">
     <span>WhatsApp</span>
   </a>
@@ -718,62 +712,50 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzZCgaa35xExbHyGGvlOobsM2ARy9jwYYmYgBWVB3ZimueqxESZPtLeOljzbNweZ9iU/exec";
+    // ==========================================================
+    // FOTOS 100% LOCAIS (sem API / sem blocos)
+    // Desktop: assets/img-para-pc/
+    // Mobile:  assets/bloco-1/
+    // ==========================================================
 
-    const HERO_FALLBACK_MOBILE = [
+    const HERO_QTD  = 10;
+    const THUMB_QTD = 10;
+
+    // Mobile (mantém seu padrão atual)
+    const HERO_MOBILE = [
       "assets/bloco-1/hero-1.jpg","assets/bloco-1/hero-2.jpg","assets/bloco-1/hero-3.jpg",
       "assets/bloco-1/hero-4.jpg","assets/bloco-1/hero-5.jpg","assets/bloco-1/hero-6.jpg",
       "assets/bloco-1/hero-7.jpg","assets/bloco-1/hero-8.jpg","assets/bloco-1/hero-9.jpg",
-      "assets/bloco-1/hero-10.jpg",
+      "assets/bloco-1/hero-10.jpg"
     ];
 
-    const HERO_FALLBACK_DESKTOP = [
-
+    // Desktop (apenas img-para-pc)
+    const HERO_DESKTOP = [
+      "assets/img-para-pc/img-para-pc_1.jpg",
+      "assets/img-para-pc/img-para-pc_2.jpg",
+      "assets/img-para-pc/img-para-pc_3.jpg",
+      "assets/img-para-pc/img-para-pc_4.jpg",
+      "assets/img-para-pc/img-para-pc_5.jpg",
+      "assets/img-para-pc/img-para-pc_6.jpg",
+      "assets/img-para-pc/img-para-pc_7.jpg",
+      "assets/img-para-pc/img-para-pc_8.jpg",
+      "assets/img-para-pc/img-para-pc_9.jpg",
+      "assets/img-para-pc/img-para-pc_10.jpg"
     ];
 
-    const CACHOEIRAS_FALLBACK = [
-      "assets/cachoeiras/santa-barbara.jpg",
-      "assets/cachoeiras/canjica.jpg",
-      "assets/cachoeiras/guardiao.jpg",
-    ];
+    const THUMBS_MOBILE  = HERO_MOBILE;
+    const THUMBS_DESKTOP = HERO_DESKTOP;
 
-    const THUMB_FALLBACK_MOBILE = HERO_FALLBACK_MOBILE;
-    const THUMB_FALLBACK_DESKTOP = HERO_FALLBACK_DESKTOP;
-
-    const HERO_QTD = 10;
-    const THUMB_QTD = 10;
-
-    const heroTrack = document.getElementById("heroTrack");
-    const heroDots  = document.getElementById("heroDots");
+    const heroTrack  = document.getElementById("heroTrack");
+    const heroDots   = document.getElementById("heroDots");
     const thumbTrack = document.getElementById("thumbTrack");
 
     const lightbox = document.getElementById("lightbox");
-    const lbImg = document.getElementById("lbImg");
-    const lbClose = document.getElementById("lbClose");
+    const lbImg    = document.getElementById("lbImg");
+    const lbClose  = document.getElementById("lbClose");
 
-    async function carregarGaleria(){
-      const fallback = { bloco1: [], bloco2: [], bloco3: [] };
-
-      try{
-        const body = new URLSearchParams();
-        body.set("action", "getGaleria");
-        body.set("payload", JSON.stringify({}));
-
-        const res = await fetch(API_URL, { method: "POST", body, cache:"no-store" });
-        const text = await res.text();
-        let json = null;
-        try { json = JSON.parse(text); } catch (e) {}
-
-        if (!json || !json.ok || !json.data) return fallback;
-
-        return {
-          bloco1: Array.isArray(json.data.bloco1) ? json.data.bloco1 : [],
-          bloco2: Array.isArray(json.data.bloco2) ? json.data.bloco2 : [],
-          bloco3: Array.isArray(json.data.bloco3) ? json.data.bloco3 : [],
-        };
-      }catch(e){
-        return fallback;
-      }
+    function isDesktop(){
+      return window.matchMedia("(min-width: 981px)").matches;
     }
 
     function buildHero(images){
@@ -798,9 +780,7 @@
 
       heroTrack.addEventListener("scroll", () => {
         const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth);
-        [...heroDots.children].forEach((dot, i) => {
-          dot.classList.toggle("active", i === idx);
-        });
+        [...heroDots.children].forEach((dot, i) => dot.classList.toggle("active", i === idx));
       }, { passive:true });
     }
 
@@ -830,37 +810,17 @@
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
-    const desktopMedia = window.matchMedia("(min-width: 981px)");
-    let galeriaCache = { bloco1: [], bloco2: [], bloco3: [] };
+    function renderGaleriaLocal(){
+      const hero   = isDesktop() ? HERO_DESKTOP : HERO_MOBILE;
+      const thumbs = isDesktop() ? THUMBS_DESKTOP : THUMBS_MOBILE;
 
-    function renderGaleria({ bloco1, bloco2, bloco3 }, isDesktop){
-      const heroFallback = isDesktop ? HERO_FALLBACK_DESKTOP : HERO_FALLBACK_MOBILE;
-      const thumbFallback = isDesktop ? THUMB_FALLBACK_DESKTOP : THUMB_FALLBACK_MOBILE;
-
-      const heroBase   = bloco1.length ? bloco1 : heroFallback;
-      const thumbsBase = bloco3.length ? bloco3 : thumbFallback;
-      const cachBase   = bloco2.length ? bloco2 : CACHOEIRAS_FALLBACK;
-
-      const heroSafe  = heroBase.length  >= HERO_QTD  ? heroBase  : [...heroBase,  ...heroFallback].slice(0, HERO_QTD);
-      const thumbSafe = thumbsBase.length >= THUMB_QTD ? thumbsBase : [...thumbsBase, ...thumbFallback].slice(0, THUMB_QTD);
-
-      buildHero(heroSafe);
-      buildThumbs(thumbSafe);
-
-      document.querySelectorAll("[data-cachoeira]").forEach((img) => {
-        const idx = Number(img.dataset.cachoeira || 0);
-        if (cachBase[idx]) img.src = cachBase[idx];
-      });
+      buildHero(hero);
+      buildThumbs(thumbs);
     }
 
-    (async function init(){
-      galeriaCache = await carregarGaleria();
-      renderGaleria(galeriaCache, desktopMedia.matches);
-    })();
-
-    desktopMedia.addEventListener("change", (event) => {
-      renderGaleria(galeriaCache, event.matches);
-    });
+    // Init + troca automática ao mudar o tamanho da tela
+    renderGaleriaLocal();
+    window.matchMedia("(min-width: 981px)").addEventListener("change", renderGaleriaLocal);
   </script>
 
 </body>
