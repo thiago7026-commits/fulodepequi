@@ -183,14 +183,14 @@
       transform:translateX(-50%);
       bottom:18px;
       display:flex;
-      gap:8px;
-      padding:10px 12px;
+      gap:10px;
+      padding:12px 14px;
       border-radius:999px;
       background:rgba(0,0,0,0.35);
       backdrop-filter: blur(8px);
     }
     .dot{
-      width:8px; height:8px;
+      width:12px; height:12px;
       border-radius:999px;
       background:rgba(255,255,255,0.45);
       border:1px solid rgba(255,255,255,0.10);
@@ -496,7 +496,17 @@
       .hero{ min-height:540px; }
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
-      .thumb{ width:78px; height:78px; }
+      .thumb{ width:88px; height:88px; }
+      .dot{ width:10px; height:10px; }
+    }
+    @media (min-width: 981px){
+      .hero{
+        height:68vh;
+        min-height:480px;
+      }
+      .hero-slide img{
+        object-position:center 20%;
+      }
     }
   </style>
 </head>
@@ -635,7 +645,7 @@
 
           </div>
           <div class="txt">
-            <h3>Cachoeira Candaru</h3>
+            <h3>Cachoeira Canjica</h3>
             <p>Uma opção excelente para quem quer natureza e trilha com visual marcante e boas fotos.</p>
           </div>
         </article>
@@ -645,7 +655,7 @@
 
           </div>
           <div class="txt">
-            <h3>Cachoeira com acesso por Cavalcante (TO)</h3>
+            <h3>Cachoeira Guardião</h3>
             <p>Localizada no Tocantins, mas com acesso por Cavalcante — perfeita para incluir no roteiro.</p>
           </div>
         </article>
@@ -736,9 +746,7 @@
       "assets/bloco-1/hero-10.jpg",
     ];
     const CACHOEIRAS_FALLBACK = [
-      "assets/cachoeiras/cachoeira-santa-barbara.jpg",
-      "assets/cachoeiras/cachoeira-candaru.jpg",
-      "assets/cachoeiras/cachoeira-fronteira-go-to.jpg",
+
     ];
     const THUMB_FALLBACK = HERO_FALLBACK;
 
