@@ -238,7 +238,7 @@
     }
     .qa:hover{ transform:translateY(-1px); }
 
-    /* ================= DESTAQUES ================= */
+    /* ================= SUBSTITUTO PROFISSIONAL DO “BANNER” ================= */
     .highlights{
       margin-top:26px;
       background:linear-gradient(180deg, rgba(201,162,77,0.14) 0%, rgba(255,255,255,0.0) 100%);
@@ -317,7 +317,7 @@
     .cach-card h3{ font-size:20px; margin-bottom:8px; }
     .cach-card p{ color:var(--muted); line-height:1.75; font-size:14.5px; }
 
-    /* ================= CARROSSEL REDONDINHO (GRANDE) ================= */
+    /* ================= CARROSSEL REDONDINHO (8 FOTOS, TAMANHO DAS CACHOEIRAS) ================= */
     .thumb-carousel{
       background:#f2f2f2;
       padding:110px 0 120px;
@@ -349,7 +349,6 @@
       transition:transform .25s ease;
     }
     .thumb:hover{ transform:scale(1.03); }
-
     .thumb img{
       width:100%;
       height:100%;
@@ -394,6 +393,31 @@
       border:0;
       min-height:380px;
     }
+
+    /* ================= MAPA DEMO + LINK EXTERNO ================= */
+    .mapa-demo{ position:relative; }
+    .mapa-demo iframe{ pointer-events:none; } /* mapa não interativo */
+    .mapa-overlay{
+      position:absolute;
+      inset:0;
+      z-index:5;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-weight:700;
+      font-size:16px;
+      text-decoration:none;
+      transition:background .2s ease;
+    }
+    .mapa-overlay span{
+      background:rgba(0,0,0,0.65);
+      padding:14px 22px;
+      border-radius:999px;
+      letter-spacing:.4px;
+    }
+    .mapa-overlay:hover{ background:rgba(0,0,0,0.45); }
 
     /* ================= LIGHTBOX ================= */
     .lightbox{
@@ -486,6 +510,7 @@
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
 
+      /* mobile mantém bom */
       .thumb{
         width:190px;
         height:190px;
@@ -611,7 +636,6 @@
 
         </div>
       </div>
-
     </div>
   </section>
 
@@ -626,7 +650,7 @@
       <div class="cachoeiras-grid">
         <article class="cach-card">
           <div class="img">
-            <img src="assets/cachoeiras/santa-barbara.jpg" alt="Cachoeira Santa Bárbara">
+            <img src="assets/cachoeiras/santa barbara.jpg" alt="Cachoeira Santa Bárbara">
           </div>
           <div class="txt">
             <h3>Cachoeira Santa Bárbara</h3>
@@ -657,39 +681,53 @@
     </div>
   </section>
 
-  <!-- CARROSSEL REDONDINHO (SOMENTE BLOCO-3 / 8 FOTOS) -->
+  <!-- CARROSSEL REDONDINHO (8 FOTOS - SOMENTE assets/bloco-3) -->
   <section class="thumb-carousel" aria-label="Galeria complementar">
     <div class="wrap">
       <h2>Mais fotos do chalé</h2>
       <p class="sub">Carrossel redondinho com 8 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
 
       <div class="thumb-track" id="thumbTrack"></div>
+
       <div class="thumb-title">Arraste para o lado</div>
     </div>
   </section>
 
-  <!-- MAPA -->
+  <!-- MAPA / LOCALIZAÇÃO -->
   <section class="section" id="mapa" aria-label="Localização">
     <div class="wrap">
       <h2>Localização do chalé</h2>
       <p class="sub">
-        Endereço: <b>R. 241, Qd 01 - Lt 06 - Vila Morro Encantado, Cavalcante - GO, 73790-000</b>
+        Coordenadas: <b>-13.800631501, -47.441498775</b>
       </p>
 
       <div class="mapa-wrap">
         <div class="mapa-card">
           <h3>Como chegar</h3>
-          <p>Use o mapa ao lado para traçar a rota.</p>
+          <p>
+            O mapa abaixo é apenas uma demonstração. Clique no botão para abrir diretamente no Google Maps e traçar a rota.
+          </p>
           <a class="btn btn-dourado" href="reservas.html">Ir para reservas</a>
         </div>
 
-        <div class="mapa-embed">
+        <!-- MAPA DEMO + LINK EXTERNO -->
+        <div class="mapa-embed mapa-demo">
+          <a
+            href="https://maps.app.goo.gl/sqFYwmYdKzmKMjJG9"
+            target="_blank"
+            rel="noopener"
+            class="mapa-overlay"
+            aria-label="Abrir no Google Maps">
+            <span>📍 Abrir no Google Maps</span>
+          </a>
+
           <iframe
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=R.%20241,%20Qd%2001%20-%20Lt%2006%20-%20Vila%20Morro%20Encantado,%20Cavalcante%20-%20GO,%2073790-000&output=embed">
+            src="https://www.google.com/maps?q=-13.800631501,-47.441498775&z=16&output=embed">
           </iframe>
         </div>
+
       </div>
     </div>
   </section>
@@ -702,7 +740,7 @@
     </p>
   </footer>
 
-  <!-- WhatsApp flutuante -->
+  <!-- WhatsApp flutuante (ajuste o número abaixo) -->
   <a class="whats" href="https://wa.me/55SEUNUMEROAQUI" target="_blank" rel="noopener">
     <span>WhatsApp</span>
   </a>
@@ -716,57 +754,18 @@
   </div>
 
   <script>
-    // ==========================================================
-    // HERO: 10 FOTOS (Mobile = bloco-1, Desktop = img-para-pc)
-    // ==========================================================
+    /* ================= HERO (10 fotos) ================= */
     const HERO_QTD = 10;
 
-    const HERO_MOBILE = [
+    const HERO_FALLBACK = [
       "assets/bloco-1/hero-1.jpg","assets/bloco-1/hero-2.jpg","assets/bloco-1/hero-3.jpg",
       "assets/bloco-1/hero-4.jpg","assets/bloco-1/hero-5.jpg","assets/bloco-1/hero-6.jpg",
       "assets/bloco-1/hero-7.jpg","assets/bloco-1/hero-8.jpg","assets/bloco-1/hero-9.jpg",
-      "assets/bloco-1/hero-10.jpg"
+      "assets/bloco-1/hero-10.jpg",
     ];
 
-    const HERO_DESKTOP = [
-      "assets/img-para-pc/img-para-pc_1.jpg",
-      "assets/img-para-pc/img-para-pc_2.jpg",
-      "assets/img-para-pc/img-para-pc_3.jpg",
-      "assets/img-para-pc/img-para-pc_4.jpg",
-      "assets/img-para-pc/img-para-pc_5.jpg",
-      "assets/img-para-pc/img-para-pc_6.jpg",
-      "assets/img-para-pc/img-para-pc_7.jpg",
-      "assets/img-para-pc/img-para-pc_8.jpg",
-      "assets/img-para-pc/img-para-pc_9.jpg",
-      "assets/img-para-pc/img-para-pc_10.jpg"
-    ];
-
-    // ==========================================================
-    // THUMBS: SOMENTE BLOCO-3 / 8 FOTOS
-    // ==========================================================
-    const THUMB_QTD = 8;
-    const THUMBS_BLOCO3 = [
-      "assets/bloco-3/g1.jpg",
-      "assets/bloco-3/g2.jpg",
-      "assets/bloco-3/g3.jpg",
-      "assets/bloco-3/g4.jpg",
-      "assets/bloco-3/g5.jpg",
-      "assets/bloco-3/g6.jpg",
-      "assets/bloco-3/g7.jpg",
-      "assets/bloco-3/g8.jpg"
-    ];
-
-    const heroTrack  = document.getElementById("heroTrack");
-    const heroDots   = document.getElementById("heroDots");
-    const thumbTrack = document.getElementById("thumbTrack");
-
-    const lightbox = document.getElementById("lightbox");
-    const lbImg    = document.getElementById("lbImg");
-    const lbClose  = document.getElementById("lbClose");
-
-    function isDesktop(){
-      return window.matchMedia("(min-width: 981px)").matches;
-    }
+    const heroTrack = document.getElementById("heroTrack");
+    const heroDots  = document.getElementById("heroDots");
 
     function buildHero(images){
       heroTrack.innerHTML = "";
@@ -794,6 +793,26 @@
       }, { passive:true });
     }
 
+    /* ================= THUMBS (8 fotos SOMENTE bloco-3) ================= */
+    const THUMB_QTD = 8;
+
+    const THUMB_FALLBACK = [
+      "assets/bloco-3/g1.jpg",
+      "assets/bloco-3/g2.jpg",
+      "assets/bloco-3/g3.jpg",
+      "assets/bloco-3/g4.jpg",
+      "assets/bloco-3/g5.jpg",
+      "assets/bloco-3/g6.jpg",
+      "assets/bloco-3/g7.jpg",
+      "assets/bloco-3/g8.jpg",
+    ];
+
+    const thumbTrack = document.getElementById("thumbTrack");
+
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
+
     function buildThumbs(images){
       thumbTrack.innerHTML = "";
       const imgs = images.slice(0, THUMB_QTD);
@@ -815,21 +834,15 @@
       lightbox.classList.remove("open");
       lbImg.src = "";
     }
-
     lbClose.addEventListener("click", closeLightbox);
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
-    function render(){
-      const hero = isDesktop() ? HERO_DESKTOP : HERO_MOBILE;
-      buildHero(hero);
-
-      // Ponto principal: SEMPRE bloco-3 (8 fotos), sem misturar pasta nenhuma
-      buildThumbs(THUMBS_BLOCO3);
-    }
-
-    render();
-    window.matchMedia("(min-width: 981px)").addEventListener("change", render);
+    /* ================= INIT ================= */
+    (function init(){
+      buildHero(HERO_FALLBACK);
+      buildThumbs(THUMB_FALLBACK);
+    })();
   </script>
 
 </body>
