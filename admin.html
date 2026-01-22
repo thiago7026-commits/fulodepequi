@@ -3,104 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fulô de Pequi • Administração do Calendário</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <title>Fulô de Pequi • Administração do Chalé</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <link rel="stylesheet" href="css/admin.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="index.html" aria-label="Voltar para a home">
-        <img src="assets/logo.png" alt="Fulô de Pequi" />
-        <div>
-          <strong>Fulô de Pequi</strong>
-          <span>Área de administração</span>
-        </div>
-      </a>
-      <nav class="top-actions">
-        <a class="btn btn-outline" href="index.html">Voltar ao site</a>
-        <button class="btn btn-ghost hidden" id="logoutButton" type="button">Sair</button>
-      </nav>
+      <div>
+        <p class="topbar-title">Administração do Chalé</p>
+        <span class="topbar-subtitle">Calendário e configurações</span>
+      </div>
+      <a class="btn btn-outline" href="index.html">Voltar ao site</a>
     </div>
   </header>
 
   <main class="page">
     <section class="intro">
-      <h1>Calendário do chalé em um só lugar</h1>
+      <h1>Gestão de calendário no estilo Airbnb</h1>
       <p>
-        Esta área é dedicada apenas ao calendário. As fotos serão gerenciadas manualmente pela equipe,
-        então o cliente não tem acesso a essa parte.
-        Aqui você bloqueia datas, sincroniza com o Airbnb e baixa o arquivo iCal do site.
+        Escolha um intervalo para bloquear datas, ajuste o valor da diária e mantenha o link iCal externo
+        sempre atualizado. Tudo fica salvo no navegador para uso rápido.
       </p>
     </section>
 
-    <section class="card" id="loginCard">
-      <div class="card-header">
-        <h2>Login do administrador</h2>
-        <p>Use o usuário e senha combinados. Para trocar, edite o arquivo <code>js/admin.js</code>.</p>
-      </div>
-
-      <form class="login-form" id="loginForm">
-        <label>
-          Usuário
-          <input type="text" name="usuario" placeholder="Digite o usuário" required />
-        </label>
-        <label>
-          Senha
-          <input type="password" name="senha" placeholder="Digite a senha" required />
-        </label>
-        <button class="btn btn-primary" type="submit">Entrar</button>
-        <p class="form-note" id="loginFeedback" aria-live="polite"></p>
-      </form>
-    </section>
-
-    <section class="card calendar-card hidden" id="calendarPanel">
-      <div class="card-header">
-        <div>
-          <h2>Calendário no estilo Airbnb</h2>
-          <p>Bloqueie datas, sincronize com o Airbnb e compartilhe o iCal do site.</p>
-        </div>
-        <div class="export-actions">
-          <button class="btn btn-outline" type="button" id="calendarCopy">Copiar JSON</button>
-          <button class="btn btn-primary" type="button" id="calendarDownload">Baixar iCal</button>
-          <button class="btn btn-ghost" type="button" id="calendarClear">Limpar bloqueios</button>
-        </div>
-      </div>
-
-      <div class="calendar-grid">
-        <div class="calendar-box">
-          <label class="calendar-label" for="airbnbLink">Link iCal do Airbnb (importar no site)</label>
-          <input type="url" id="airbnbLink" class="calendar-input" placeholder="Cole o link do Airbnb aqui">
-
-            <button class="btn btn-outline" type="button" id="calendarLinkCopy">Copiar link</button>
+    <section class="admin-grid">
+      <div class="calendar-panel" aria-label="Calendário do chalé">
+        <div class="calendar-header">
+          <div>
+            <h2>Calendário do chalé</h2>
+            <p>Seleção de intervalo com bloqueio de datas.</p>
           </div>
-          <p class="calendar-helper">
-            Depois de baixar o iCal, substitua o arquivo <strong>calendario.ics</strong> no site para manter a sincronização.
-          </p>
-          <label class="calendar-label">Selecione um período para bloquear</label>
-          <input type="text" id="calendarRange" class="calendar-input is-hidden" placeholder="Selecione as datas">
-          <div class="calendar-inline" id="calendarInline"></div>
-          <label class="calendar-label" for="calendarNote">Observação (opcional)</label>
-          <input type="text" id="calendarNote" class="calendar-input" placeholder="Ex: reserva Airbnb, manutenção">
-          <button class="btn btn-primary" type="button" id="calendarAdd">Adicionar bloqueio</button>
-          <p class="form-note" id="calendarFeedback" aria-live="polite"></p>
+          <div class="calendar-range-info">
+            <span>Período selecionado</span>
+            <strong id="selectedRange">Selecione as datas no calendário</strong>
+          </div>
+        </div>
+        <div id="calendarInline" class="calendar-inline"></div>
+        <button class="btn btn-primary" id="addBlockButton" type="button">Adicionar bloqueio</button>
+        <p class="feedback" id="calendarFeedback" aria-live="polite"></p>
+      </div>
+
+      <aside class="admin-panel" aria-label="Painel administrativo">
+        <div class="card">
+          <h2>Painel administrativo</h2>
+          <label class="field">
+            <span>Valor da diária (R$)</span>
+            <input type="number" min="0" step="1" id="dailyRate" placeholder="Ex: 340" />
+          </label>
+          <label class="field">
+            <span>Link iCal externo (Airbnb / RBMB)</span>
+            <input type="url" id="externalIcal" placeholder="Cole o link iCal aqui" />
+          </label>
+          <button class="btn btn-outline" id="saveSettings" type="button">Salvar configurações</button>
+          <button class="btn btn-primary" id="exportIcal" type="button">Exportar iCal do site</button>
+          <p class="feedback" id="settingsFeedback" aria-live="polite"></p>
         </div>
 
-        <div class="calendar-summary">
+        <div class="card block-list">
           <h3>Bloqueios cadastrados</h3>
-          <p class="calendar-subtitle">Use esta lista para sincronizar com seu calendário do Airbnb.</p>
-          <div id="calendarList" class="calendar-list"></div>
+          <p class="muted">Veja e remova intervalos bloqueados.</p>
+          <div id="blocksList"></div>
         </div>
-      </div>
+      </aside>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Fulô de Pequi • Área administrativa simples para controle do calendário.</p>
+    <p>Fulô de Pequi • Página administrativa local.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
