@@ -237,7 +237,6 @@
       transition:transform .15s ease;
     }
     .qa:hover{ transform:translateY(-1px); }
-    .qa strong{ color:var(--verde); }
 
     /* ================= SUBSTITUTO PROFISSIONAL DO “BANNER” ================= */
     .highlights{
@@ -262,13 +261,8 @@
     }
     .high-left h3{ font-size:22px; margin-bottom:10px; }
     .high-left p{ color:var(--muted); line-height:1.8; margin-bottom:16px; }
-    .high-left .mini-actions{
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .high-right{
-      display:grid;
-      gap:12px;
-    }
+    .high-left .mini-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .high-right{ display:grid; gap:12px; }
     .pill{
       background:#fff;
       border:1px solid var(--borda);
@@ -319,18 +313,9 @@
       object-fit:cover;
       transform:scale(1.02);
     }
-    .cach-card .txt{
-      padding:18px 18px 20px;
-    }
-    .cach-card h3{
-      font-size:20px;
-      margin-bottom:8px;
-    }
-    .cach-card p{
-      color:var(--muted);
-      line-height:1.75;
-      font-size:14.5px;
-    }
+    .cach-card .txt{ padding:18px 18px 20px; }
+    .cach-card h3{ font-size:20px; margin-bottom:8px; }
+    .cach-card p{ color:var(--muted); line-height:1.75; font-size:14.5px; }
 
     /* ================= MAPA / LOCALIZAÇÃO ================= */
     .mapa-wrap{
@@ -366,32 +351,36 @@
     /* ================= CARROSSEL REDONDINHO (10 FOTOS) ================= */
     .thumb-carousel{
       background:#f2f2f2;
-      padding:56px 0 72px;
+      padding:90px 0 100px; /* ⬅️ AUMENTADO */
       border-top:1px solid rgba(0,0,0,0.05);
       border-bottom:1px solid rgba(0,0,0,0.05);
     }
     .thumb-track{
       display:flex;
-      gap:14px;
+      gap:18px;            /* ⬅️ mais espaçamento */
       overflow-x:auto;
-      padding:14px 6px;
+      padding:22px 8px;    /* ⬅️ mais altura */
       scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
     }
     .thumb-track::-webkit-scrollbar{ display:none; }
+
     .thumb{
       flex:0 0 auto;
-      width:88px;
-      height:88px;
+      width:130px;          /* ⬅️ AUMENTADO */
+      height:130px;         /* ⬅️ AUMENTADO */
       border-radius:999px;
       overflow:hidden;
-      border:3px solid rgba(255,255,255,0.9);
-      box-shadow:0 12px 24px rgba(0,0,0,0.12);
+      border:4px solid rgba(255,255,255,0.95);
+      box-shadow:0 18px 36px rgba(0,0,0,0.18);
       scroll-snap-align:start;
       cursor:pointer;
       background:#ddd;
+      transition:transform .25s ease;
     }
+    .thumb:hover{ transform:scale(1.06); }
+
     .thumb img{
       width:100%;
       height:100%;
@@ -400,8 +389,9 @@
     .thumb-title{
       text-align:center;
       color:var(--muted);
-      font-size:14px;
-      margin-top:6px;
+      font-size:15px;     /* ⬅️ maior */
+      margin-top:12px;    /* ⬅️ mais respiro */
+      font-weight:600;
     }
 
     /* ================= LIGHTBOX ================= */
@@ -460,9 +450,7 @@
       font-weight:700;
       letter-spacing:0.4px;
     }
-    .whats span{
-      font-size:14px;
-    }
+    .whats span{ font-size:14px; }
 
     /* ================= FOOTER ================= */
     footer{
@@ -496,17 +484,16 @@
       .hero{ min-height:540px; }
       .hero-box h1{ font-size:30px; }
       .hero-box p{ font-size:15px; }
-      .thumb{ width:88px; height:88px; }
+      .thumb{
+        width:105px;  /* ⬅️ maior no mobile */
+        height:105px; /* ⬅️ maior no mobile */
+      }
       .dot{ width:10px; height:10px; }
+      .thumb-carousel{ padding:70px 0 80px; } /* ⬅️ ajustado para mobile */
     }
     @media (min-width: 981px){
-      .hero{
-        height:68vh;
-        min-height:480px;
-      }
-      .hero-slide img{
-        object-position:center 20%;
-      }
+      .hero{ height:68vh; min-height:480px; }
+      .hero-slide img{ object-position:center 20%; }
     }
   </style>
 </head>
@@ -541,7 +528,7 @@
   <!-- HERO (TOPO) - 10 FOTOS -->
   <section class="hero" aria-label="Galeria principal">
     <div class="hero-track" id="heroTrack">
-      <!-- Slides inseridos via JS (10 fotos do Drive/FluxPig) -->
+      <!-- Slides inseridos via JS -->
     </div>
     <div class="hero-gradient"></div>
 
@@ -576,7 +563,7 @@
         <a class="qa" href="politica.html">Políticas</a>
       </div>
 
-      <!-- SUBSTITUTO PROFISSIONAL DO BANNER (sem quebrar estrutura) -->
+      <!-- SUBSTITUTO PROFISSIONAL DO BANNER -->
       <div class="highlights" aria-label="Destaques profissionais">
         <div class="highlights-grid">
           <div class="high-left">
@@ -617,11 +604,10 @@
 
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- CACHOEIRAS (GRANDES E VALORIZADAS) -->
+  <!-- CACHOEIRAS -->
   <section class="section" aria-label="Cachoeiras">
     <div class="wrap">
       <h2>Cachoeiras da região</h2>
@@ -632,9 +618,7 @@
       <div class="cachoeiras-grid">
         <article class="cach-card">
           <div class="img">
-            <!-- IMPORTANTE: "santa barbara.jpg" tem espaço. Mantive com %20.
-                 Se você renomear para santa-barbara.jpg, troque aqui também. -->
-            <img data-cachoeira="0" src="assets/cachoeiras/santa%20barbara.jpg" alt="Cachoeira Santa Bárbara">
+            <img data-cachoeira="0" src="assets/cachoeiras/santa-barbara.jpg" alt="Cachoeira Santa Bárbara">
           </div>
           <div class="txt">
             <h3>Cachoeira Santa Bárbara</h3>
@@ -665,21 +649,21 @@
     </div>
   </section>
 
-  <!-- CARROSSEL REDONDINHO (10 FOTOS) -->
+  <!-- CARROSSEL REDONDINHO (AUMENTADO) -->
   <section class="thumb-carousel" aria-label="Galeria complementar">
     <div class="wrap">
       <h2>Mais fotos do chalé</h2>
       <p class="sub">Carrossel redondinho com 10 fotos (arraste para o lado). Toque em uma foto para ampliar.</p>
 
       <div class="thumb-track" id="thumbTrack">
-        <!-- Thumbs inseridos via JS (10 fotos do Drive/FluxPig) -->
+        <!-- Thumbs inseridos via JS -->
       </div>
 
       <div class="thumb-title">Arraste para o lado</div>
     </div>
   </section>
 
-  <!-- MAPA / LOCALIZAÇÃO NA HOME -->
+  <!-- MAPA -->
   <section class="section" id="mapa" aria-label="Localização">
     <div class="wrap">
       <h2>Localização do chalé</h2>
@@ -700,7 +684,6 @@
         </div>
 
         <div class="mapa-embed">
-          <!-- Embed por endereço (estável). Se você preferir embed por coordenadas, eu ajusto depois. -->
           <iframe
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
@@ -719,7 +702,7 @@
     </p>
   </footer>
 
-  <!-- WhatsApp flutuante (ajuste o número abaixo) -->
+  <!-- WhatsApp flutuante -->
   <a class="whats" href="https://wa.me/55SEUNUMEROAQUI" target="_blank" rel="noopener">
     <span>WhatsApp</span>
   </a>
@@ -733,14 +716,8 @@
   </div>
 
   <script>
-    /**
-     * INTEGRAÇÃO GOOGLE DRIVE / APPS SCRIPT
-     * - Usa o mesmo endpoint da página admin (Apps Script) para buscar os 3 blocos.
-     * - Se não houver dados, o site usa as imagens locais como fallback.
-     */
     const API_URL = "https://script.google.com/macros/s/AKfycbzZCgaa35xExbHyGGvlOobsM2ARy9jwYYmYgBWVB3ZimueqxESZPtLeOljzbNweZ9iU/exec";
 
-    // Placeholders (se não houver dados no admin)
     const HERO_FALLBACK = [
       "assets/bloco-1/hero-1.jpg","assets/bloco-1/hero-2.jpg","assets/bloco-1/hero-3.jpg",
       "assets/bloco-1/hero-4.jpg","assets/bloco-1/hero-5.jpg","assets/bloco-1/hero-6.jpg",
@@ -748,10 +725,8 @@
       "assets/bloco-1/hero-10.jpg",
     ];
 
-    // ✅ AQUI está o ponto principal da correção (cachoeiras)
-    // Se você renomear "santa barbara.jpg" para "santa-barbara.jpg", ajuste este caminho.
     const CACHOEIRAS_FALLBACK = [
-      "assets/cachoeiras/santa%20barbara.jpg",
+      "assets/cachoeiras/santa-barbara.jpg",
       "assets/cachoeiras/canjica.jpg",
       "assets/cachoeiras/guardiao.jpg",
     ];
@@ -814,7 +789,6 @@
         heroDots.appendChild(d);
       });
 
-      // Atualiza dot ativo ao rolar
       heroTrack.addEventListener("scroll", () => {
         const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth);
         [...heroDots.children].forEach((dot, i) => {
@@ -846,31 +820,22 @@
     }
 
     lbClose.addEventListener("click", closeLightbox);
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeLightbox();
-    });
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
-    // Init
     (async function init(){
       const galeria = await carregarGaleria();
 
       const heroBase   = galeria.bloco1.length ? galeria.bloco1 : HERO_FALLBACK;
       const thumbsBase = galeria.bloco3.length ? galeria.bloco3 : THUMB_FALLBACK;
-
-      // ✅ cachoeiras: se vier do Apps Script (bloco2), usa; senão usa fallback local
       const cachBase   = galeria.bloco2.length ? galeria.bloco2 : CACHOEIRAS_FALLBACK;
 
-      // Garante que existam ao menos 10
       const heroSafe  = heroBase.length  >= HERO_QTD  ? heroBase  : [...heroBase,  ...HERO_FALLBACK].slice(0, HERO_QTD);
       const thumbSafe = thumbsBase.length >= THUMB_QTD ? thumbsBase : [...thumbsBase, ...THUMB_FALLBACK].slice(0, THUMB_QTD);
 
       buildHero(heroSafe);
       buildThumbs(thumbSafe);
 
-      // ✅ Agora funciona, porque existem <img data-cachoeira="0/1/2"> no HTML
       document.querySelectorAll("[data-cachoeira]").forEach((img) => {
         const idx = Number(img.dataset.cachoeira || 0);
         if (cachBase[idx]) img.src = cachBase[idx];
