@@ -12,7 +12,9 @@ h1, h2, h3{font-family:"Playfair Display", serif}
 .galeria img{height:220px;object-fit:cover;width:100%}
 .rodape{background:#2f3b2a;color:#fff;text-align:center;padding:30px}
 
-.whats-float{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:12px 16px;border-radius:999px;box-shadow:0 18px 34px rgba(0,0,0,0.2);font-weight:700;letter-spacing:0.4px;text-decoration:none}
+.whats-float{position:fixed;right:20px;bottom:20px;z-index:120;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#25d366,#1aa955);color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 16px 30px rgba(16,80,40,0.28);font-weight:600;letter-spacing:0.2px;text-decoration:none;border:1px solid rgba(255,255,255,0.28);transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease}
 .whats-float span{font-size:14px}
-.whats-float .whats-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,0.18)}
+.whats-float:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(16,80,40,0.32);background:linear-gradient(135deg,#2be06f,#1db45d)}
+.whats-float:focus-visible{outline:2px solid rgba(255,255,255,0.85);outline-offset:4px}
+.whats-float .whats-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08)}
 .whats-float .whats-icon svg{width:18px;height:18px;display:block}
