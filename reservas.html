@@ -516,6 +516,7 @@ h1, h2, h3{ font-family:"Playfair Display", serif; }
       <li><a href="reservas.html" class="ativo">Acomodações</a></li>
       <li><a href="servicos.html">Serviços</a></li>
       <li><a href="politica.html">Política</a></li>
+      <li><a href="admin.html">Admin</a></li>
     </ul>
   </nav>
 </header>
@@ -721,7 +722,21 @@ setFoto(0);
 /* =========================
    RESERVA / CÁLCULO
    ========================= */
-const VALOR_DIARIA = 340;
+const DEFAULT_DAILY_RATE = 340;
+const storedDailyRate = Number.parseFloat(localStorage.getItem("adminDailyRate"));
+const VALOR_DIARIA = Number.isFinite(storedDailyRate) ? storedDailyRate : DEFAULT_DAILY_RATE;
+
+const storedBlockedDates = (() => {
+  const raw = localStorage.getItem("adminBlockedDates");
+  if(!raw) return [];
+  try{
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(err){
+    console.warn("Falha ao ler datas bloqueadas:", err);
+    return [];
+  }
+})();
 
 const inputNome = document.getElementById("nome");
 const inputEmail = document.getElementById("email");
@@ -802,6 +817,7 @@ flatpickr("#datas", {
   minDate: "today",
   dateFormat: "d/m/Y",
   locale: "pt",
+  disable: storedBlockedDates,
   onClose: function(selectedDates){
     if(selectedDates.length < 2){
       atualizarResumo(selectedDates);

@@ -532,6 +532,7 @@
           <li><a href="reservas.html">Acomodações</a></li>
           <li><a href="servicos.html">Serviços</a></li>
           <li><a href="politica.html">Políticas</a></li>
+          <li><a href="admin.html">Admin</a></li>
         </ul>
       </nav>
 
@@ -829,10 +830,25 @@
     lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 
+    function readStoredImages(key, fallback){
+      const raw = localStorage.getItem(key);
+      if(!raw) return fallback;
+
+      try{
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) && parsed.length ? parsed : fallback;
+      }catch(err){
+        console.warn("Falha ao ler imagens do storage:", err);
+        return fallback;
+      }
+    }
+
     /* ================= INIT ================= */
     (function init(){
-      buildHero(HERO_FALLBACK);
-      buildThumbs(THUMB_FALLBACK);
+      const heroImages = readStoredImages("adminHeroImages", HERO_FALLBACK);
+      const thumbImages = readStoredImages("adminThumbImages", THUMB_FALLBACK);
+      buildHero(heroImages);
+      buildThumbs(thumbImages);
     })();
   </script>
 

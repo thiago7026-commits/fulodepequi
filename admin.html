@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin | Fulô de Pequi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header>
+  <nav class="topo">
+    <div class="logo">
+      <a href="index.html" aria-label="Ir para a página inicial">
+        <img src="assets/logo.png" alt="Fulô de Pequi">
+      </a>
+    </div>
+
+    <ul class="menu">
+      <li><a href="index.html">INÍCIO</a></li>
+      <li><a href="reservas.html">ACOMODAÇÕES</a></li>
+      <li><a href="servicos.html">SERVIÇOS</a></li>
+      <li><a href="politica.html">POLÍTICA</a></li>
+      <li><a href="admin.html" class="ativo">ADMIN</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="admin-hero">
+  <div>
+    <p>Painel administrativo do chalé</p>
+    <h1>Configurações do Fulô de Pequi</h1>
+  </div>
+</section>
+
+<main class="admin-main">
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Banco de dados MySQL</h2>
+      <p>Preencha os dados de conexão para integrar o backend ao MySQL.</p>
+    </div>
+
+    <form id="mysqlForm" class="admin-grid" autocomplete="off">
+      <label class="field">
+        <span>Host</span>
+        <input type="text" name="host" placeholder="ex: localhost" required>
+      </label>
+      <label class="field">
+        <span>Porta</span>
+        <input type="number" name="port" placeholder="3306" min="1" max="65535" required>
+      </label>
+      <label class="field">
+        <span>Banco</span>
+        <input type="text" name="database" placeholder="fulodepequi" required>
+      </label>
+      <label class="field">
+        <span>Usuário</span>
+        <input type="text" name="user" placeholder="root" required>
+      </label>
+      <label class="field">
+        <span>Senha</span>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </label>
+      <button class="btn-primary" type="submit">Salvar configuração</button>
+    </form>
+
+    <div class="hint" id="mysqlStatus"></div>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Calendário de bloqueios</h2>
+      <p>Selecione datas que devem ficar indisponíveis para reservas.</p>
+    </div>
+
+    <div class="admin-inline">
+      <label class="field">
+        <span>Data bloqueada</span>
+        <input type="date" id="blockedDateInput">
+      </label>
+      <button class="btn-secondary" id="addBlockedDate">Adicionar data</button>
+      <button class="btn-ghost" id="clearBlockedDates">Limpar tudo</button>
+    </div>
+
+    <ul class="blocked-list" id="blockedDatesList"></ul>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Valor da diária</h2>
+      <p>Atualize o valor para aparecer automaticamente no cálculo de reservas.</p>
+    </div>
+
+    <form id="rateForm" class="admin-inline" autocomplete="off">
+      <label class="field">
+        <span>Valor (R$)</span>
+        <input type="number" step="0.01" min="0" id="dailyRateInput" placeholder="340,00">
+      </label>
+      <button class="btn-primary" type="submit">Salvar diária</button>
+    </form>
+    <div class="hint" id="rateStatus"></div>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Fotos da página inicial</h2>
+      <p>Atualize as imagens do hero (10 fotos) e do carrossel circular (8 fotos). Use uma URL por linha.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div>
+        <h3>Hero principal</h3>
+        <textarea id="heroImagesInput" rows="8" placeholder="https://.../foto1.jpg"></textarea>
+        <button class="btn-primary" id="saveHeroImages">Salvar hero</button>
+        <div class="preview" id="heroPreview"></div>
+      </div>
+
+      <div>
+        <h3>Carrossel redondo</h3>
+        <textarea id="thumbImagesInput" rows="8" placeholder="https://.../foto1.jpg"></textarea>
+        <button class="btn-primary" id="saveThumbImages">Salvar carrossel</button>
+        <div class="preview" id="thumbPreview"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="admin-footer">
+  <p>As configurações são salvas localmente neste navegador. Para sincronizar com o site público, conecte o backend ao MySQL.</p>
+</footer>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
