@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
   blockedDates: "adminBlockedDates",
   heroImages: "adminHeroImages",
   thumbImages: "adminThumbImages",
+  airbnb: "adminAirbnbIntegration",
 };
 
 const mysqlForm = document.getElementById("mysqlForm");
@@ -21,6 +22,10 @@ const heroPreview = document.getElementById("heroPreview");
 const thumbPreview = document.getElementById("thumbPreview");
 const saveHeroImagesBtn = document.getElementById("saveHeroImages");
 const saveThumbImagesBtn = document.getElementById("saveThumbImages");
+const airbnbForm = document.getElementById("airbnbForm");
+const airbnbStatus = document.getElementById("airbnbStatus");
+const openAirbnbListingBtn = document.getElementById("openAirbnbListing");
+const importAirbnbDatesBtn = document.getElementById("importAirbnbDates");
 
 function readJSON(key, fallback) {
   const raw = localStorage.getItem(key);
@@ -43,6 +48,10 @@ function updateMysqlStatus(message) {
 
 function updateRateStatus(message) {
   rateStatus.textContent = message;
+}
+
+function updateAirbnbStatus(message) {
+  airbnbStatus.textContent = message;
 }
 
 function renderBlockedDates() {
@@ -110,6 +119,57 @@ function renderPreview(container, urls) {
   });
 }
 
+function parseIcalDate(value) {
+  if (!value) return null;
+  const clean = value.split("T")[0];
+  if (clean.length !== 8) return null;
+  const year = Number.parseInt(clean.slice(0, 4), 10);
+  const month = Number.parseInt(clean.slice(4, 6), 10) - 1;
+  const day = Number.parseInt(clean.slice(6, 8), 10);
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) {
+    return null;
+  }
+  return new Date(Date.UTC(year, month, day));
+}
+
+function formatDateKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function parseIcalBlockedDates(icalText) {
+  const lines = icalText.split(/\r?\n/);
+  const blocked = new Set();
+  let start = null;
+  let end = null;
+
+  lines.forEach((line) => {
+    if (line.startsWith("DTSTART")) {
+      start = parseIcalDate(line.split(":")[1]);
+    }
+    if (line.startsWith("DTEND")) {
+      end = parseIcalDate(line.split(":")[1]);
+    }
+    if (line.startsWith("END:VEVENT")) {
+      if (start) {
+        const current = new Date(start);
+        const limit = end || new Date(start);
+        if (!end) {
+          blocked.add(formatDateKey(current));
+        } else {
+          while (current < limit) {
+            blocked.add(formatDateKey(current));
+            current.setUTCDate(current.getUTCDate() + 1);
+          }
+        }
+      }
+      start = null;
+      end = null;
+    }
+  });
+
+  return Array.from(blocked).sort();
+}
+
 function loadStoredValues() {
   const mysql = readJSON(STORAGE_KEYS.mysql, null);
   if (mysql) {
@@ -133,6 +193,13 @@ function loadStoredValues() {
   thumbImagesInput.value = thumbImages.join("\n");
   renderPreview(heroPreview, heroImages);
   renderPreview(thumbPreview, thumbImages);
+
+  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
+  if (airbnbForm && airbnb) {
+    airbnbForm.listing.value = airbnb.listing || "";
+    airbnbForm.ical.value = airbnb.ical || "";
+    updateAirbnbStatus("Integração do Airbnb carregada.");
+  }
 
   renderBlockedDates();
 }
@@ -183,6 +250,50 @@ saveThumbImagesBtn.addEventListener("click", () => {
   const urls = parseLines(thumbImagesInput.value);
   writeJSON(STORAGE_KEYS.thumbImages, urls);
   renderPreview(thumbPreview, urls);
+});
+
+airbnbForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const listing = airbnbForm.listing.value.trim();
+  const ical = airbnbForm.ical.value.trim();
+
+  writeJSON(STORAGE_KEYS.airbnb, { listing, ical });
+  updateAirbnbStatus("Integração do Airbnb salva localmente.");
+});
+
+openAirbnbListingBtn.addEventListener("click", () => {
+  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
+  if (!airbnb || !airbnb.listing) {
+    updateAirbnbStatus("Informe o link do anúncio para abrir o Airbnb.");
+    return;
+  }
+  window.open(airbnb.listing, "_blank", "noopener");
+});
+
+importAirbnbDatesBtn.addEventListener("click", async () => {
+  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
+  if (!airbnb || !airbnb.ical) {
+    updateAirbnbStatus("Informe o link iCal do Airbnb para importar bloqueios.");
+    return;
+  }
+
+  updateAirbnbStatus("Buscando calendário do Airbnb...");
+  try {
+    const response = await fetch(airbnb.ical);
+    if (!response.ok) {
+      throw new Error("Falha ao baixar iCal.");
+    }
+    const text = await response.text();
+    const importedDates = parseIcalBlockedDates(text);
+    const currentDates = readJSON(STORAGE_KEYS.blockedDates, []);
+    const merged = Array.from(new Set([...currentDates, ...importedDates])).sort();
+    writeJSON(STORAGE_KEYS.blockedDates, merged);
+    renderBlockedDates();
+    updateAirbnbStatus(`Importado ${importedDates.length} bloqueios do Airbnb.`);
+  } catch (error) {
+    console.warn("Falha ao importar Airbnb", error);
+    updateAirbnbStatus("Não foi possível importar o calendário (verifique CORS e o link iCal).");
+  }
 });
 
 loadStoredValues();

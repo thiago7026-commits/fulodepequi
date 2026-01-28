@@ -74,6 +74,33 @@
 
   <section class="admin-card">
     <div class="card-header">
+      <h2>Integração Airbnb (iCal)</h2>
+      <p>Salve o link do anúncio e o link iCal do Airbnb para manter bloqueios sincronizados.</p>
+    </div>
+
+    <form id="airbnbForm" class="admin-grid" autocomplete="off">
+      <label class="field">
+        <span>Link do anúncio</span>
+        <input type="url" name="listing" placeholder="https://www.airbnb.com.br/rooms/..." inputmode="url">
+      </label>
+      <label class="field">
+        <span>Link iCal do Airbnb</span>
+        <input type="url" name="ical" placeholder="https://www.airbnb.com/calendar/ical/..." inputmode="url">
+      </label>
+      <button class="btn-primary" type="submit">Salvar integração</button>
+    </form>
+
+    <div class="admin-inline">
+      <button class="btn-secondary" type="button" id="openAirbnbListing">Abrir anúncio</button>
+      <button class="btn-ghost" type="button" id="importAirbnbDates">Importar bloqueios do Airbnb</button>
+    </div>
+    <div class="hint" id="airbnbStatus">
+      Dica: para sincronização bidirecional, exporte e importe o iCal no Airbnb e conecte um backend ao seu site.
+    </div>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
       <h2>Calendário de bloqueios</h2>
       <p>Selecione datas que devem ficar indisponíveis para reservas.</p>
     </div>
