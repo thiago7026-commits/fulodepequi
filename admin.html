@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Painel Admin | Fulô de Pequi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -38,30 +37,6 @@
 </section>
 
 <main class="admin-main">
-
-  <!-- ✅ Login/Admin Session -->
-  <section class="admin-card" id="authCard">
-    <div class="card-header">
-      <h2>Acesso do administrador</h2>
-      <p>Faça login para gerenciar bloqueios, diária e fotos.</p>
-    </div>
-
-    <form id="loginForm" class="admin-inline" autocomplete="off">
-      <label class="field">
-        <span>E-mail</span>
-        <input type="email" id="adminEmail" placeholder="fulodepequi@gmail.com" required>
-      </label>
-      <label class="field">
-        <span>Senha</span>
-        <input type="password" id="adminPassword" placeholder="••••••••" required>
-      </label>
-      <button class="btn-primary" type="submit">Entrar</button>
-      <button class="btn-ghost" type="button" id="logoutBtn" style="display:none;">Sair</button>
-    </form>
-
-    <div class="hint" id="authStatus"></div>
-  </section>
-
   <section class="admin-card">
     <div class="card-header">
       <h2>Calendário de reservas e bloqueios</h2>
@@ -149,17 +124,19 @@
 </main>
 
 <footer class="admin-footer">
-  <p>As configurações são salvas no Supabase (e com fallback local se necessário).</p>
+  <p>As configurações são salvas localmente neste navegador.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
-<!-- Supabase -->
+<!-- ✅ 1) Supabase JS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- ✅ 2) Seu client Supabase (crie este arquivo em /js/supabaseClient.js) -->
 <script src="js/supabaseClient.js"></script>
 
-<!-- App -->
+<!-- ✅ 3) Seu JS do admin -->
 <script src="js/admin.js"></script>
 </body>
 </html>
