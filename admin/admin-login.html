@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Admin | Fulô de Pequi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="login-page">
+  <header>
+    <nav class="topo">
+      <div class="logo">
+        <a href="../index.html" aria-label="Ir para a página inicial">
+          <img src="../assets/logo.png" alt="Fulô de Pequi">
+        </a>
+      </div>
+      <ul class="menu">
+        <li><a href="../index.html">INÍCIO</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="login-main">
+    <section class="login-card">
+      <div class="login-header">
+        <p>Acesso restrito</p>
+        <h1>Entrar no admin</h1>
+      </div>
+
+      <form id="loginForm" class="login-form" autocomplete="on">
+        <label class="field">
+          <span>Email</span>
+          <input type="email" id="adminEmail" placeholder="voce@dominio.com" required>
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input type="password" id="adminPassword" placeholder="********" required>
+        </label>
+
+        <button class="btn-primary" type="submit">Entrar</button>
+        <div class="login-status" id="authStatus" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="admin-footer">
+    <p>Somente usuários autorizados (role <strong>alfa</strong>) podem acessar.</p>
+  </footer>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabaseClient.js"></script>
+  <script src="admin-login.js"></script>
+</body>
+</html>
