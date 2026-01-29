@@ -1,9 +1,5 @@
 const STORAGE_KEYS = {
-  dailyRate: "adminDailyRate",
-  adminBlocks: "fp_bloqueios",
-  reservedDates: "fp_reservas",
-  legacyBlocks: ["adminManualBlocks", "adminBlockedDates"],
-  legacyReserved: ["adminReservedDates"],
+  // Mantive fotos local por enquanto (URL por linha)
   heroImages: "adminHeroImages",
   thumbImages: "adminThumbImages",
 };
@@ -27,12 +23,18 @@ const thumbPreview = document.getElementById("thumbPreview");
 const saveHeroImagesBtn = document.getElementById("saveHeroImages");
 const saveThumbImagesBtn = document.getElementById("saveThumbImages");
 
-let blockedDates = [];
-let reservedDates = [];
+// Supabase client (precisa estar em window por causa do supabaseClient.js)
+const sb = window.supabaseClient;
+
+let blockedDates = [];        // array de YYYY-MM-DD (dias bloqueados)
+let reservedDates = [];       // array de YYYY-MM-DD (dias reservados confirmados)
 let blockedDatesSet = new Set();
 let reservedDatesSet = new Set();
+
+let blockedDateToRowId = new Map(); // YYYY-MM-DD -> bloqueios.id (para remover fácil)
 let calendarInstance = null;
 
+// ---------------------- Utils ----------------------
 function readJSON(key, fallback) {
   const raw = localStorage.getItem(key);
   if (!raw) return fallback;
@@ -47,18 +49,6 @@ function readJSON(key, fallback) {
 function writeJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
-
-function addDays(baseDate, days) {
-  const date = new Date(baseDate);
-  date.setDate(date.getDate() + days);
-  return date;
-}
-
-const MOCK_RESERVED_RANGES = [
-  { start: addDays(new Date(), 4), end: addDays(new Date(), 7) },
-  { start: addDays(new Date(), 13), end: addDays(new Date(), 14) },
-  { start: addDays(new Date(), 23), end: addDays(new Date(), 26) },
-];
 
 function formatDateKey(date) {
   return date.toISOString().slice(0, 10);
@@ -115,8 +105,10 @@ function normalizeDate(date) {
 function expandRange(start, end) {
   const dates = [];
   if (!start) return dates;
+
   const normalizedStart = normalizeDate(start);
   const normalizedEnd = normalizeDate(end || start);
+
   const from = normalizedStart <= normalizedEnd ? normalizedStart : normalizedEnd;
   const to = normalizedStart <= normalizedEnd ? normalizedEnd : normalizedStart;
   const current = new Date(from);
@@ -127,35 +119,6 @@ function expandRange(start, end) {
   }
 
   return dates;
-}
-
-function normalizeDateEntries(entries) {
-  if (!Array.isArray(entries)) return [];
-
-  const dates = entries.flatMap((entry) => {
-    if (typeof entry === "string") {
-      const parsed = parseDateString(entry);
-      return parsed ? [formatDateKey(parsed)] : [];
-    }
-
-    if (entry && typeof entry === "object") {
-      const start = parseDateString(
-        entry.start || entry.inicio || entry.from || entry.checkin
-      );
-      const end = parseDateString(entry.end || entry.fim || entry.to || entry.checkout);
-
-      if (start) {
-        return expandRange(start, end);
-      }
-
-      const single = parseDateString(entry.date);
-      return single ? [formatDateKey(single)] : [];
-    }
-
-    return [];
-  });
-
-  return Array.from(new Set(dates)).sort();
 }
 
 function parseLines(value) {
@@ -208,43 +171,123 @@ function syncSets() {
   reservedDatesSet = new Set(reservedDates);
 }
 
-function getStoredDates(primaryKey, legacyKeys = [], fallback = []) {
-  const current = normalizeDateEntries(readJSON(primaryKey, []));
-  if (current.length) {
-    return current;
+// ---------------------- Supabase helpers ----------------------
+async function sbGetDiaria() {
+  const { data, error } = await sb
+    .from("config")
+    .select("diaria")
+    .eq("id", "main")
+    .single();
+  if (error) throw error;
+  return Number(data?.diaria || 0);
+}
+
+async function sbSetDiaria(valor) {
+  const { error } = await sb
+    .from("config")
+    .update({ diaria: valor, updated_at: new Date().toISOString() })
+    .eq("id", "main");
+  if (error) throw error;
+}
+
+async function sbListReservasConfirmadas() {
+  const { data, error } = await sb
+    .from("reservas")
+    .select("id,start_date,end_date,status")
+    .eq("status", "confirmada")
+    .order("start_date", { ascending: true });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbListBloqueios() {
+  const { data, error } = await sb
+    .from("bloqueios")
+    .select("id,start_date,end_date")
+    .order("start_date", { ascending: true });
+  if (error) throw error;
+  return data || [];
+}
+
+async function sbInsertBloqueioRange(startISO, endISO) {
+  const { data: u } = await sb.auth.getUser();
+  const created_by = u?.user?.id || null;
+
+  const { error } = await sb.from("bloqueios").insert([
+    {
+      start_date: startISO,
+      end_date: endISO,
+      motivo: "",
+      created_by,
+    },
+  ]);
+  if (error) throw error;
+}
+
+async function sbDeleteBloqueioById(id) {
+  const { error } = await sb.from("bloqueios").delete().eq("id", id);
+  if (error) throw error;
+}
+
+async function sbDeleteAllBloqueios() {
+  const { error } = await sb
+    .from("bloqueios")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000");
+  if (error) throw error;
+}
+
+// ---------------------- Data load (Supabase -> UI) ----------------------
+async function loadDailyRateFromSupabase() {
+  try {
+    const diaria = await sbGetDiaria();
+    dailyRateInput.value = diaria ? diaria.toFixed(2) : "";
+    updateRateStatus("Diária carregada do Supabase.");
+  } catch (e) {
+    console.error(e);
+    updateRateStatus("Não foi possível carregar a diária do Supabase.");
   }
+}
 
-  for (const legacyKey of legacyKeys) {
-    const legacy = normalizeDateEntries(readJSON(legacyKey, []));
-    if (legacy.length) {
-      writeJSON(primaryKey, legacy);
-      return legacy;
-    }
+function rangesToDaysAndMap(rows) {
+  const days = [];
+  const map = new Map(); // date -> rowId (prioriza o primeiro)
+  for (const r of rows) {
+    const start = parseDateString(r.start_date);
+    const end = parseDateString(r.end_date);
+    const expanded = expandRange(start, end);
+    expanded.forEach((d) => {
+      days.push(d);
+      if (!map.has(d)) map.set(d, r.id);
+    });
   }
-
-  return fallback;
+  return { days: Array.from(new Set(days)).sort(), map };
 }
 
-function getBlockedDates() {
-  return getStoredDates(STORAGE_KEYS.adminBlocks, STORAGE_KEYS.legacyBlocks, []);
-}
+async function refreshCalendarDataFromSupabase() {
+  // 1) Reservas confirmadas
+  const reservas = await sbListReservasConfirmadas();
+  const reservasDays = reservas.flatMap((r) => {
+    const s = parseDateString(r.start_date);
+    const e = parseDateString(r.end_date);
+    return expandRange(s, e);
+  });
 
-function buildMockReserved() {
-  return MOCK_RESERVED_RANGES.flatMap((range) => expandRange(range.start, range.end));
-}
+  reservedDates = Array.from(new Set(reservasDays)).sort();
 
-function getReservedDates() {
-  const fallback = buildMockReserved();
-  return getStoredDates(STORAGE_KEYS.reservedDates, STORAGE_KEYS.legacyReserved, fallback);
-}
+  // 2) Bloqueios do admin
+  const bloqueios = await sbListBloqueios();
+  const { days: bloqueiosDays, map } = rangesToDaysAndMap(bloqueios);
 
-function refreshCalendarData() {
-  blockedDates = getBlockedDates();
-  reservedDates = getReservedDates();
+  blockedDates = bloqueiosDays;
+  blockedDateToRowId = map;
+
+  // 3) Atualiza sets + listas
   syncSets();
   renderList(reservedDatesList, reservedDates, { removable: false });
   renderList(blockedDatesList, blockedDates, { removable: true });
 
+  // 4) Atualiza calendário
   if (calendarInstance) {
     calendarInstance.set("disable", reservedDates);
     calendarInstance.redraw();
@@ -252,38 +295,55 @@ function refreshCalendarData() {
   }
 }
 
-function removeBlockedDate(dateKey, { confirmRemoval = false } = {}) {
+// ---------------------- Actions ----------------------
+async function removeBlockedDate(dateKey, { confirmRemoval = false } = {}) {
   if (confirmRemoval && !confirm("Deseja remover este bloqueio?")) {
     return;
   }
 
-  blockedDates = blockedDates.filter((date) => date !== dateKey);
-  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
-  syncSets();
-  renderList(blockedDatesList, blockedDates, { removable: true });
-  if (calendarInstance) {
-    calendarInstance.redraw();
-    calendarInstance.clear();
-    updateSelectionSummary([]);
+  // Remove no Supabase (pela linha de bloqueio que contém esse dia)
+  const rowId = blockedDateToRowId.get(dateKey);
+  if (!rowId) {
+    // fallback: remove só local (não deveria acontecer)
+    blockedDates = blockedDates.filter((date) => date !== dateKey);
+    syncSets();
+    renderList(blockedDatesList, blockedDates, { removable: true });
+    if (calendarInstance) {
+      calendarInstance.redraw();
+      calendarInstance.clear();
+      updateSelectionSummary([]);
+    }
+    return;
+  }
+
+  try {
+    await sbDeleteBloqueioById(rowId);
+    await refreshCalendarDataFromSupabase();
+    if (calendarInstance) {
+      calendarInstance.clear();
+      updateSelectionSummary([]);
+    }
+  } catch (e) {
+    alert("Erro ao remover bloqueio: " + (e?.message || e));
   }
 }
 
-function addBlockedRange() {
+async function addBlockedRange() {
   if (!calendarInstance) return;
+
   const selected = calendarInstance.selectedDates;
   if (!selected.length) {
     setCalendarHint("Selecione uma data ou intervalo no calendário.");
     return;
   }
 
-  const start = selected[0];
-  const end = selected[1] || selected[0];
-  const normalizedStart = normalizeDate(start);
-  const normalizedEnd = normalizeDate(end);
+  const start = normalizeDate(selected[0]);
+  const end = normalizeDate(selected[1] || selected[0]);
 
+  // Validação: não bloquear dia reservado
   const daysToBlock = [];
-  const current = new Date(normalizedStart);
-  while (current <= normalizedEnd) {
+  const current = new Date(start);
+  while (current <= end) {
     const key = formatDateKey(current);
     if (reservedDatesSet.has(key)) {
       setCalendarHint("Não é possível bloquear uma data já reservada.");
@@ -294,34 +354,43 @@ function addBlockedRange() {
     current.setDate(current.getDate() + 1);
   }
 
-  const merged = Array.from(new Set([...blockedDates, ...daysToBlock])).sort();
-  blockedDates = merged;
-  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
-  syncSets();
-  renderList(blockedDatesList, blockedDates, { removable: true });
-  if (calendarInstance) {
-    calendarInstance.clear();
-    calendarInstance.redraw();
-    updateSelectionSummary([]);
+  // Salva como range no Supabase (1 linha start/end)
+  const startISO = daysToBlock[0];
+  const endISO = daysToBlock[daysToBlock.length - 1];
+
+  try {
+    await sbInsertBloqueioRange(startISO, endISO);
+    await refreshCalendarDataFromSupabase();
+    if (calendarInstance) {
+      calendarInstance.clear();
+      calendarInstance.redraw();
+      updateSelectionSummary([]);
+    }
+    setCalendarHint("");
+  } catch (e) {
+    alert("Erro ao adicionar bloqueio: " + (e?.message || e));
   }
-  setCalendarHint("");
 }
 
-function clearBlockedDates() {
+async function clearBlockedDates() {
   if (!confirm("Remover todos os bloqueios do admin?")) {
     return;
   }
-  blockedDates = [];
-  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
-  syncSets();
-  renderList(blockedDatesList, blockedDates, { removable: true });
-  if (calendarInstance) {
-    calendarInstance.clear();
-    calendarInstance.redraw();
-    updateSelectionSummary([]);
+
+  try {
+    await sbDeleteAllBloqueios();
+    await refreshCalendarDataFromSupabase();
+    if (calendarInstance) {
+      calendarInstance.clear();
+      calendarInstance.redraw();
+      updateSelectionSummary([]);
+    }
+  } catch (e) {
+    alert("Erro ao remover bloqueios: " + (e?.message || e));
   }
 }
 
+// ---------------------- Calendar UI ----------------------
 function updateSelectionSummary(selectedDates) {
   if (!selectionRange) return;
   if (!selectedDates || !selectedDates.length) {
@@ -382,23 +451,17 @@ function initCalendar() {
   });
 }
 
-function loadStoredValues() {
-  const rate = localStorage.getItem(STORAGE_KEYS.dailyRate);
-  if (rate) {
-    dailyRateInput.value = rate;
-    updateRateStatus("Diária atual carregada.");
-  }
-
+// ---------------------- Fotos (mantém local por enquanto) ----------------------
+function loadImagesLocal() {
   const heroImages = readJSON(STORAGE_KEYS.heroImages, []);
   const thumbImages = readJSON(STORAGE_KEYS.thumbImages, []);
   heroImagesInput.value = heroImages.join("\n");
   thumbImagesInput.value = thumbImages.join("\n");
   renderPreview(heroPreview, heroImages);
   renderPreview(thumbPreview, thumbImages);
-
-  refreshCalendarData();
 }
 
+// ---------------------- Bind events ----------------------
 addBlockedRangeBtn.addEventListener("click", (event) => {
   event.preventDefault();
   addBlockedRange();
@@ -417,16 +480,24 @@ clearBlockedDatesBtn.addEventListener("click", (event) => {
   clearBlockedDates();
 });
 
-rateForm.addEventListener("submit", (event) => {
+rateForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const value = Number.parseFloat(dailyRateInput.value.replace(",", "."));
+
+  const raw = (dailyRateInput.value || "").toString().replace(",", ".");
+  const value = Number.parseFloat(raw);
+
   if (!Number.isFinite(value) || value <= 0) {
     updateRateStatus("Informe um valor válido para a diária.");
     return;
   }
 
-  localStorage.setItem(STORAGE_KEYS.dailyRate, value.toFixed(2));
-  updateRateStatus("Diária atualizada com sucesso.");
+  try {
+    await sbSetDiaria(Number(value.toFixed(2)));
+    updateRateStatus("Diária atualizada com sucesso (Supabase).");
+  } catch (e) {
+    updateRateStatus("Erro ao salvar diária no Supabase.");
+    alert("Erro ao salvar diária: " + (e?.message || e));
+  }
 });
 
 saveHeroImagesBtn.addEventListener("click", () => {
@@ -441,5 +512,15 @@ saveThumbImagesBtn.addEventListener("click", () => {
   renderPreview(thumbPreview, urls);
 });
 
-loadStoredValues();
-initCalendar();
+// ---------------------- Init ----------------------
+(async function initAdmin() {
+  // Fotos continuam como estão
+  loadImagesLocal();
+
+  // Calendário inicia vazio; depois carregamos do banco e redesenhamos
+  initCalendar();
+
+  // Carrega do banco
+  await loadDailyRateFromSupabase();
+  await refreshCalendarDataFromSupabase();
+})();
