@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin | Fulô de Pequi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="auth-checking">
+
+<header>
+  <nav class="topo">
+    <div class="logo">
+      <a href="../index.html" aria-label="Ir para a página inicial">
+        <img src="../assets/logo.png" alt="Fulô de Pequi">
+      </a>
+    </div>
+
+    <ul class="menu">
+      <li><a href="../index.html">INÍCIO</a></li>
+      <li><a href="index.html" class="ativo">ADMIN</a></li>
+    </ul>
+
+    <button class="btn-ghost admin-logout" id="adminLogoutBtn" type="button">Sair</button>
+  </nav>
+</header>
+
+<section class="admin-hero">
+  <div>
+    <p>Painel administrativo do chalé</p>
+    <h1>Configurações do Fulô de Pequi</h1>
+  </div>
+</section>
+
+<main class="admin-main">
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Calendário de reservas e bloqueios</h2>
+      <p>Acompanhe as reservas confirmadas (somente leitura) e gerencie os bloqueios manuais.</p>
+    </div>
+
+    <div class="calendar-layout">
+      <div class="calendar-controls">
+        <div class="calendar-selection">
+          <div class="selection-title">Seleção atual</div>
+          <div class="selection-range" id="selectionRange">Nenhuma data selecionada.</div>
+          <input type="text" id="adminBlockRange" class="calendar-input" aria-hidden="true" tabindex="-1">
+          <p class="selection-help">Clique na data inicial e final para criar um intervalo.</p>
+        </div>
+
+        <div class="admin-inline">
+          <button class="btn-secondary" id="addBlockedRange">Adicionar bloqueio</button>
+          <button class="btn-ghost" id="clearSelection">Limpar seleção</button>
+          <button class="btn-ghost" id="clearBlockedDates">Remover todos os bloqueios</button>
+        </div>
+
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch reserved"></span> Reservado</span>
+          <span class="legend-item"><span class="legend-swatch blocked"></span> Bloqueio do admin</span>
+        </div>
+
+        <div class="hint" id="calendarHint"></div>
+      </div>
+
+      <div class="calendar-panel">
+        <div id="adminCalendar" aria-label="Calendário de reservas e bloqueios"></div>
+      </div>
+    </div>
+
+    <div class="calendar-lists">
+      <div>
+        <h3>Reservas confirmadas</h3>
+        <ul class="blocked-list" id="reservedDatesList"></ul>
+      </div>
+      <div>
+        <h3>Bloqueios do admin</h3>
+        <ul class="blocked-list" id="blockedDatesList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Valor da diária</h2>
+      <p>Atualize o valor para aparecer automaticamente no cálculo de reservas.</p>
+    </div>
+
+    <form id="rateForm" class="admin-inline" autocomplete="off">
+      <label class="field">
+        <span>Valor (R$)</span>
+        <input type="number" step="0.01" min="0" id="dailyRateInput" placeholder="340,00">
+      </label>
+      <button class="btn-primary" type="submit">Salvar diária</button>
+    </form>
+    <div class="hint" id="rateStatus"></div>
+  </section>
+
+  <section class="admin-card">
+    <div class="card-header">
+      <h2>Fotos da página inicial</h2>
+      <p>Atualize as imagens do hero (10 fotos) e do carrossel circular (8 fotos). Use uma URL por linha.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div>
+        <h3>Hero principal</h3>
+        <textarea id="heroImagesInput" rows="8" placeholder="https://.../foto1.jpg"></textarea>
+        <button class="btn-primary" id="saveHeroImages">Salvar hero</button>
+        <div class="preview" id="heroPreview"></div>
+      </div>
+
+      <div>
+        <h3>Carrossel redondo</h3>
+        <textarea id="thumbImagesInput" rows="8" placeholder="https://.../foto1.jpg"></textarea>
+        <button class="btn-primary" id="saveThumbImages">Salvar carrossel</button>
+        <div class="preview" id="thumbPreview"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="admin-footer">
+  <p>As configurações são salvas localmente neste navegador.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+<!-- ✅ 1) Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- ✅ 2) Seu client Supabase (crie este arquivo em /js/supabaseClient.js) -->
+<script src="../js/supabaseClient.js"></script>
+
+<!-- ✅ 3) Guarda de autenticação do admin -->
+<script src="admin-guard.js"></script>
+
+<!-- ✅ 4) Seu JS do admin -->
+<script src="../js/admin.js"></script>
+</body>
+</html>

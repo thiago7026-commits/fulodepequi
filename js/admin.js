@@ -37,13 +37,6 @@ const thumbPreview = document.getElementById("thumbPreview");
 const saveHeroImagesBtn = document.getElementById("saveHeroImages");
 const saveThumbImagesBtn = document.getElementById("saveThumbImages");
 
-// Auth UI
-const loginForm = document.getElementById("loginForm");
-const adminEmail = document.getElementById("adminEmail");
-const adminPassword = document.getElementById("adminPassword");
-const authStatus = document.getElementById("authStatus");
-const logoutBtn = document.getElementById("logoutBtn");
-
 let blockedDates = [];
 let reservedDates = [];
 let blockedDatesSet = new Set();
@@ -65,10 +58,6 @@ function writeJSON(key, value) {
 
 function setHint(msg) {
   if (calendarHint) calendarHint.textContent = msg || "";
-}
-
-function setAuthStatus(msg) {
-  if (authStatus) authStatus.textContent = msg || "";
 }
 
 function setRateStatus(msg) {
@@ -215,21 +204,10 @@ async function getSession() {
 async function requireAdminSession() {
   const session = await getSession();
   if (!session) {
-    setHint("Faça login para gerenciar bloqueios e configurações.");
+    window.location.href = "admin-login.html?reason=session";
     return null;
   }
   return session;
-}
-
-async function refreshAuthUI() {
-  const session = await getSession();
-  if (session) {
-    logoutBtn.style.display = "inline-flex";
-    setAuthStatus(`Logado como: ${session.user.email}`);
-  } else {
-    logoutBtn.style.display = "none";
-    setAuthStatus("Você não está logado.");
-  }
 }
 
 /* =========================
@@ -700,46 +678,14 @@ saveThumbImagesBtn.addEventListener("click", async (event) => {
   }
 });
 
-// Auth
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  setAuthStatus("Entrando...");
-
-  const email = adminEmail.value.trim();
-  const password = adminPassword.value;
-
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) {
-    console.error(error);
-    setAuthStatus(`Erro no login: ${error.message}`);
-    return;
-  }
-
-  setAuthStatus("Login feito com sucesso.");
-  logoutBtn.style.display = "inline-flex";
-  await refreshAuthUI();
-
-  // Recarrega dados após login
-  await refreshCalendarData();
-});
-
-logoutBtn.addEventListener("click", async () => {
-  await sb.auth.signOut();
-  await refreshAuthUI();
-  setHint("Você saiu. Para editar bloqueios, faça login novamente.");
-});
-
-// Auto refresh UI quando sessão muda
-sb.auth.onAuthStateChange(async () => {
-  await refreshAuthUI();
-});
-
 /* =========================
    Boot
    ========================= */
 
 (async function boot() {
-  await refreshAuthUI();
+  if (window.adminAccessReady) {
+    await window.adminAccessReady;
+  }
   initCalendar();
   await loadStoredValues();
 })();

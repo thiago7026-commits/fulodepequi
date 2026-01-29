@@ -1,9 +1,7 @@
 // js/supabaseClient.js
-const SUPABASE_URL = "sb_publishable_xdd1tjsLj54U7n9r6yAVIg_6LN-Uu_m";
-const SUPABASE_ANON_KEY =
-  "sb_secret_VThbfigv8JszRJsmAFFPdg_oM4F5V_V";
+// ✅ Substitua pelos valores do seu projeto Supabase (somente URL + ANON KEY).
+// ⚠️ Nunca coloque SERVICE ROLE ou chaves secretas no front-end.
+const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
+const SUPABASE_ANON_KEY = "SUA_SUPABASE_ANON_KEY_PUBLICA";
 
-window.supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
