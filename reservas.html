@@ -737,11 +737,19 @@ function readDateArray(key){
   }
 }
 
-const storedReservedDates = readDateArray("adminReservedDates");
-const storedAdminBlocks = readDateArray("adminManualBlocks");
+const storedReservedDates = readDateArray("fp_reservas");
+const storedReservedLegacy = readDateArray("adminReservedDates");
+const storedAdminBlocks = readDateArray("fp_bloqueios");
+const storedAdminBlocksLegacy = readDateArray("adminManualBlocks");
 const storedLegacyBlocks = readDateArray("adminBlockedDates");
 const storedBlockedDates = Array.from(
-  new Set([...storedReservedDates, ...storedAdminBlocks, ...storedLegacyBlocks])
+  new Set([
+    ...storedReservedDates,
+    ...storedReservedLegacy,
+    ...storedAdminBlocks,
+    ...storedAdminBlocksLegacy,
+    ...storedLegacyBlocks,
+  ])
 );
 
 const inputNome = document.getElementById("nome");

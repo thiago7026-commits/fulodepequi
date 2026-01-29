@@ -1,8 +1,9 @@
 const STORAGE_KEYS = {
   dailyRate: "adminDailyRate",
-  adminBlocks: "adminManualBlocks",
-  reservedDates: "adminReservedDates",
-  legacyBlocks: "adminBlockedDates",
+  adminBlocks: "fp_bloqueios",
+  reservedDates: "fp_reservas",
+  legacyBlocks: ["adminManualBlocks", "adminBlockedDates"],
+  legacyReserved: ["adminReservedDates"],
   heroImages: "adminHeroImages",
   thumbImages: "adminThumbImages",
 };
@@ -15,6 +16,7 @@ const clearSelectionBtn = document.getElementById("clearSelection");
 const calendarInput = document.getElementById("adminBlockRange");
 const calendarContainer = document.getElementById("adminCalendar");
 const calendarHint = document.getElementById("calendarHint");
+const selectionRange = document.getElementById("selectionRange");
 const rateForm = document.getElementById("rateForm");
 const dailyRateInput = document.getElementById("dailyRateInput");
 const rateStatus = document.getElementById("rateStatus");
@@ -46,11 +48,17 @@ function writeJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function readDateArray(key) {
-  const parsed = readJSON(key, []);
-  if (!Array.isArray(parsed)) return [];
-  return parsed.filter(Boolean);
+function addDays(baseDate, days) {
+  const date = new Date(baseDate);
+  date.setDate(date.getDate() + days);
+  return date;
 }
+
+const MOCK_RESERVED_RANGES = [
+  { start: addDays(new Date(), 4), end: addDays(new Date(), 7) },
+  { start: addDays(new Date(), 13), end: addDays(new Date(), 14) },
+  { start: addDays(new Date(), 23), end: addDays(new Date(), 26) },
+];
 
 function formatDateKey(date) {
   return date.toISOString().slice(0, 10);
@@ -70,6 +78,84 @@ function setCalendarHint(message) {
   if (calendarHint) {
     calendarHint.textContent = message;
   }
+}
+
+function parseDateString(value) {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  if (typeof value !== "string") return null;
+
+  const cleaned = value.trim();
+  if (!cleaned) return null;
+
+  if (cleaned.includes("/")) {
+    const parts = cleaned.split("/");
+    if (parts.length !== 3) return null;
+    const [p1, p2, p3] = parts;
+    if (p1.length === 4) {
+      return new Date(Number(p1), Number(p2) - 1, Number(p3));
+    }
+    return new Date(Number(p3), Number(p2) - 1, Number(p1));
+  }
+
+  if (cleaned.includes("-")) {
+    const parts = cleaned.split("-");
+    if (parts.length !== 3) return null;
+    const [year, month, day] = parts;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
+  return null;
+}
+
+function normalizeDate(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function expandRange(start, end) {
+  const dates = [];
+  if (!start) return dates;
+  const normalizedStart = normalizeDate(start);
+  const normalizedEnd = normalizeDate(end || start);
+  const from = normalizedStart <= normalizedEnd ? normalizedStart : normalizedEnd;
+  const to = normalizedStart <= normalizedEnd ? normalizedEnd : normalizedStart;
+  const current = new Date(from);
+
+  while (current <= to) {
+    dates.push(formatDateKey(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return dates;
+}
+
+function normalizeDateEntries(entries) {
+  if (!Array.isArray(entries)) return [];
+
+  const dates = entries.flatMap((entry) => {
+    if (typeof entry === "string") {
+      const parsed = parseDateString(entry);
+      return parsed ? [formatDateKey(parsed)] : [];
+    }
+
+    if (entry && typeof entry === "object") {
+      const start = parseDateString(
+        entry.start || entry.inicio || entry.from || entry.checkin
+      );
+      const end = parseDateString(entry.end || entry.fim || entry.to || entry.checkout);
+
+      if (start) {
+        return expandRange(start, end);
+      }
+
+      const single = parseDateString(entry.date);
+      return single ? [formatDateKey(single)] : [];
+    }
+
+    return [];
+  });
+
+  return Array.from(new Set(dates)).sort();
 }
 
 function parseLines(value) {
@@ -107,7 +193,9 @@ function renderList(listEl, dates, { removable }) {
       button.type = "button";
       button.textContent = "x";
       button.setAttribute("aria-label", `Remover ${formatDateBr(date)}`);
-      button.addEventListener("click", () => removeBlockedDate(date));
+      button.addEventListener("click", () =>
+        removeBlockedDate(date, { confirmRemoval: true })
+      );
       item.appendChild(button);
     }
 
@@ -120,22 +208,39 @@ function syncSets() {
   reservedDatesSet = new Set(reservedDates);
 }
 
-function getBlockedDates() {
-  const current = readDateArray(STORAGE_KEYS.adminBlocks);
+function getStoredDates(primaryKey, legacyKeys = [], fallback = []) {
+  const current = normalizeDateEntries(readJSON(primaryKey, []));
   if (current.length) {
     return current;
   }
 
-  const legacy = readDateArray(STORAGE_KEYS.legacyBlocks);
-  if (legacy.length) {
-    writeJSON(STORAGE_KEYS.adminBlocks, legacy);
+  for (const legacyKey of legacyKeys) {
+    const legacy = normalizeDateEntries(readJSON(legacyKey, []));
+    if (legacy.length) {
+      writeJSON(primaryKey, legacy);
+      return legacy;
+    }
   }
-  return legacy;
+
+  return fallback;
+}
+
+function getBlockedDates() {
+  return getStoredDates(STORAGE_KEYS.adminBlocks, STORAGE_KEYS.legacyBlocks, []);
+}
+
+function buildMockReserved() {
+  return MOCK_RESERVED_RANGES.flatMap((range) => expandRange(range.start, range.end));
+}
+
+function getReservedDates() {
+  const fallback = buildMockReserved();
+  return getStoredDates(STORAGE_KEYS.reservedDates, STORAGE_KEYS.legacyReserved, fallback);
 }
 
 function refreshCalendarData() {
   blockedDates = getBlockedDates();
-  reservedDates = readDateArray(STORAGE_KEYS.reservedDates);
+  reservedDates = getReservedDates();
   syncSets();
   renderList(reservedDatesList, reservedDates, { removable: false });
   renderList(blockedDatesList, blockedDates, { removable: true });
@@ -143,10 +248,15 @@ function refreshCalendarData() {
   if (calendarInstance) {
     calendarInstance.set("disable", reservedDates);
     calendarInstance.redraw();
+    updateSelectionSummary(calendarInstance.selectedDates);
   }
 }
 
-function removeBlockedDate(dateKey) {
+function removeBlockedDate(dateKey, { confirmRemoval = false } = {}) {
+  if (confirmRemoval && !confirm("Deseja remover este bloqueio?")) {
+    return;
+  }
+
   blockedDates = blockedDates.filter((date) => date !== dateKey);
   writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
   syncSets();
@@ -154,6 +264,7 @@ function removeBlockedDate(dateKey) {
   if (calendarInstance) {
     calendarInstance.redraw();
     calendarInstance.clear();
+    updateSelectionSummary([]);
   }
 }
 
@@ -167,14 +278,15 @@ function addBlockedRange() {
 
   const start = selected[0];
   const end = selected[1] || selected[0];
-  const normalizedStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const normalizedEnd = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+  const normalizedStart = normalizeDate(start);
+  const normalizedEnd = normalizeDate(end);
 
   const daysToBlock = [];
   const current = new Date(normalizedStart);
   while (current <= normalizedEnd) {
     const key = formatDateKey(current);
     if (reservedDatesSet.has(key)) {
+      setCalendarHint("Não é possível bloquear uma data já reservada.");
       alert("Não é possível bloquear uma data já reservada.");
       return;
     }
@@ -190,11 +302,15 @@ function addBlockedRange() {
   if (calendarInstance) {
     calendarInstance.clear();
     calendarInstance.redraw();
+    updateSelectionSummary([]);
   }
   setCalendarHint("");
 }
 
 function clearBlockedDates() {
+  if (!confirm("Remover todos os bloqueios do admin?")) {
+    return;
+  }
   blockedDates = [];
   writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
   syncSets();
@@ -202,7 +318,25 @@ function clearBlockedDates() {
   if (calendarInstance) {
     calendarInstance.clear();
     calendarInstance.redraw();
+    updateSelectionSummary([]);
   }
+}
+
+function updateSelectionSummary(selectedDates) {
+  if (!selectionRange) return;
+  if (!selectedDates || !selectedDates.length) {
+    selectionRange.textContent = "Nenhuma data selecionada.";
+    return;
+  }
+
+  if (selectedDates.length === 1) {
+    selectionRange.textContent = formatDateBr(formatDateKey(selectedDates[0]));
+    return;
+  }
+
+  const start = formatDateBr(formatDateKey(selectedDates[0]));
+  const end = formatDateBr(formatDateKey(selectedDates[1]));
+  selectionRange.textContent = `${start} → ${end}`;
 }
 
 function initCalendar() {
@@ -216,6 +350,15 @@ function initCalendar() {
     inline: true,
     appendTo: calendarContainer,
     disable: reservedDates,
+    onReady: function (selectedDates) {
+      updateSelectionSummary(selectedDates);
+    },
+    onChange: function (selectedDates) {
+      updateSelectionSummary(selectedDates);
+      if (!selectedDates.length) {
+        setCalendarHint("");
+      }
+    },
     onDayCreate: function (_dObj, _dStr, _fp, dayElem) {
       const key = formatDateKey(dayElem.dateObj);
       if (reservedDatesSet.has(key)) {
@@ -234,7 +377,7 @@ function initCalendar() {
     const key = formatDateKey(day.dateObj);
     if (blockedDatesSet.has(key)) {
       event.preventDefault();
-      removeBlockedDate(key);
+      removeBlockedDate(key, { confirmRemoval: true });
     }
   });
 }
@@ -265,6 +408,7 @@ clearSelectionBtn.addEventListener("click", (event) => {
   event.preventDefault();
   if (calendarInstance) {
     calendarInstance.clear();
+    updateSelectionSummary([]);
   }
 });
 

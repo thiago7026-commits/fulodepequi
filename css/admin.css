@@ -16,10 +16,15 @@ body{
 }
 
 .topo .logo img{
-  height:60px;
+  height:52px;
   width:auto;
   object-fit:contain;
   display:block;
+}
+
+.topo .logo a{
+  display:flex;
+  align-items:center;
 }
 
 .admin-hero{
@@ -155,6 +160,38 @@ textarea{
   align-items:start;
 }
 
+.calendar-selection{
+  display:grid;
+  gap:6px;
+  margin-bottom:16px;
+}
+
+.selection-title{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--muted);
+}
+
+.selection-range{
+  font-size:16px;
+  color:var(--verde);
+  font-weight:600;
+}
+
+.selection-help{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.calendar-input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+  height:0;
+  width:0;
+}
+
 .calendar-panel{
   background:#fff;
   border-radius:16px;
@@ -165,6 +202,46 @@ textarea{
 .calendar-panel .flatpickr-calendar{
   box-shadow:none;
   border:none;
+  width:100%;
+}
+
+.calendar-panel .flatpickr-innerContainer,
+.calendar-panel .flatpickr-rContainer,
+.calendar-panel .flatpickr-days{
+  width:100%;
+}
+
+.calendar-panel .flatpickr-months{
+  padding:6px 4px 10px;
+}
+
+.calendar-panel .flatpickr-month{
+  color:var(--verde);
+}
+
+.calendar-panel .flatpickr-weekdays{
+  background:rgba(47,59,42,0.05);
+  border-radius:10px;
+  margin-bottom:8px;
+}
+
+.calendar-panel span.flatpickr-weekday{
+  color:var(--verde);
+  font-weight:600;
+  font-size:12px;
+}
+
+.calendar-panel .flatpickr-day{
+  height:44px;
+  line-height:44px;
+  max-width:44px;
+  border-radius:12px;
+  font-size:13px;
+  color:var(--texto);
+}
+
+.calendar-panel .flatpickr-day:hover{
+  border-color:rgba(47,59,42,0.35);
 }
 
 .legend{

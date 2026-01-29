@@ -45,10 +45,12 @@
 
     <div class="calendar-layout">
       <div class="calendar-controls">
-        <label class="field">
-          <span>Período do bloqueio</span>
-          <input type="text" id="adminBlockRange" placeholder="Selecione as datas">
-        </label>
+        <div class="calendar-selection">
+          <div class="selection-title">Seleção atual</div>
+          <div class="selection-range" id="selectionRange">Nenhuma data selecionada.</div>
+          <input type="text" id="adminBlockRange" class="calendar-input" aria-hidden="true" tabindex="-1">
+          <p class="selection-help">Clique na data inicial e final para criar um intervalo.</p>
+        </div>
 
         <div class="admin-inline">
           <button class="btn-secondary" id="addBlockedRange">Adicionar bloqueio</button>
