@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -23,9 +24,6 @@
 
     <ul class="menu">
       <li><a href="index.html">INÍCIO</a></li>
-      <li><a href="reservas.html">ACOMODAÇÕES</a></li>
-      <li><a href="servicos.html">SERVIÇOS</a></li>
-      <li><a href="politica.html">POLÍTICA</a></li>
       <li><a href="admin.html" class="ativo">ADMIN</a></li>
     </ul>
   </nav>
@@ -41,80 +39,46 @@
 <main class="admin-main">
   <section class="admin-card">
     <div class="card-header">
-      <h2>Banco de dados MySQL</h2>
-      <p>Preencha os dados de conexão para integrar o backend ao MySQL.</p>
+      <h2>Calendário de reservas e bloqueios</h2>
+      <p>Acompanhe as reservas confirmadas (somente leitura) e gerencie os bloqueios manuais.</p>
     </div>
 
-    <form id="mysqlForm" class="admin-grid" autocomplete="off">
-      <label class="field">
-        <span>Host</span>
-        <input type="text" name="host" placeholder="ex: localhost" required>
-      </label>
-      <label class="field">
-        <span>Porta</span>
-        <input type="number" name="port" placeholder="3306" min="1" max="65535" required>
-      </label>
-      <label class="field">
-        <span>Banco</span>
-        <input type="text" name="database" placeholder="fulodepequi" required>
-      </label>
-      <label class="field">
-        <span>Usuário</span>
-        <input type="text" name="user" placeholder="root" required>
-      </label>
-      <label class="field">
-        <span>Senha</span>
-        <input type="password" name="password" placeholder="••••••••" required>
-      </label>
-      <button class="btn-primary" type="submit">Salvar configuração</button>
-    </form>
+    <div class="calendar-layout">
+      <div class="calendar-controls">
+        <label class="field">
+          <span>Período do bloqueio</span>
+          <input type="text" id="adminBlockRange" placeholder="Selecione as datas">
+        </label>
 
-    <div class="hint" id="mysqlStatus"></div>
-  </section>
+        <div class="admin-inline">
+          <button class="btn-secondary" id="addBlockedRange">Adicionar bloqueio</button>
+          <button class="btn-ghost" id="clearSelection">Limpar seleção</button>
+          <button class="btn-ghost" id="clearBlockedDates">Remover todos os bloqueios</button>
+        </div>
 
-  <section class="admin-card">
-    <div class="card-header">
-      <h2>Integração Airbnb (iCal)</h2>
-      <p>Salve o link do anúncio e o link iCal do Airbnb para manter bloqueios sincronizados.</p>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch reserved"></span> Reservado</span>
+          <span class="legend-item"><span class="legend-swatch blocked"></span> Bloqueio do admin</span>
+        </div>
+
+        <div class="hint" id="calendarHint"></div>
+      </div>
+
+      <div class="calendar-panel">
+        <div id="adminCalendar" aria-label="Calendário de reservas e bloqueios"></div>
+      </div>
     </div>
 
-    <form id="airbnbForm" class="admin-grid" autocomplete="off">
-      <label class="field">
-        <span>Link do anúncio</span>
-        <input type="url" name="listing" placeholder="https://www.airbnb.com.br/rooms/..." inputmode="url">
-      </label>
-      <label class="field">
-        <span>Link iCal do Airbnb</span>
-        <input type="url" name="ical" placeholder="https://www.airbnb.com/calendar/ical/..." inputmode="url">
-      </label>
-      <button class="btn-primary" type="submit">Salvar integração</button>
-    </form>
-
-    <div class="admin-inline">
-      <button class="btn-secondary" type="button" id="openAirbnbListing">Abrir anúncio</button>
-      <button class="btn-ghost" type="button" id="importAirbnbDates">Importar bloqueios do Airbnb</button>
+    <div class="calendar-lists">
+      <div>
+        <h3>Reservas confirmadas</h3>
+        <ul class="blocked-list" id="reservedDatesList"></ul>
+      </div>
+      <div>
+        <h3>Bloqueios do admin</h3>
+        <ul class="blocked-list" id="blockedDatesList"></ul>
+      </div>
     </div>
-    <div class="hint" id="airbnbStatus">
-      Dica: para sincronização bidirecional, exporte e importe o iCal no Airbnb e conecte um backend ao seu site.
-    </div>
-  </section>
-
-  <section class="admin-card">
-    <div class="card-header">
-      <h2>Calendário de bloqueios</h2>
-      <p>Selecione datas que devem ficar indisponíveis para reservas.</p>
-    </div>
-
-    <div class="admin-inline">
-      <label class="field">
-        <span>Data bloqueada</span>
-        <input type="date" id="blockedDateInput">
-      </label>
-      <button class="btn-secondary" id="addBlockedDate">Adicionar data</button>
-      <button class="btn-ghost" id="clearBlockedDates">Limpar tudo</button>
-    </div>
-
-    <ul class="blocked-list" id="blockedDatesList"></ul>
   </section>
 
   <section class="admin-card">
@@ -158,9 +122,11 @@
 </main>
 
 <footer class="admin-footer">
-  <p>As configurações são salvas localmente neste navegador. Para sincronizar com o site público, conecte o backend ao MySQL.</p>
+  <p>As configurações são salvas localmente neste navegador.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

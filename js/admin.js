@@ -1,18 +1,20 @@
 const STORAGE_KEYS = {
-  mysql: "adminMysqlConfig",
   dailyRate: "adminDailyRate",
-  blockedDates: "adminBlockedDates",
+  adminBlocks: "adminManualBlocks",
+  reservedDates: "adminReservedDates",
+  legacyBlocks: "adminBlockedDates",
   heroImages: "adminHeroImages",
   thumbImages: "adminThumbImages",
-  airbnb: "adminAirbnbIntegration",
 };
 
-const mysqlForm = document.getElementById("mysqlForm");
-const mysqlStatus = document.getElementById("mysqlStatus");
-const blockedDateInput = document.getElementById("blockedDateInput");
-const addBlockedDateBtn = document.getElementById("addBlockedDate");
-const clearBlockedDatesBtn = document.getElementById("clearBlockedDates");
 const blockedDatesList = document.getElementById("blockedDatesList");
+const reservedDatesList = document.getElementById("reservedDatesList");
+const addBlockedRangeBtn = document.getElementById("addBlockedRange");
+const clearBlockedDatesBtn = document.getElementById("clearBlockedDates");
+const clearSelectionBtn = document.getElementById("clearSelection");
+const calendarInput = document.getElementById("adminBlockRange");
+const calendarContainer = document.getElementById("adminCalendar");
+const calendarHint = document.getElementById("calendarHint");
 const rateForm = document.getElementById("rateForm");
 const dailyRateInput = document.getElementById("dailyRateInput");
 const rateStatus = document.getElementById("rateStatus");
@@ -22,10 +24,12 @@ const heroPreview = document.getElementById("heroPreview");
 const thumbPreview = document.getElementById("thumbPreview");
 const saveHeroImagesBtn = document.getElementById("saveHeroImages");
 const saveThumbImagesBtn = document.getElementById("saveThumbImages");
-const airbnbForm = document.getElementById("airbnbForm");
-const airbnbStatus = document.getElementById("airbnbStatus");
-const openAirbnbListingBtn = document.getElementById("openAirbnbListing");
-const importAirbnbDatesBtn = document.getElementById("importAirbnbDates");
+
+let blockedDates = [];
+let reservedDates = [];
+let blockedDatesSet = new Set();
+let reservedDatesSet = new Set();
+let calendarInstance = null;
 
 function readJSON(key, fallback) {
   const raw = localStorage.getItem(key);
@@ -42,64 +46,30 @@ function writeJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function updateMysqlStatus(message) {
-  mysqlStatus.textContent = message;
+function readDateArray(key) {
+  const parsed = readJSON(key, []);
+  if (!Array.isArray(parsed)) return [];
+  return parsed.filter(Boolean);
+}
+
+function formatDateKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function formatDateBr(value) {
+  if (!value || value.length !== 10) return value;
+  const [year, month, day] = value.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 function updateRateStatus(message) {
   rateStatus.textContent = message;
 }
 
-function updateAirbnbStatus(message) {
-  airbnbStatus.textContent = message;
-}
-
-function renderBlockedDates() {
-  const blockedDates = readJSON(STORAGE_KEYS.blockedDates, []);
-  blockedDatesList.innerHTML = "";
-
-  if (!blockedDates.length) {
-    blockedDatesList.innerHTML = "<li class=\"hint\">Nenhuma data bloqueada.</li>";
-    return;
+function setCalendarHint(message) {
+  if (calendarHint) {
+    calendarHint.textContent = message;
   }
-
-  blockedDates.forEach((date) => {
-    const item = document.createElement("li");
-    item.className = "blocked-item";
-    item.innerHTML = `
-      <span>${date}</span>
-      <button type="button" aria-label="Remover ${date}">x</button>
-    `;
-
-    const button = item.querySelector("button");
-    button.addEventListener("click", () => {
-      const next = blockedDates.filter((d) => d !== date);
-      writeJSON(STORAGE_KEYS.blockedDates, next);
-      renderBlockedDates();
-    });
-
-    blockedDatesList.appendChild(item);
-  });
-}
-
-function saveBlockedDate() {
-  const value = blockedDateInput.value;
-  if (!value) return;
-
-  const blockedDates = readJSON(STORAGE_KEYS.blockedDates, []);
-  if (!blockedDates.includes(value)) {
-    blockedDates.push(value);
-    blockedDates.sort();
-    writeJSON(STORAGE_KEYS.blockedDates, blockedDates);
-  }
-
-  blockedDateInput.value = "";
-  renderBlockedDates();
-}
-
-function clearBlockedDates() {
-  writeJSON(STORAGE_KEYS.blockedDates, []);
-  renderBlockedDates();
 }
 
 function parseLines(value) {
@@ -119,68 +89,157 @@ function renderPreview(container, urls) {
   });
 }
 
-function parseIcalDate(value) {
-  if (!value) return null;
-  const clean = value.split("T")[0];
-  if (clean.length !== 8) return null;
-  const year = Number.parseInt(clean.slice(0, 4), 10);
-  const month = Number.parseInt(clean.slice(4, 6), 10) - 1;
-  const day = Number.parseInt(clean.slice(6, 8), 10);
-  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) {
-    return null;
+function renderList(listEl, dates, { removable }) {
+  listEl.innerHTML = "";
+
+  if (!dates.length) {
+    listEl.innerHTML = '<li class="hint">Nenhuma data cadastrada.</li>';
+    return;
   }
-  return new Date(Date.UTC(year, month, day));
+
+  dates.forEach((date) => {
+    const item = document.createElement("li");
+    item.className = "blocked-item";
+    item.innerHTML = `<span>${formatDateBr(date)}</span>`;
+
+    if (removable) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = "x";
+      button.setAttribute("aria-label", `Remover ${formatDateBr(date)}`);
+      button.addEventListener("click", () => removeBlockedDate(date));
+      item.appendChild(button);
+    }
+
+    listEl.appendChild(item);
+  });
 }
 
-function formatDateKey(date) {
-  return date.toISOString().slice(0, 10);
+function syncSets() {
+  blockedDatesSet = new Set(blockedDates);
+  reservedDatesSet = new Set(reservedDates);
 }
 
-function parseIcalBlockedDates(icalText) {
-  const lines = icalText.split(/\r?\n/);
-  const blocked = new Set();
-  let start = null;
-  let end = null;
+function getBlockedDates() {
+  const current = readDateArray(STORAGE_KEYS.adminBlocks);
+  if (current.length) {
+    return current;
+  }
 
-  lines.forEach((line) => {
-    if (line.startsWith("DTSTART")) {
-      start = parseIcalDate(line.split(":")[1]);
+  const legacy = readDateArray(STORAGE_KEYS.legacyBlocks);
+  if (legacy.length) {
+    writeJSON(STORAGE_KEYS.adminBlocks, legacy);
+  }
+  return legacy;
+}
+
+function refreshCalendarData() {
+  blockedDates = getBlockedDates();
+  reservedDates = readDateArray(STORAGE_KEYS.reservedDates);
+  syncSets();
+  renderList(reservedDatesList, reservedDates, { removable: false });
+  renderList(blockedDatesList, blockedDates, { removable: true });
+
+  if (calendarInstance) {
+    calendarInstance.set("disable", reservedDates);
+    calendarInstance.redraw();
+  }
+}
+
+function removeBlockedDate(dateKey) {
+  blockedDates = blockedDates.filter((date) => date !== dateKey);
+  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
+  syncSets();
+  renderList(blockedDatesList, blockedDates, { removable: true });
+  if (calendarInstance) {
+    calendarInstance.redraw();
+    calendarInstance.clear();
+  }
+}
+
+function addBlockedRange() {
+  if (!calendarInstance) return;
+  const selected = calendarInstance.selectedDates;
+  if (!selected.length) {
+    setCalendarHint("Selecione uma data ou intervalo no calendário.");
+    return;
+  }
+
+  const start = selected[0];
+  const end = selected[1] || selected[0];
+  const normalizedStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const normalizedEnd = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+  const daysToBlock = [];
+  const current = new Date(normalizedStart);
+  while (current <= normalizedEnd) {
+    const key = formatDateKey(current);
+    if (reservedDatesSet.has(key)) {
+      alert("Não é possível bloquear uma data já reservada.");
+      return;
     }
-    if (line.startsWith("DTEND")) {
-      end = parseIcalDate(line.split(":")[1]);
-    }
-    if (line.startsWith("END:VEVENT")) {
-      if (start) {
-        const current = new Date(start);
-        const limit = end || new Date(start);
-        if (!end) {
-          blocked.add(formatDateKey(current));
-        } else {
-          while (current < limit) {
-            blocked.add(formatDateKey(current));
-            current.setUTCDate(current.getUTCDate() + 1);
-          }
-        }
+    daysToBlock.push(key);
+    current.setDate(current.getDate() + 1);
+  }
+
+  const merged = Array.from(new Set([...blockedDates, ...daysToBlock])).sort();
+  blockedDates = merged;
+  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
+  syncSets();
+  renderList(blockedDatesList, blockedDates, { removable: true });
+  if (calendarInstance) {
+    calendarInstance.clear();
+    calendarInstance.redraw();
+  }
+  setCalendarHint("");
+}
+
+function clearBlockedDates() {
+  blockedDates = [];
+  writeJSON(STORAGE_KEYS.adminBlocks, blockedDates);
+  syncSets();
+  renderList(blockedDatesList, blockedDates, { removable: true });
+  if (calendarInstance) {
+    calendarInstance.clear();
+    calendarInstance.redraw();
+  }
+}
+
+function initCalendar() {
+  if (!calendarInput) return;
+
+  calendarInstance = flatpickr(calendarInput, {
+    mode: "range",
+    minDate: "today",
+    dateFormat: "d/m/Y",
+    locale: "pt",
+    inline: true,
+    appendTo: calendarContainer,
+    disable: reservedDates,
+    onDayCreate: function (_dObj, _dStr, _fp, dayElem) {
+      const key = formatDateKey(dayElem.dateObj);
+      if (reservedDatesSet.has(key)) {
+        dayElem.classList.add("reserved-day");
       }
-      start = null;
-      end = null;
-    }
+      if (blockedDatesSet.has(key)) {
+        dayElem.classList.add("admin-blocked");
+      }
+    },
   });
 
-  return Array.from(blocked).sort();
+  calendarContainer.addEventListener("click", (event) => {
+    const day = event.target.closest(".flatpickr-day");
+    if (!day || !day.dateObj) return;
+
+    const key = formatDateKey(day.dateObj);
+    if (blockedDatesSet.has(key)) {
+      event.preventDefault();
+      removeBlockedDate(key);
+    }
+  });
 }
 
 function loadStoredValues() {
-  const mysql = readJSON(STORAGE_KEYS.mysql, null);
-  if (mysql) {
-    mysqlForm.host.value = mysql.host || "";
-    mysqlForm.port.value = mysql.port || "";
-    mysqlForm.database.value = mysql.database || "";
-    mysqlForm.user.value = mysql.user || "";
-    mysqlForm.password.value = mysql.password || "";
-    updateMysqlStatus("Configuração carregada do navegador.");
-  }
-
   const rate = localStorage.getItem(STORAGE_KEYS.dailyRate);
   if (rate) {
     dailyRateInput.value = rate;
@@ -194,33 +253,19 @@ function loadStoredValues() {
   renderPreview(heroPreview, heroImages);
   renderPreview(thumbPreview, thumbImages);
 
-  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
-  if (airbnbForm && airbnb) {
-    airbnbForm.listing.value = airbnb.listing || "";
-    airbnbForm.ical.value = airbnb.ical || "";
-    updateAirbnbStatus("Integração do Airbnb carregada.");
-  }
-
-  renderBlockedDates();
+  refreshCalendarData();
 }
 
-mysqlForm.addEventListener("submit", (event) => {
+addBlockedRangeBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  const data = {
-    host: mysqlForm.host.value.trim(),
-    port: mysqlForm.port.value.trim(),
-    database: mysqlForm.database.value.trim(),
-    user: mysqlForm.user.value.trim(),
-    password: mysqlForm.password.value,
-  };
-
-  writeJSON(STORAGE_KEYS.mysql, data);
-  updateMysqlStatus("Configuração MySQL salva localmente.");
+  addBlockedRange();
 });
 
-addBlockedDateBtn.addEventListener("click", (event) => {
+clearSelectionBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  saveBlockedDate();
+  if (calendarInstance) {
+    calendarInstance.clear();
+  }
 });
 
 clearBlockedDatesBtn.addEventListener("click", (event) => {
@@ -252,48 +297,5 @@ saveThumbImagesBtn.addEventListener("click", () => {
   renderPreview(thumbPreview, urls);
 });
 
-airbnbForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const listing = airbnbForm.listing.value.trim();
-  const ical = airbnbForm.ical.value.trim();
-
-  writeJSON(STORAGE_KEYS.airbnb, { listing, ical });
-  updateAirbnbStatus("Integração do Airbnb salva localmente.");
-});
-
-openAirbnbListingBtn.addEventListener("click", () => {
-  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
-  if (!airbnb || !airbnb.listing) {
-    updateAirbnbStatus("Informe o link do anúncio para abrir o Airbnb.");
-    return;
-  }
-  window.open(airbnb.listing, "_blank", "noopener");
-});
-
-importAirbnbDatesBtn.addEventListener("click", async () => {
-  const airbnb = readJSON(STORAGE_KEYS.airbnb, null);
-  if (!airbnb || !airbnb.ical) {
-    updateAirbnbStatus("Informe o link iCal do Airbnb para importar bloqueios.");
-    return;
-  }
-
-  updateAirbnbStatus("Buscando calendário do Airbnb...");
-  try {
-    const response = await fetch(airbnb.ical);
-    if (!response.ok) {
-      throw new Error("Falha ao baixar iCal.");
-    }
-    const text = await response.text();
-    const importedDates = parseIcalBlockedDates(text);
-    const currentDates = readJSON(STORAGE_KEYS.blockedDates, []);
-    const merged = Array.from(new Set([...currentDates, ...importedDates])).sort();
-    writeJSON(STORAGE_KEYS.blockedDates, merged);
-    renderBlockedDates();
-    updateAirbnbStatus(`Importado ${importedDates.length} bloqueios do Airbnb.`);
-  } catch (error) {
-    console.warn("Falha ao importar Airbnb", error);
-    updateAirbnbStatus("Não foi possível importar o calendário (verifique CORS e o link iCal).");
-  }
-});
-
 loadStoredValues();
+initCalendar();

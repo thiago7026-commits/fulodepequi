@@ -725,17 +725,24 @@ const DEFAULT_DAILY_RATE = 340;
 const storedDailyRate = Number.parseFloat(localStorage.getItem("adminDailyRate"));
 const VALOR_DIARIA = Number.isFinite(storedDailyRate) ? storedDailyRate : DEFAULT_DAILY_RATE;
 
-const storedBlockedDates = (() => {
-  const raw = localStorage.getItem("adminBlockedDates");
+function readDateArray(key){
+  const raw = localStorage.getItem(key);
   if(!raw) return [];
   try{
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   }catch(err){
-    console.warn("Falha ao ler datas bloqueadas:", err);
+    console.warn(`Falha ao ler datas (${key}):`, err);
     return [];
   }
-})();
+}
+
+const storedReservedDates = readDateArray("adminReservedDates");
+const storedAdminBlocks = readDateArray("adminManualBlocks");
+const storedLegacyBlocks = readDateArray("adminBlockedDates");
+const storedBlockedDates = Array.from(
+  new Set([...storedReservedDates, ...storedAdminBlocks, ...storedLegacyBlocks])
+);
 
 const inputNome = document.getElementById("nome");
 const inputEmail = document.getElementById("email");
