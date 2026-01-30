@@ -14,6 +14,9 @@
     button{width:100%; margin-top:16px; padding:12px; border:none; border-radius:999px; background:#c9a24d; color:#fff; font-weight:700; cursor:pointer;}
     button:disabled{opacity:.6; cursor:not-allowed;}
     .msg{margin-top:12px; font-size:13px; color:#b00020; min-height:18px;}
+    .msg.success{color:#1b6b2c;}
+    .actions{margin-top:12px; text-align:center;}
+    .link-btn{background:none; border:none; color:#2f3b2a; font-size:12px; text-decoration:underline; cursor:pointer;}
     .hint{margin-top:18px; font-size:12px; opacity:.65; text-align:center;}
   </style>
 </head>
@@ -30,6 +33,9 @@
 
       <button id="btnLogin" type="button">Entrar</button>
       <div id="msg" class="msg"></div>
+      <div class="actions">
+        <button id="btnReset" class="link-btn" type="button">Esqueci minha senha</button>
+      </div>
 
       <div class="hint">Somente usuários autorizados (role alfa) podem acessar.</div>
     </div>
