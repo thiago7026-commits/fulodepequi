@@ -11,6 +11,12 @@
     msg.classList.toggle("success", type === "success");
   }
 
+  async function forgotPassword(email) {
+    return supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://fulodepequi.com.br/admin/redefinir-senha.html",
+    });
+  }
+
   // Se já estiver logado, manda direto pro painel
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -64,9 +70,7 @@
     }
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://fulodepequi.com.br/admin/redefinir-senha.html",
-      });
+      const { error } = await forgotPassword(email);
 
       if (error) {
         setMsg(error.message);
