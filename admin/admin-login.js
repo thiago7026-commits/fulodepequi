@@ -1,109 +1,59 @@
-(() => {
-  const sb = window.supabaseClient;
-  const loginForm = document.getElementById("loginForm");
-  const adminEmail = document.getElementById("adminEmail");
-  const adminPassword = document.getElementById("adminPassword");
-  const authStatus = document.getElementById("authStatus");
-  const requiredRole = "alfa";
+// /admin/js/admin-login.js
+(async function () {
+  const emailEl = document.getElementById("email");
+  const passEl = document.getElementById("password");
+  const btn = document.getElementById("btnLogin");
+  const msg = document.getElementById("msg");
 
-  if (!sb) {
-    authStatus.textContent = "Supabase client não carregou. Verifique js/supabaseClient.js.";
-    return;
+  function setMsg(text) {
+    msg.textContent = text || "";
   }
 
-  const setStatus = (message, variant = "info") => {
-    authStatus.textContent = message;
-    authStatus.dataset.variant = variant;
-  };
+  // Se já estiver logado, manda direto pro painel
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      window.location.href = "/admin/index.html";
+      return;
+    }
+  } catch (e) {
+    // se der erro aqui, segue e deixa tentar login
+  }
 
-  const getRoleFromUser = (user) => {
-    if (!user) return null;
-    return (
-      user.app_metadata?.role ||
-      user.user_metadata?.role ||
-      user.role ||
-      null
-    );
-  };
+  btn.addEventListener("click", async () => {
+    setMsg("");
+    btn.disabled = true;
 
-  const fetchRoleFromProfiles = async (userId) => {
+    const email = (emailEl.value || "").trim();
+    const password = passEl.value || "";
+
+    if (!email || !password) {
+      setMsg("Preencha email e senha.");
+      btn.disabled = false;
+      return;
+    }
+
     try {
-      const { data, error } = await sb
-        .from("profiles")
-        .select("role")
-        .eq("id", userId)
-        .maybeSingle();
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error) return null;
-      return data?.role || null;
+      if (error) {
+        setMsg(error.message);
+        btn.disabled = false;
+        return;
+      }
+
+      // ✅ Login OK
+      window.location.href = "/admin/index.html";
     } catch (err) {
-      return null;
+      setMsg("Erro no login: Failed to fetch (verifique SUPABASE_URL/ANON e internet).");
+      btn.disabled = false;
     }
-  };
-
-  const resolveUserRole = async (user) => {
-    const directRole = getRoleFromUser(user);
-    if (directRole) return directRole;
-    if (!user?.id) return null;
-    return await fetchRoleFromProfiles(user.id);
-  };
-
-  const showReasonMessage = () => {
-    const params = new URLSearchParams(window.location.search);
-    const reason = params.get("reason");
-
-    if (reason === "denied") {
-      setStatus("Acesso negado. Somente usuários alfa podem entrar.", "error");
-    } else if (reason === "session") {
-      setStatus("Faça login para continuar.", "info");
-    }
-  };
-
-  const redirectToAdmin = () => {
-    window.location.href = "index.html";
-  };
-
-  const checkExistingSession = async () => {
-    const { data } = await sb.auth.getSession();
-    if (!data?.session) {
-      showReasonMessage();
-      return;
-    }
-
-    const role = await resolveUserRole(data.session.user);
-    if (role === requiredRole) {
-      redirectToAdmin();
-    } else {
-      await sb.auth.signOut();
-      setStatus("Acesso negado. Somente usuários alfa podem entrar.", "error");
-    }
-  };
-
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    setStatus("Entrando...", "info");
-
-    const email = adminEmail.value.trim();
-    const password = adminPassword.value;
-
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) {
-      setStatus(`Erro no login: ${error.message}`, "error");
-      return;
-    }
-
-    const user = data.user || (await sb.auth.getUser()).data.user;
-    const role = await resolveUserRole(user);
-
-    if (role !== requiredRole) {
-      await sb.auth.signOut();
-      setStatus("Acesso negado. Somente usuários alfa podem entrar.", "error");
-      return;
-    }
-
-    setStatus("Login autorizado. Redirecionando...", "success");
-    redirectToAdmin();
   });
 
-  checkExistingSession();
+  // Enter no teclado
+  [emailEl, passEl].forEach(el => {
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") btn.click();
+    });
+  });
 })();
