@@ -1,60 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Admin | Fulô de Pequi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto; background:#f6f3ee; margin:0;}
+    .wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+    .card{width:420px; max-width:100%; background:#fff; border-radius:16px; padding:24px; box-shadow:0 12px 30px rgba(0,0,0,.08);}
+    h1{margin:0 0 16px; font-size:24px;}
+    label{display:block; font-size:12px; opacity:.7; margin:12px 0 6px;}
+    input{width:100%; padding:12px; border:1px solid rgba(0,0,0,.15); border-radius:10px; font-size:14px;}
+    button{width:100%; margin-top:16px; padding:12px; border:none; border-radius:999px; background:#c9a24d; color:#fff; font-weight:700; cursor:pointer;}
+    button:disabled{opacity:.6; cursor:not-allowed;}
+    .msg{margin-top:12px; font-size:13px; color:#b00020; min-height:18px;}
+    .hint{margin-top:18px; font-size:12px; opacity:.65; text-align:center;}
+  </style>
 </head>
-<body class="login-page">
-  <header>
-    <nav class="topo">
-      <div class="logo">
-        <a href="../index.html" aria-label="Ir para a página inicial">
-          <img src="../assets/logo.png" alt="Fulô de Pequi">
-        </a>
-      </div>
-      <ul class="menu">
-        <li><a href="../index.html">INÍCIO</a></li>
-      </ul>
-    </nav>
-  </header>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Entrar no admin</h1>
 
-  <main class="login-main">
-    <section class="login-card">
-      <div class="login-header">
-        <p>Acesso restrito</p>
-        <h1>Entrar no admin</h1>
-      </div>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="fulodepequi@gmail.com" />
 
-      <form id="loginForm" class="login-form" autocomplete="on">
-        <label class="field">
-          <span>Email</span>
-          <input type="email" id="adminEmail" placeholder="voce@dominio.com" required>
-        </label>
+      <label for="password">Senha</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
 
-        <label class="field">
-          <span>Senha</span>
-          <input type="password" id="adminPassword" placeholder="********" required>
-        </label>
+      <button id="btnLogin" type="button">Entrar</button>
+      <div id="msg" class="msg"></div>
 
-        <button class="btn-primary" type="submit">Entrar</button>
-        <div class="login-status" id="authStatus" role="status" aria-live="polite"></div>
-      </form>
-    </section>
-  </main>
+      <div class="hint">Somente usuários autorizados (role alfa) podem acessar.</div>
+    </div>
+  </div>
 
-  <footer class="admin-footer">
-    <p>Somente usuários autorizados (role <strong>alfa</strong>) podem acessar.</p>
-  </footer>
-
-  <!-- Supabase JS -->
+  <!-- 1) CDN do Supabase (obrigatório) -->
+  <script>
+    // para evitar conflito de nome, guardamos em window.supabaseJs
+    // (a biblioteca original expõe "supabase")
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/supabaseClient.js"></script>
-  <script src="admin-login.js"></script>
+  <script> window.supabaseJs = window.supabase; </script>
+
+  <!-- 2) Seu client -->
+  <script src="/js/supabaseClient.js"></script>
+
+  <!-- 3) Script do login -->
+  <script src="/admin/js/admin-login.js"></script>
 </body>
 </html>
