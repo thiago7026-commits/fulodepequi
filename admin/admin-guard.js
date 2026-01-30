@@ -1,99 +1,19 @@
-(() => {
-  const sb = window.supabaseClient;
-  const requiredRole = "alfa";
-  const loginUrl = "admin-login.html";
+// /admin/js/admin-guard.js
+(async function () {
+  const { data: { session } } = await supabase.auth.getSession();
 
-  if (!sb) {
-    console.error("Supabase client não carregou. Verifique js/supabaseClient.js e a ordem dos scripts.");
-    window.location.href = loginUrl;
+  if (!session) {
+    window.location.href = "/admin/admin-login.html?reason=session";
     return;
   }
 
-  const body = document.body;
-  if (body) body.classList.add("auth-checking");
-
-  const logoutBtn = document.getElementById("adminLogoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      await sb.auth.signOut();
-      window.location.href = loginUrl;
-    });
+  // Debug opcional (mostra email logado)
+  const who = document.getElementById("whoami");
+  if (who) {
+    who.textContent = "Logado como: " + (session.user?.email || "(sem email)");
   }
 
-  const getRoleFromUser = (user) => {
-    if (!user) return null;
-    return (
-      user.app_metadata?.role ||
-      user.user_metadata?.role ||
-      user.role ||
-      null
-    );
-  };
-
-  const fetchRoleFromProfiles = async (userId) => {
-    try {
-      const { data, error } = await sb
-        .from("profiles")
-        .select("role")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (error) return null;
-      return data?.role || null;
-    } catch (err) {
-      return null;
-    }
-  };
-
-  const resolveUserRole = async (user) => {
-    const directRole = getRoleFromUser(user);
-    if (directRole) return directRole;
-    if (!user?.id) return null;
-    return await fetchRoleFromProfiles(user.id);
-  };
-
-  const redirectToLogin = (reason) => {
-    const target = reason ? `${loginUrl}?reason=${reason}` : loginUrl;
-    window.location.href = target;
-  };
-
-  const signOutAndRedirect = async (reason) => {
-    await sb.auth.signOut();
-    redirectToLogin(reason);
-  };
-
-  const enforceAdminAccess = async () => {
-    const { data, error } = await sb.auth.getSession();
-    if (error) {
-      redirectToLogin("session");
-      return null;
-    }
-
-    const session = data.session;
-    if (!session) {
-      redirectToLogin("session");
-      return null;
-    }
-
-    const role = await resolveUserRole(session.user);
-    if (role !== requiredRole) {
-      await signOutAndRedirect("denied");
-      return null;
-    }
-
-    if (body) {
-      body.classList.remove("auth-checking");
-      body.classList.add("auth-ok");
-    }
-
-    return session;
-  };
-
-  window.adminAccessReady = enforceAdminAccess();
-
-  sb.auth.onAuthStateChange((_event, session) => {
-    if (!session) {
-      redirectToLogin("session");
-    }
-  });
+  // 🔒 (Opcional) TRAVA POR ROLE "ALFA"
+  // Se você já tem RBAC (tabela user_roles / roles), me diga qual tabela/campo.
+  // Aí eu coloco aqui a verificação certinha (sem adivinhar schema).
 })();
