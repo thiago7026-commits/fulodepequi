@@ -19,7 +19,7 @@
       <strong>Fulô de Pequi</strong>
       <span class="muted">• Admin</span>
     </div>
-    <button id="btnLogout" class="btn" type="button">Sair</button>
+    <button id="btnSair" class="btn" type="button">Sair</button>
   </header>
 
   <main>
@@ -35,16 +35,15 @@
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script> window.supabaseJs = window.supabase; </script>
-  <script src="/js/supabaseClient.js"></script>
+  <script src="./js/supabaseClient.js"></script>
 
   <!-- Guard (proteção) -->
-  <script src="/admin/js/admin-guard.js"></script>
+  <script src="./js/admin-guard.js"></script>
 
   <script>
-    document.getElementById("btnLogout").addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "/admin/admin-login.html?reason=logout";
+    document.getElementById("btnSair").addEventListener("click", async () => {
+      await window.sb.auth.signOut();
+      window.location.href = "./login.html";
     });
   </script>
 </body>
