@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Configurações</title>
+    <link rel="stylesheet" href="./css/admin.css" />
+  </head>
+  <body data-page="configuracoes">
+    <header class="admin-header">
+      <div class="inner">
+        <div class="brand">
+          <img src="../assets/logo.png" alt="Logo Fulô" />
+          <div><h1>Chalé Fulô de Pequi</h1><p>Painel Administrativo</p></div>
+        </div>
+        <button class="btn logout-btn" id="logoutBtn">Sair</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <nav class="tabs">
+        <a class="tab" data-tab="dashboard" href="./dashboard.html">Visão Geral</a>
+        <a class="tab" data-tab="reservas" href="./reservas.html">Reservas</a>
+        <a class="tab" data-tab="calendario" href="./calendario.html">Calendário</a>
+        <a class="tab" data-tab="fotos" href="./fotos.html">Fotos</a>
+        <a class="tab disabled" data-tab="avaliacoes" href="#">Avaliações</a>
+        <a class="tab" data-tab="configuracoes" href="./configuracoes.html">Configurações</a>
+      </nav>
+
+      <section class="section">
+        <form id="configForm">
+          <div class="config-grid">
+            <div>
+              <h3>Informações básicas</h3>
+              <div class="form-group"><label>Nome do chalé</label><input name="nome" required /></div>
+              <div class="form-group"><label>Endereço</label><input name="endereco" required /></div>
+              <div class="form-group"><label>Telefone</label><input name="telefone" required /></div>
+              <div class="form-group"><label>Email</label><input name="email" type="email" required /></div>
+              <div class="form-group"><label>Descrição</label><textarea name="descricao"></textarea></div>
+            </div>
+            <div>
+              <h3>Capacidade e horários</h3>
+              <div class="form-group"><label>Capacidade máxima</label><input name="capacidadeMax" type="number" min="1" /></div>
+              <div class="form-group"><label>Mínimo de noites</label><input name="minNoites" type="number" min="1" /></div>
+              <div class="form-group"><label>Máximo de noites</label><input name="maxNoites" type="number" min="1" /></div>
+              <div class="form-group"><label>Check-in</label><input name="checkin" type="time" /></div>
+              <div class="form-group"><label>Check-out</label><input name="checkout" type="time" /></div>
+            </div>
+          </div>
+
+          <h3>Políticas</h3>
+          <div class="config-grid">
+            <label class="toggle-item">Reserva instantânea <input class="switch" type="checkbox" name="reservaInstantanea" /></label>
+            <label class="toggle-item">Aceita pets <input class="switch" type="checkbox" name="aceitaPets" /></label>
+            <label class="toggle-item">Permite fumar <input class="switch" type="checkbox" name="permiteFumar" /></label>
+            <label class="toggle-item">Permite eventos <input class="switch" type="checkbox" name="permiteEventos" /></label>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Salvar Todas as Configurações</button>
+          <p class="feedback" id="configFeedback"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="./js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Login</title>
+    <link rel="stylesheet" href="./css/admin.css" />
+  </head>
+  <body class="admin-login" data-page="login">
+    <section class="login-card">
+      <div class="login-brand">
+        <img src="../assets/logo.png" alt="Logo Fulô de Pequi" />
+        <h1>Painel Administrativo</h1>
+        <p>Chalé Fulô de Pequi - Sistema de Gestão</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="admin@fulodepequi.com" required />
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input id="senha" name="senha" type="password" placeholder="••••••••" required />
+        </div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+        <p class="login-error" id="loginError"></p>
+      </form>
+    </section>
+
+    <script src="./js/admin.js"></script>
+  </body>
+</html>
