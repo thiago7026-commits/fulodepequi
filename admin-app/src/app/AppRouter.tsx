@@ -10,7 +10,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
  */
 export function AppRouter() {
   return (
-    <BrowserRouter basename="/admin">
+    <BrowserRouter basename="/admin/">
       <Routes>
         {/* Login */}
         <Route path="/" element={<LoginPage />} />
