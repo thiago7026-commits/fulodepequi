@@ -207,4 +207,131 @@ function atualizarResumo(selectedDates){
 
   const payload = {
     nome: inputNome.value.trim(),
-    emai
+    email: inputEmail.value.trim(),
+    telefone: inputTelefone.value.trim(),
+    hospedes: Number(hospedesEl.value || 1),
+    datas: inputDatas.value,
+    total,
+    diaria: SETTINGS.diaria
+  };
+
+  dadosReserva.textContent = JSON.stringify(payload, null, 2);
+}
+
+/* =========================
+   FLATPICKR
+========================= */
+
+flatpickr("#datas", {
+  mode: "range",
+  minDate: "today",
+  dateFormat: "d/m/Y",
+  locale: "pt",
+  disable: storedBlockedDates,
+  onClose: function(selectedDates){
+    if(selectedDates.length < 2){
+      atualizarResumo(selectedDates);
+      return;
+    }
+
+    const n = noites(selectedDates[0], selectedDates[1]);
+    if(n < SETTINGS.minimoNoites){
+      alert(`Reserva mínima: ${SETTINGS.minimoNoites} noite(s).`);
+      inputDatas.value = "";
+      atualizarResumo([]);
+      return;
+    }
+
+    if(n > SETTINGS.maximoNoites){
+      alert(`Reserva máxima: ${SETTINGS.maximoNoites} noite(s).`);
+      inputDatas.value = "";
+      atualizarResumo([]);
+      return;
+    }
+
+    if(!fimDeSemanaOk(selectedDates[0], selectedDates[1])){
+      alert("Nos finais de semana, a reserva deve incluir SEXTA e SÁBADO juntos.");
+      inputDatas.value = "";
+      atualizarResumo([]);
+      return;
+    }
+
+    atualizarResumo(selectedDates);
+  }
+});
+
+/* =========================
+   SUBMIT (salva solicitação)
+   Observação: aqui é site estático, então salva em localStorage.
+   Se quiser enviar email/whats, dá pra integrar depois.
+========================= */
+
+function toISODate(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function parseRangeToISO(rangeStr){
+  // "dd/mm/yyyy até dd/mm/yyyy" ou "dd/mm/yyyy to dd/mm/yyyy" dependendo do flatpickr
+  const parts = rangeStr.split(" to ").length > 1 ? rangeStr.split(" to ") : rangeStr.split(" até ");
+  if(parts.length < 2) return null;
+
+  const [a,b] = parts.map(s => s.trim());
+  const [da,ma,ya] = a.split("/");
+  const [db,mb,yb] = b.split("/");
+  if(!ya || !yb) return null;
+
+  return { inicio: `${ya}-${ma}-${da}`, fim: `${yb}-${mb}-${db}` };
+}
+
+document.getElementById("reservaForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const nome = inputNome.value.trim();
+  const email = inputEmail.value.trim();
+  const telefone = inputTelefone.value.trim();
+  const hospedes = Number(hospedesEl.value || 1);
+  const datas = inputDatas.value.trim();
+
+  if(!nome || !email || !telefone || !datas){
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  const rangeISO = parseRangeToISO(datas);
+  if(!rangeISO){
+    alert("Selecione as datas corretamente.");
+    return;
+  }
+
+  const id = `r_${Date.now()}`;
+  const totalInfo = calcularTotal([new Date(rangeISO.inicio), new Date(rangeISO.fim)]);
+
+  const reserva = {
+    id,
+    nome,
+    email,
+    telefone,
+    hospedes,
+    inicio: rangeISO.inicio,
+    fim: rangeISO.fim,
+    total: totalInfo.total,
+    status: "pendente"
+  };
+
+  const raw = localStorage.getItem("adminReservas");
+  const list = raw ? (JSON.parse(raw) || []) : [];
+  list.push(reserva);
+  localStorage.setItem("adminReservas", JSON.stringify(list));
+
+  alert("Solicitação enviada! (salva no admin local)");
+  e.target.reset();
+  dadosReserva.textContent = "";
+  totalBox.textContent = "Selecione as datas para ver o total.";
+});
+</script>
+
+</body>
+</html>
