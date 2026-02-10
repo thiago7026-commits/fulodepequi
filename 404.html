@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página não encontrada</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        font-family: Arial, sans-serif;
+        background: #f7f2e7;
+        color: #5a2d13;
+      }
+      .card {
+        width: min(560px, 100%);
+        background: #fff;
+        border: 1px solid #f2d8aa;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(73, 36, 5, 0.12);
+        padding: 24px;
+        text-align: center;
+      }
+      a {
+        color: #d97706;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Página não encontrada</h1>
+      <p>O endereço acessado não foi encontrado.</p>
+      <p><a href="/">Voltar para o site</a></p>
+    </div>
+
+    <script>
+      (function () {
+        var path = window.location.pathname.replace(/\/+$/, '');
+
+        if (path === '/admin') {
+          window.location.replace('/admin/index.html');
+          return;
+        }
+      })();
+    </script>
+  </body>
+</html>
