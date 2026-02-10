@@ -4,7 +4,7 @@ import {
   createAdminBlock,
   deleteAdminBlock,
   upsertExternalEvents,
-  clearAirbnbExternalEvents
+  LISTING_ID
 } from "../../js/calendarService.js";
 
 
