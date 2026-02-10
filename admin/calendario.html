@@ -35,8 +35,21 @@
             <button class="btn btn-outline" id="nextMonth">▶</button>
           </div>
         </div>
+
         <p>Valor da diária: <strong id="dailyRateInfo">R$ 350</strong></p>
+
+        <div class="card" style="margin:16px 0; padding:14px;">
+          <h3 style="margin-bottom:8px;">Sincronizar com Airbnb (iCal)</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <input id="icsFile" type="file" accept=".ics,text/calendar" />
+            <button class="btn" id="importIcsBtn" type="button">Importar .ICS</button>
+            <button class="btn btn-outline" id="clearAirbnbBtn" type="button">Limpar importações do Airbnb</button>
+          </div>
+          <small id="icsStatus" style="display:block; margin-top:10px; opacity:0.8;"></small>
+        </div>
+
         <div class="calendar-grid" id="calendarGrid"></div>
+
         <div class="legend">
           <span class="l-disponivel">Disponível</span>
           <span class="l-reservada">Reservada</span>
