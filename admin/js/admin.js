@@ -515,7 +515,7 @@ function initCalendario() {
   clearBtn?.addEventListener("click", async () => {
     try {
       setStatus("Limpando importações do Airbnb no Supabase...");
-      await clearAirbnbExternalEvents();
+      alert("Função de limpar Airbnb ainda não implementada.");
       setStatus("Importações do Airbnb removidas (Supabase).");
       await renderAsync();
     } catch (err) {
