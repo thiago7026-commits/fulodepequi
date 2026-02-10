@@ -1,48 +1,59 @@
-// /js/calendarService.js
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const supabaseUrl = "https://SEU_PROJECT_ID.supabase.co";
-const supabaseKey = "SUA_PUBLIC_ANON_KEY";
+const SUPABASE_URL = "https://SEU-PROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "SUA-ANON-KEY";
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const LISTING_ID = "635415619801096957";
+export const LISTING_ID = "635415619801096957"; // seu airbnb/listing
 
-// 🔹 Buscar eventos (Airbnb + bloqueios)
-export async function fetchCalendarEvents(start, end) {
-  const [external, blocks] = await Promise.all([
+export async function fetchCalendarEvents(fromISO, toISO) {
+  const [externalRes, blocksRes] = await Promise.all([
     supabase
       .from("calendar_external_events")
-      .select("*")
+      .select("id, source, start_date, end_date, summary, uid, listing_id")
       .eq("listing_id", LISTING_ID)
-      .lte("start_date", end)
-      .gte("end_date", start),
+      .lte("start_date", toISO)
+      .gte("end_date", fromISO),
 
     supabase
       .from("calendar_admin_blocks")
-      .select("*")
+      .select("id, start_date, end_date, reason, listing_id")
       .eq("listing_id", LISTING_ID)
-      .lte("start_date", end)
-      .gte("end_date", start),
+      .lte("start_date", toISO)
+      .gte("end_date", fromISO),
   ]);
 
+  if (externalRes.error) throw externalRes.error;
+  if (blocksRes.error) throw blocksRes.error;
+
   return {
-    reserved: external.data || [],
-    blocked: blocks.data || [],
+    reserved: externalRes.data ?? [],
+    blocked: blocksRes.data ?? [],
   };
 }
 
-// 🔹 Criar bloqueio (ADMIN)
-export async function createBlock(start, end, reason = "") {
-  return supabase.from("calendar_admin_blocks").insert({
-    listing_id: LISTING_ID,
-    start_date: start,
-    end_date: end,
-    reason,
-  });
+export async function createAdminBlock(startISO, endISO, reason = "") {
+  const { data, error } = await supabase
+    .from("calendar_admin_blocks")
+    .insert({
+      listing_id: LISTING_ID,
+      start_date: startISO,
+      end_date: endISO,
+      reason,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
-// 🔹 Remover bloqueio (ADMIN)
-export async function removeBlock(id) {
-  return supabase.from("calendar_admin_blocks").delete().eq("id", id);
+export async function deleteAdminBlock(blockId) {
+  const { error } = await supabase
+    .from("calendar_admin_blocks")
+    .delete()
+    .eq("id", blockId);
+
+  if (error) throw error;
 }
