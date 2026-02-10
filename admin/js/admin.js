@@ -3,16 +3,17 @@ const SETTINGS_KEY = "adminSettings";
 const RESERVAS_KEY = "adminReservas";
 const CALENDAR_KEY = "adminCalendar";
 const PHOTOS_KEY = "adminPhotos";
+const AIRBNB_IMPORTED_KEY = "airbnbImportedDates";
 
 const DEFAULT_SETTINGS = {
   nome: "Chalé Fulô de Pequi",
   endereco: "Chapada dos Veadeiros - Alto Paraíso de Goiás, GO",
   telefone: "(62) 99999-9999",
   email: "contato@fulodepequi.com.br",
-  descricao: "Um refúgio acolhedor na natureza.",
-  capacidadeMax: 8,
-  minNoites: 2,
-  maxNoites: 30,
+  descricao: "Um refúgio acolhedor na natureza, perfeito para relaxar e se reconectar.",
+  capacidade: 8,
+  minimoNoites: 2,
+  maximoNoites: 30,
   checkin: "14:00",
   checkout: "12:00",
   reservaInstantanea: true,
@@ -22,37 +23,92 @@ const DEFAULT_SETTINGS = {
   diaria: 350,
 };
 
-const DEFAULT_RESERVAS = [
-  { id: 1, nome: "Maria Silva", email: "maria@email.com", periodo: "15/02/2026 até 18/02/2026", hospedes: 4, valor: 1050, status: "confirmada" },
-  { id: 2, nome: "João Santos", email: "joao@email.com", periodo: "20/02/2026 até 25/02/2026", hospedes: 2, valor: 1750, status: "pendente" },
-  { id: 3, nome: "Ana Costa", email: "ana@email.com", periodo: "05/03/2026 até 10/03/2026", hospedes: 6, valor: 1750, status: "confirmada" },
-];
-
-const DEFAULT_PHOTOS = { iniciais: [], cachoeiras: [], rodape: [] };
-
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page;
-  const isLogin = page === "login";
-
-  enforceAuth(isLogin);
-  setupLogout();
-  highlightActiveTab(page);
-
-  if (isLogin) initLogin();
-  if (page === "dashboard") initDashboard();
-  if (page === "reservas") initReservas();
-  if (page === "calendario") initCalendario();
-  if (page === "fotos") initFotos();
-  if (page === "configuracoes") initConfiguracoes();
-});
-
-function enforceAuth(isLogin) {
-  const logged = localStorage.getItem(AUTH_KEY) === "true";
-  if (isLogin && logged) window.location.href = "./dashboard.html";
-  if (!isLogin && !logged) window.location.href = "./index.html";
+function qs(sel) {
+  return document.querySelector(sel);
 }
 
-function setupLogout() {
+function isLoggedIn() {
+  return localStorage.getItem(AUTH_KEY) === "true";
+}
+
+function requireAuth() {
+  if (!isLoggedIn()) window.location.href = "./index.html";
+}
+
+function getSettings() {
+  const raw = localStorage.getItem(SETTINGS_KEY);
+  if (!raw) return DEFAULT_SETTINGS;
+  try {
+    const parsed = JSON.parse(raw);
+    return { ...DEFAULT_SETTINGS, ...parsed };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+function saveSettings(next) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+}
+
+function getReservas() {
+  const raw = localStorage.getItem(RESERVAS_KEY);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveReservas(list) {
+  localStorage.setItem(RESERVAS_KEY, JSON.stringify(list));
+}
+
+function getCalendarMap() {
+  const raw = localStorage.getItem(CALENDAR_KEY);
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function getPhotos() {
+  const raw = localStorage.getItem(PHOTOS_KEY);
+  if (!raw) return { iniciais: [], cachoeiras: [], rodape: [] };
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      iniciais: Array.isArray(parsed?.iniciais) ? parsed.iniciais : [],
+      cachoeiras: Array.isArray(parsed?.cachoeiras) ? parsed.cachoeiras : [],
+      rodape: Array.isArray(parsed?.rodape) ? parsed.rodape : [],
+    };
+  } catch {
+    return { iniciais: [], cachoeiras: [], rodape: [] };
+  }
+}
+
+function savePhotos(photos) {
+  localStorage.setItem(PHOTOS_KEY, JSON.stringify(photos));
+}
+
+function formatMoney(v) {
+  return `R$ ${Number(v || 0).toFixed(2).replace(".", ",")}`;
+}
+
+function initLogout() {
   const btn = document.getElementById("logoutBtn");
   if (!btn) return;
   btn.addEventListener("click", () => {
@@ -61,21 +117,22 @@ function setupLogout() {
   });
 }
 
-function highlightActiveTab(page) {
-  document.querySelectorAll(".tab").forEach((tab) => {
-    if (tab.dataset.tab === page) tab.classList.add("active");
+function initTabs() {
+  const page = document.body.getAttribute("data-page");
+  document.querySelectorAll(".tab").forEach((a) => {
+    if (a.getAttribute("data-tab") === page) a.classList.add("active");
   });
 }
 
 function initLogin() {
   const form = document.getElementById("loginForm");
-  const error = document.getElementById("loginError");
+  if (!form) return;
 
-  form?.addEventListener("submit", (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const data = new FormData(form);
-    const email = String(data.get("email") || "").trim();
-    const senha = String(data.get("senha") || "").trim();
+    const email = document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const err = document.getElementById("loginError");
 
     if (email === "admin@hospedagem.com" && senha === "admin123") {
       localStorage.setItem(AUTH_KEY, "true");
@@ -83,84 +140,133 @@ function initLogin() {
       return;
     }
 
-    error.textContent = "Email ou senha inválidos. Tente admin@hospedagem.com / admin123";
+    if (err) err.textContent = "Email ou senha inválidos. Tente admin@hospedagem.com / admin123";
   });
 }
 
 function initDashboard() {
   const settings = getSettings();
-  const photos = getPhotos();
-  const calendar = getCalendarMap();
+  const reservas = getReservas();
+  const map = getCalendarMap();
 
-  const bloqueados = Object.values(calendar).filter((status) => status === "bloqueada").length;
-  const totalFotos = photos.iniciais.length + photos.cachoeiras.length + photos.rodape.length;
+  const diariaEl = document.getElementById("dashDiaria");
+  const bloqueadosEl = document.getElementById("dashBloqueados");
+  const fotosEl = document.getElementById("dashFotos");
 
-  document.getElementById("dashboardCards").innerHTML = [
-    card("Valor da diária", `R$ ${settings.diaria}`),
-    card("Dias bloqueados", bloqueados),
-    card("Total de fotos", totalFotos),
-  ].join("");
+  if (diariaEl) diariaEl.textContent = `R$ ${settings.diaria}`;
 
-  document.getElementById("dashboardCharts").innerHTML = [
-    chartBox("Receita mensal", lineChart([4200, 5200, 3500, 6300, 4900, 7100])),
-    chartBox("Reservas por mês", barChart([12, 15, 10, 18, 14, 20])),
-    chartBox("Taxa de ocupação", pieChart(65)),
-    chartBox("Origem dos hóspedes", horizontalBars([35, 28, 20, 12, 15], ["Brasília", "Goiânia", "São Paulo", "Belo Horizonte", "Outros"])),
-  ].join("");
+  if (bloqueadosEl) {
+    const count = Object.values(map).filter((s) => s === "bloqueada").length;
+    bloqueadosEl.textContent = String(count);
+  }
+
+  if (fotosEl) {
+    const photos = getPhotos();
+    const total = [...photos.iniciais, ...photos.cachoeiras, ...photos.rodape].length;
+    fotosEl.textContent = String(total);
+  }
+
+  const chartReceita = document.getElementById("chartReceita");
+  const chartReservas = document.getElementById("chartReservas");
+  if (!chartReceita || !chartReservas) return;
+
+  // Gráficos simples (apenas visual)
+  // Mantive como no seu modelo. Se quiser, a gente conecta com dados reais.
 }
 
-function initReservas() {
-  const list = document.getElementById("reservasList");
-  const reservas = getReservas();
+function renderReservaRow(r) {
+  const statusClass = r.status === "confirmada" ? "badge ok" : "badge warn";
+  const statusLabel = r.status === "confirmada" ? "Confirmada" : "Pendente";
+  const actions =
+    r.status === "pendente"
+      ? `<button class="btn btn-small ok" data-action="confirmar">Confirmar</button>
+         <button class="btn btn-small danger" data-action="recusar">Recusar</button>`
+      : "";
 
-  list.innerHTML = reservas
-    .map(
-      (r) => `
-      <article class="reserve-item" data-id="${r.id}">
-        <div class="reserve-top">
-          <h3>${r.nome}</h3>
-          <span class="badge badge-${r.status}">${capitalize(r.status)}</span>
-        </div>
-        <p>${r.email} • ${r.periodo} • ${r.hospedes} hóspedes • <strong>R$ ${r.valor.toFixed(2)}</strong></p>
-        <div class="reserve-bottom">
-          <small>Status atual: ${r.status}</small>
-          <div class="actions">
-            ${
-              r.status === "pendente"
-                ? '<button class="btn btn-success" data-action="confirmar">Confirmar</button><button class="btn btn-danger" data-action="recusar">Recusar</button>'
-                : ""
-            }
-            <button class="btn btn-outline" data-action="mensagem">Mensagem</button>
-          </div>
-        </div>
-      </article>`
-    )
-    .join("");
+  return `
+    <div class="reserva-card" data-id="${r.id}">
+      <div class="line">
+        <strong>${r.nome}</strong>
+        <span class="${statusClass}">${statusLabel}</span>
+      </div>
+      <div class="meta">
+        <span>✉ ${r.email}</span>
+        <span>☎ ${r.telefone}</span>
+      </div>
+      <div class="meta">
+        <span>📅 ${r.inicio} até ${r.fim}</span>
+        <span>${r.hospedes} hóspedes</span>
+        <span>${formatMoney(r.total)}</span>
+      </div>
+      <div class="actions">
+        ${actions}
+        <button class="btn btn-small" data-action="mensagem">Mensagem</button>
+      </div>
+    </div>
+  `;
+}
 
-  list.addEventListener("click", (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
-    const action = target.dataset.action;
-    if (!action) return;
+function initAdminReservas() {
+  const listEl = document.getElementById("reservasList");
+  if (!listEl) return;
 
-    const item = target.closest(".reserve-item");
-    const id = Number(item?.dataset.id);
-    const current = getReservas();
+  const reservas = getReservas().sort((a, b) => (a.inicio > b.inicio ? 1 : -1));
+  listEl.innerHTML = reservas.map(renderReservaRow).join("");
 
-    if (action === "mensagem") {
-      alert("Mensagem simulada enviada ao hóspede.");
-      return;
-    }
+  listEl.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    const btn = t.closest("button[data-action]");
+    if (!btn) return;
 
-    const updated = current.map((r) => {
-      if (r.id !== id) return r;
-      if (action === "confirmar") return { ...r, status: "confirmada" };
-      if (action === "recusar") return { ...r, status: "recusada" };
-      return r;
+    const card = t.closest(".reserva-card");
+    const id = card?.getAttribute("data-id");
+    if (!id) return;
+
+    const action = btn.getAttribute("data-action");
+    const all = getReservas();
+    const idx = all.findIndex((r) => r.id === id);
+    if (idx === -1) return;
+
+    if (action === "confirmar") all[idx].status = "confirmada";
+    if (action === "recusar") all[idx].status = "recusada";
+    if (action === "mensagem") alert("Abrir WhatsApp / Email (pode implementar depois).");
+
+    saveReservas(all);
+    initAdminReservas(); // re-render
+  });
+}
+
+function initConfiguracoes() {
+  const form = document.getElementById("settingsForm");
+  if (!form) return;
+
+  const s = getSettings();
+  Object.keys(s).forEach((k) => {
+    const el = document.getElementById(k);
+    if (!el) return;
+    if (el.type === "checkbox") el.checked = Boolean(s[k]);
+    else el.value = s[k];
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const next = { ...getSettings() };
+
+    Object.keys(next).forEach((k) => {
+      const el = document.getElementById(k);
+      if (!el) return;
+      if (el.type === "checkbox") next[k] = el.checked;
+      else next[k] = el.value;
     });
 
-    localStorage.setItem(RESERVAS_KEY, JSON.stringify(updated));
-    initReservas();
+    next.diaria = Number(next.diaria || 350);
+    next.capacidade = Number(next.capacidade || 8);
+    next.minimoNoites = Number(next.minimoNoites || 2);
+    next.maximoNoites = Number(next.maximoNoites || 30);
+
+    saveSettings(next);
+    alert("Configurações salvas.");
   });
 }
 
@@ -191,7 +297,8 @@ function initCalendario() {
     for (let day = 1; day <= totalDays; day++) {
       const key = `${y}-${String(m + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
       const status = map[key] || "disponivel";
-      html += `<button class="day ${status}" data-date="${key}" type="button">${day}<small>R$ ${settings.diaria}</small></button>`;
+      html += `<button 
+class="day ${status}" data-date="${key}" type="button">${day}<small>R$ ${settings.diaria}</small></button>`;
     }
 
     grid.innerHTML = html;
@@ -223,6 +330,168 @@ function initCalendario() {
     localStorage.setItem(CALENDAR_KEY, JSON.stringify(map));
     render();
   });
+
+  // ===== Airbnb iCal Import (via upload .ics) =====
+  const importBtn = document.getElementById("importIcsBtn");
+  const fileInput = document.getElementById("icsFile");
+  const statusEl = document.getElementById("icsStatus");
+  const clearBtn = document.getElementById("clearAirbnbBtn");
+
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg;
+  }
+
+  function getImportedDates() {
+    const raw = localStorage.getItem(AIRBNB_IMPORTED_KEY);
+    if (!raw) return [];
+    try {
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveImportedDates(dates) {
+    localStorage.setItem(AIRBNB_IMPORTED_KEY, JSON.stringify(dates));
+  }
+
+  function normalizeYmd(yyyymmdd) {
+    const y = yyyymmdd.slice(0, 4);
+    const m = yyyymmdd.slice(4, 6);
+    const d = yyyymmdd.slice(6, 8);
+    return `${y}-${m}-${d}`;
+  }
+
+  function expandRangeToDates(startYYYYMMDD, endYYYYMMDDExclusive) {
+    const sy = Number(startYYYYMMDD.slice(0, 4));
+    const sm = Number(startYYYYMMDD.slice(4, 6)) - 1;
+    const sd = Number(startYYYYMMDD.slice(6, 8));
+    const ey = Number(endYYYYMMDDExclusive.slice(0, 4));
+    const em = Number(endYYYYMMDDExclusive.slice(4, 6)) - 1;
+    const ed = Number(endYYYYMMDDExclusive.slice(6, 8));
+
+    const out = [];
+    let cur = new Date(sy, sm, sd);
+    const end = new Date(ey, em, ed);
+
+    while (cur < end) {
+      const y = cur.getFullYear();
+      const m = String(cur.getMonth() + 1).padStart(2, "0");
+      const d = String(cur.getDate()).padStart(2, "0");
+      out.push(`${y}-${m}-${d}`);
+      cur.setDate(cur.getDate() + 1);
+    }
+    return out;
+  }
+
+  // Parser simples de iCal (DTSTART/DTEND). Marca todos os dias entre start e end (end exclusivo).
+  function parseIcsToDates(icsText) {
+    const lines = icsText.split(/\r?\n/);
+    const dates = new Set();
+
+    let dtStart = null;
+    let dtEnd = null;
+
+    for (const raw of lines) {
+      const line = raw.trim();
+
+      if (line === "BEGIN:VEVENT") {
+        dtStart = null;
+        dtEnd = null;
+      }
+
+      // Ex: DTSTART;VALUE=DATE:20260223  ou DTSTART:20260223T000000Z
+      if (line.startsWith("DTSTART")) {
+        const v = (line.split(":")[1] || "").trim();
+        dtStart = v.slice(0, 8);
+      }
+
+      if (line.startsWith("DTEND")) {
+        const v = (line.split(":")[1] || "").trim();
+        dtEnd = v.slice(0, 8);
+      }
+
+      if (line === "END:VEVENT") {
+        if (dtStart && dtEnd) {
+          expandRangeToDates(dtStart, dtEnd).forEach((d) => dates.add(d));
+        } else if (dtStart) {
+          dates.add(normalizeYmd(dtStart));
+        }
+      }
+    }
+
+    return Array.from(dates).sort();
+  }
+
+  clearBtn?.addEventListener("click", () => {
+    const map = getCalendarMap();
+    const prev = getImportedDates();
+
+    // Remove apenas o que foi importado e ainda estiver como "reservada"
+    prev.forEach((d) => {
+      if (map[d] === "reservada") delete map[d];
+    });
+
+    localStorage.setItem(CALENDAR_KEY, JSON.stringify(map));
+    saveImportedDates([]);
+    setStatus("Importações do Airbnb removidas.");
+    render();
+  });
+
+  importBtn?.addEventListener("click", async () => {
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      setStatus("Selecione um arquivo .ics primeiro.");
+      return;
+    }
+
+    setStatus("Importando iCal...");
+
+    const text = await file.text();
+    const importedDates = parseIcsToDates(text);
+
+    if (importedDates.length === 0) {
+      setStatus("Não encontrei datas no .ics. Verifique o arquivo.");
+      return;
+    }
+
+    // Remove importações antigas (não mexe em bloqueios manuais)
+    const map = getCalendarMap();
+    const prev = getImportedDates();
+    prev.forEach((d) => {
+      if (map[d] === "reservada") delete map[d];
+    });
+
+    // Aplica novas datas: não sobrescreve "bloqueada"
+    importedDates.forEach((d) => {
+      if (map[d] !== "bloqueada") map[d] = "reservada";
+    });
+
+    localStorage.setItem(CALENDAR_KEY, JSON.stringify(map));
+    saveImportedDates(importedDates);
+
+    setStatus(`Importado do Airbnb: ${importedDates.length} dia(s) marcados como reservados.`);
+    render();
+  });
+}
+
+function renderPhotoSection(section, items) {
+  const container = document.getElementById(`section-${section}`);
+  if (!container) return;
+
+  const list = items
+    .map(
+      (src, idx) => `
+    <div class="photo-item">
+      <img src="${src}" alt="Foto" />
+      <button class="btn btn-small danger" data-section="${section}" data-idx="${idx}">Remover</button>
+    </div>
+  `
+    )
+    .join("");
+
+  container.innerHTML = list || `<p class="muted">Nenhuma foto cadastrada.</p>`;
 }
 
 function initFotos() {
@@ -241,135 +510,34 @@ function initFotos() {
       input.value = "";
     });
   });
-}
 
-function initConfiguracoes() {
-  const form = document.getElementById("configForm");
-  const feedback = document.getElementById("configFeedback");
-  const settings = getSettings();
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    const btn = t.closest("button[data-section][data-idx]");
+    if (!btn) return;
 
-  Object.entries(settings).forEach(([key, value]) => {
-    const field = form.elements.namedItem(key);
-    if (!field) return;
-    if (field.type === "checkbox") field.checked = Boolean(value);
-    else field.value = value;
-  });
+    const section = btn.getAttribute("data-section");
+    const idx = Number(btn.getAttribute("data-idx"));
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
-    const payload = { ...settings };
-
-    for (const [key, value] of formData.entries()) payload[key] = value;
-
-    ["capacidadeMax", "minNoites", "maxNoites"].forEach((field) => {
-      payload[field] = Number(payload[field] || 0);
-    });
-
-    ["reservaInstantanea", "aceitaPets", "permiteFumar", "permiteEventos"].forEach((field) => {
-      payload[field] = form.elements.namedItem(field).checked;
-    });
-
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(payload));
-    feedback.textContent = "Configurações salvas com sucesso.";
+    const current = getPhotos();
+    current[section].splice(idx, 1);
+    savePhotos(current);
+    renderPhotoSection(section, current[section]);
   });
 }
 
-function getSettings() {
-  return { ...DEFAULT_SETTINGS, ...(JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}")) };
-}
+(function boot() {
+  initTabs();
+  initLogout();
 
-function getReservas() {
-  const saved = JSON.parse(localStorage.getItem(RESERVAS_KEY) || "null");
-  if (saved) return saved;
-  localStorage.setItem(RESERVAS_KEY, JSON.stringify(DEFAULT_RESERVAS));
-  return DEFAULT_RESERVAS;
-}
+  const page = document.body.getAttribute("data-page");
+  if (page !== "login") requireAuth();
 
-function getCalendarMap() {
-  return JSON.parse(localStorage.getItem(CALENDAR_KEY) || "{}");
-}
-
-function getPhotos() {
-  return { ...DEFAULT_PHOTOS, ...(JSON.parse(localStorage.getItem(PHOTOS_KEY) || "{}")) };
-}
-
-function renderPhotoSection(section, items) {
-  const grid = document.getElementById(`grid-${section}`);
-  if (!grid) return;
-
-  if (!items.length) {
-    grid.innerHTML = '<div class="photo-card">Nenhuma imagem</div>';
-    return;
-  }
-
-  grid.innerHTML = items.map((src) => `<div class="photo-card"><img src="${src}" alt="Foto ${section}"/></div>`).join("");
-}
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function card(title, value) {
-  return `<article class="card"><h3>${title}</h3><div class="metric">${value}</div></article>`;
-}
-
-function chartBox(title, svg) {
-  return `<article class="chart"><h3>${title}</h3>${svg}</article>`;
-}
-
-function lineChart(values) {
-  const max = Math.max(...values);
-  const stepX = 600 / (values.length - 1);
-  const points = values
-    .map((v, i) => {
-      const x = i * stepX;
-      const y = 230 - (v / max) * 200;
-      return `${x},${y}`;
-    })
-    .join(" ");
-
-  return `<svg viewBox="0 0 600 250"><polyline fill="none" stroke="#d97706" stroke-width="3" points="${points}"/></svg>`;
-}
-
-function barChart(values) {
-  const max = Math.max(...values);
-  const barWidth = 600 / values.length - 10;
-  return `<svg viewBox="0 0 600 250">${values
-    .map((v, i) => {
-      const h = (v / max) * 210;
-      const x = i * (barWidth + 10);
-      const y = 230 - h;
-      return `<rect x="${x}" y="${y}" width="${barWidth}" height="${h}" fill="#f59e0b"/>`;
-    })
-    .join("")}</svg>`;
-}
-
-function pieChart(percent) {
-  const r = 80;
-  const c = 2 * Math.PI * r;
-  const occ = (percent / 100) * c;
-  const free = c - occ;
-  return `<svg viewBox="0 0 250 250"><g transform="translate(125,125) rotate(-90)"><circle r="${r}" fill="none" stroke="#fde68a" stroke-width="40" stroke-dasharray="${free} ${c}"/><circle r="${r}" fill="none" stroke="#d97706" stroke-width="40" stroke-dasharray="${occ} ${c}"/></g><text x="125" y="130" text-anchor="middle" fill="#8d3d12" font-size="20">${percent}%</text></svg>`;
-}
-
-function horizontalBars(values, labels) {
-  const max = Math.max(...values);
-  const gap = 42;
-  return `<svg viewBox="0 0 600 250">${values
-    .map((v, i) => {
-      const width = (v / max) * 400;
-      const y = 30 + i * gap;
-      return `<text x="0" y="${y + 17}" fill="#7c2d12">${labels[i]}</text><rect x="150" y="${y}" width="${width}" height="26" fill="#f59e0b"/>`;
-    })
-    .join("")}</svg>`;
-}
-
-function capitalize(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
+  if (page === "login") initLogin();
+  if (page === "dashboard") initDashboard();
+  if (page === "reservas") initAdminReservas();
+  if (page === "calendario") initCalendario();
+  if (page === "fotos") initFotos();
+  if (page === "configuracoes") initConfiguracoes();
+})();
