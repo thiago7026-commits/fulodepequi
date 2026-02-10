@@ -290,6 +290,26 @@ function initCalendario() {
   const settings = getSettings();
   if (dailyInfo) dailyInfo.textContent = `R$ ${settings.diaria}`;
 
+  function showFloatingMessage(message, type = "success") {
+    let toast = document.getElementById("calendarFloatingToast");
+
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "calendarFloatingToast";
+      toast.className = "calendar-floating-toast";
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.dataset.type = type;
+    toast.classList.add("show");
+
+    if (toast.hideTimer) clearTimeout(toast.hideTimer);
+    toast.hideTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
   // ===== Helpers (aqui dentro ✅) =====
   function ymd(y, m, d) {
     return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
@@ -431,6 +451,7 @@ function initCalendario() {
         if (!block?.id) return;
         await deleteAdminBlock(block.id);
         await renderAsync();
+        showFloatingMessage("Dia desbloqueado com sucesso.", "info");
         return;
       }
 
@@ -438,6 +459,7 @@ function initCalendario() {
       const endExclusive = addDaysISO(dateISO, 1);
       await createAdminBlock(dateISO, endExclusive, "Bloqueio manual");
       await renderAsync();
+      showFloatingMessage("Dia bloqueado com sucesso.", "success");
     } catch (err) {
       console.error(err);
       alert("Erro ao salvar/alterar bloqueio no Supabase. Veja o Console (F12).");
