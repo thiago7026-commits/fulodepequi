@@ -4,9 +4,9 @@ import {
   createAdminBlock,
   deleteAdminBlock,
   upsertExternalEvents,
-  clearAirbnbExternalEvents,
-  LISTING_ID,
+  clearAirbnbExternalEvents
 } from "../../js/calendarService.js";
+
 
 const AUTH_KEY = "adminAuth";
 const SETTINGS_KEY = "adminSettings";
