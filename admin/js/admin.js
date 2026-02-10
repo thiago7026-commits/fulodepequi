@@ -362,6 +362,24 @@ function initCalendario() {
   let blockedByDate = {};  // dateISO -> row do bloqueio (pra remover)
   let reservedSet = new Set();
 
+  function buildMonthGridHtml(y, m, firstDay, totalDays) {
+    const weekNames = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+
+    let html = weekNames.map((d) => `<div class="day-name">${d}.</div>`).join("");
+    for (let i = 0; i < firstDay; i++) html += '<div class="day"></div>';
+
+    for (let day = 1; day <= totalDays; day++) {
+      const dateISO = ymd(y, m + 1, day);
+      const status = monthStatus[dateISO] || "disponivel";
+      const disabled = status === "reservada" ? "disabled" : "";
+      html += `<button class="day ${status}" data-date="${dateISO}" type="button" ${disabled}>
+        ${day}<small>R$ ${settings.diaria}</small>
+      </button>`;
+    }
+
+    return html;
+  }
+
   async function renderAsync() {
     const y = refDate.getFullYear();
     const m = refDate.getMonth();
@@ -369,19 +387,19 @@ function initCalendario() {
 
     const firstDay = new Date(y, m, 1).getDay();
     const totalDays = new Date(y, m + 1, 0).getDate();
-    const weekNames = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+    monthStatus = {};
+    blockedByDate = {};
+    reservedSet = new Set();
 
-    let html = weekNames.map((d) => `<div class="day-name">${d}.</div>`).join("");
-    for (let i = 0; i < firstDay; i++) html += '<div class="day"></div>';
+    for (let day = 1; day <= totalDays; day++) {
+      const dateISO = ymd(y, m + 1, day);
+      monthStatus[dateISO] = "disponivel";
+    }
 
     const { from, to } = monthRange(refDate);
 
     try {
       const { reserved, blocked } = await fetchCalendarEvents(from, to);
-
-      monthStatus = {};
-      blockedByDate = {};
-      reservedSet = new Set();
 
       // Airbnb/external = reservada (read-only)
       reserved.forEach((ev) => {
@@ -401,21 +419,12 @@ function initCalendario() {
         else if (blockedByDate[dateISO]) monthStatus[dateISO] = "bloqueada";
         else monthStatus[dateISO] = "disponivel";
       }
-
-      for (let day = 1; day <= totalDays; day++) {
-        const dateISO = ymd(y, m + 1, day);
-        const status = monthStatus[dateISO] || "disponivel";
-        const disabled = status === "reservada" ? "disabled" : "";
-        html += `<button class="day ${status}" data-date="${dateISO}" type="button" ${disabled}>
-          ${day}<small>R$ ${settings.diaria}</small>
-        </button>`;
-      }
-
-      grid.innerHTML = html;
     } catch (err) {
       console.error(err);
-      alert("Erro ao carregar calendário do Supabase. Veja o Console (F12).");
+      showFloatingMessage("Calendário carregado sem sincronização. Verifique o Supabase.", "info");
     }
+
+    grid.innerHTML = buildMonthGridHtml(y, m, firstDay, totalDays);
   }
 
   // render inicial
