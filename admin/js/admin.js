@@ -398,4 +398,236 @@ function initCalendario() {
     }
   }
 
-  // render i
+  // render inicial
+  renderAsync();
+
+  document.getElementById("prevMonth")?.addEventListener("click", () => {
+    refDate = new Date(refDate.getFullYear(), refDate.getMonth() - 1, 1);
+    renderAsync();
+  });
+
+  document.getElementById("nextMonth")?.addEventListener("click", () => {
+    refDate = new Date(refDate.getFullYear(), refDate.getMonth() + 1, 1);
+    renderAsync();
+  });
+
+  // clique em dia:
+  grid?.addEventListener("click", async (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const dayBtn = target.closest(".day");
+    const dateISO = dayBtn?.getAttribute("data-date");
+    if (!dateISO) return;
+
+    const status = monthStatus[dateISO];
+
+    try {
+      // Airbnb: não mexe
+      if (status === "reservada") return;
+
+      // Se está bloqueada: remover
+      if (status === "bloqueada") {
+        const block = blockedByDate[dateISO];
+        if (!block?.id) return;
+        await deleteAdminBlock(block.id);
+        await renderAsync();
+        return;
+      }
+
+      // Se está disponível: criar bloqueio de 1 dia
+      const endExclusive = addDaysISO(dateISO, 1);
+      await createAdminBlock(dateISO, endExclusive, "Bloqueio manual");
+      await renderAsync();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao salvar/alterar bloqueio no Supabase. Veja o Console (F12).");
+    }
+  });
+
+  // ===== Airbnb iCal Import (upload .ics -> Supabase) =====
+  const importBtn = document.getElementById("importIcsBtn");
+  const fileInput = document.getElementById("icsFile");
+  const statusEl = document.getElementById("icsStatus");
+  const clearBtn = document.getElementById("clearAirbnbBtn");
+
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg;
+  }
+
+  function normalizeYmd(yyyymmdd) {
+    const y = yyyymmdd.slice(0, 4);
+    const m = yyyymmdd.slice(4, 6);
+    const d = yyyymmdd.slice(6, 8);
+    return `${y}-${m}-${d}`;
+  }
+
+  // Parser de iCal para EVENTS (UID/DTSTART/DTEND/SUMMARY)
+  function parseIcsToEvents(icsText) {
+    const lines = icsText.split(/\r?\n/);
+    const events = [];
+
+    let uid = null;
+    let dtStart = null;
+    let dtEnd = null;
+    let summary = "Reserved";
+
+    for (const raw of lines) {
+      const line = raw.trim();
+
+      if (line === "BEGIN:VEVENT") {
+        uid = null;
+        dtStart = null;
+        dtEnd = null;
+        summary = "Reserved";
+      }
+
+      if (line.startsWith("UID")) uid = (line.split(":")[1] || "").trim();
+
+      if (line.startsWith("DTSTART")) {
+        const v = (line.split(":")[1] || "").trim();
+        dtStart = v.slice(0, 8);
+      }
+
+      if (line.startsWith("DTEND")) {
+        const v = (line.split(":")[1] || "").trim();
+        dtEnd = v.slice(0, 8);
+      }
+
+      if (line.startsWith("SUMMARY")) {
+        summary = (line.split(":")[1] || "").trim() || "Reserved";
+      }
+
+      if (line === "END:VEVENT") {
+        if (uid && dtStart && dtEnd) {
+          events.push({
+            uid,
+            start_date: normalizeYmd(dtStart),
+            end_date: normalizeYmd(dtEnd), // end exclusivo (checkout)
+            summary,
+          });
+        }
+      }
+    }
+
+    return events;
+  }
+
+  clearBtn?.addEventListener("click", async () => {
+    try {
+      setStatus("Limpando importações do Airbnb no Supabase...");
+      await clearAirbnbExternalEvents();
+      setStatus("Importações do Airbnb removidas (Supabase).");
+      await renderAsync();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao limpar Airbnb no Supabase. Veja o Console (F12).");
+    }
+  });
+
+  importBtn?.addEventListener("click", async () => {
+    const file = fileInput?.files?.[0];
+    if (!file) {
+      setStatus("Selecione um arquivo .ics primeiro.");
+      return;
+    }
+
+    try {
+      setStatus("Importando iCal e salvando no Supabase...");
+
+      const text = await file.text();
+      const evs = parseIcsToEvents(text);
+
+      if (evs.length === 0) {
+        setStatus("Não encontrei eventos no .ics. Verifique o arquivo.");
+        return;
+      }
+
+      const rows = evs.map((e) => ({
+        source: "airbnb",
+        listing_id: LISTING_ID,
+        uid: e.uid,
+        start_date: e.start_date,
+        end_date: e.end_date,
+        summary: e.summary,
+        raw: e,
+      }));
+
+      await upsertExternalEvents(rows);
+
+      setStatus(`Importado do Airbnb: ${rows.length} evento(s) gravados no Supabase.`);
+      await renderAsync();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao importar .ics no Supabase. Veja o Console (F12).");
+    }
+  });
+}
+
+/* ======================================================================
+   FOTOS (igual seu original)
+====================================================================== */
+function renderPhotoSection(section, items) {
+  const container = document.getElementById(`section-${section}`);
+  if (!container) return;
+
+  const list = items
+    .map(
+      (src, idx) => `
+    <div class="photo-item">
+      <img src="${src}" alt="Foto" />
+      <button class="btn btn-small danger" data-section="${section}" data-idx="${idx}">Remover</button>
+    </div>
+  `
+    )
+    .join("");
+
+  container.innerHTML = list || `<p class="muted">Nenhuma foto cadastrada.</p>`;
+}
+
+function initFotos() {
+  const photos = getPhotos();
+  ["iniciais", "cachoeiras", "rodape"].forEach((section) => renderPhotoSection(section, photos[section]));
+
+  ["iniciais", "cachoeiras", "rodape"].forEach((section) => {
+    const input = document.getElementById(`upload-${section}`);
+    input?.addEventListener("change", async () => {
+      const files = Array.from(input.files || []);
+      const current = getPhotos();
+      const converted = await Promise.all(files.map(fileToBase64));
+      current[section] = [...current[section], ...converted];
+      localStorage.setItem(PHOTOS_KEY, JSON.stringify(current));
+      renderPhotoSection(section, current[section]);
+      input.value = "";
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    const btn = t.closest("button[data-section][data-idx]");
+    if (!btn) return;
+
+    const section = btn.getAttribute("data-section");
+    const idx = Number(btn.getAttribute("data-idx"));
+
+    const current = getPhotos();
+    current[section].splice(idx, 1);
+    savePhotos(current);
+    renderPhotoSection(section, current[section]);
+  });
+}
+
+(function boot() {
+  initTabs();
+  initLogout();
+
+  const page = document.body.getAttribute("data-page");
+  if (page !== "login") requireAuth();
+
+  if (page === "login") initLogin();
+  if (page === "dashboard") initDashboard();
+  if (page === "reservas") initAdminReservas();
+  if (page === "calendario") initCalendario();
+  if (page === "fotos") initFotos();
+  if (page === "configuracoes") initConfiguracoes();
+})();
