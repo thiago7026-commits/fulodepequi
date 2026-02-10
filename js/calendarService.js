@@ -1,17 +1,17 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const SUPABASE_URL = "https://SEU-PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "SUA-ANON-KEY";
+const SUPABASE_URL = "https://edncpydsaovtdoztnjsa.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_xdd1tjsLj54U7n9r6yAVIg_6LN-Uu_m";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export const LISTING_ID = "635415619801096957";
+export const LISTING_ID = "635415619801096957"; // seu airbnb/listing
 
 export async function fetchCalendarEvents(fromISO, toISO) {
   const [externalRes, blocksRes] = await Promise.all([
     supabase
       .from("calendar_external_events")
-      .select("id, source, uid, start_date, end_date, summary, listing_id")
+      .select("id, source, start_date, end_date, summary, uid, listing_id")
       .eq("listing_id", LISTING_ID)
       .lte("start_date", toISO)
       .gte("end_date", fromISO),
@@ -27,19 +27,22 @@ export async function fetchCalendarEvents(fromISO, toISO) {
   if (externalRes.error) throw externalRes.error;
   if (blocksRes.error) throw blocksRes.error;
 
-  return { reserved: externalRes.data ?? [], blocked: blocksRes.data ?? [] };
+  return {
+    reserved: externalRes.data ?? [],
+    blocked: blocksRes.data ?? [],
+  };
 }
 
-export async function createAdminBlock(startISO, endISOExclusive, reason = "") {
+export async function createAdminBlock(startISO, endISO, reason = "") {
   const { data, error } = await supabase
     .from("calendar_admin_blocks")
     .insert({
       listing_id: LISTING_ID,
       start_date: startISO,
-      end_date: endISOExclusive,
+      end_date: endISO,
       reason,
     })
-    .select("id, start_date, end_date, reason")
+    .select()
     .single();
 
   if (error) throw error;
@@ -47,24 +50,10 @@ export async function createAdminBlock(startISO, endISOExclusive, reason = "") {
 }
 
 export async function deleteAdminBlock(blockId) {
-  const { error } = await supabase.from("calendar_admin_blocks").delete().eq("id", blockId);
-  if (error) throw error;
-}
-
-export async function upsertExternalEvents(rows) {
   const { error } = await supabase
-    .from("calendar_external_events")
-    .upsert(rows, { onConflict: "source,listing_id,uid" });
-
-  if (error) throw error;
-}
-
-export async function clearAirbnbExternalEvents() {
-  const { error } = await supabase
-    .from("calendar_external_events")
+    .from("calendar_admin_blocks")
     .delete()
-    .eq("source", "airbnb")
-    .eq("listing_id", LISTING_ID);
+    .eq("id", blockId);
 
   if (error) throw error;
 }
