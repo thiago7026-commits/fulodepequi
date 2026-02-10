@@ -1,39 +1,210 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin | Reservas</title>
-    <link rel="stylesheet" href="./css/admin.css" />
-  </head>
-  <body data-page="reservas">
-    <header class="admin-header">
-      <div class="inner">
-        <div class="brand">
-          <img src="../assets/logo.png" alt="Logo Fulô" />
-          <div><h1>Chalé Fulô de Pequi</h1><p>Painel Administrativo</p></div>
-        </div>
-        <button class="btn logout-btn" id="logoutBtn">Sair</button>
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservas | Chalé Fulô de Pequi</title>
 
-    <main class="admin-main">
-      <nav class="tabs">
-        <a class="tab" data-tab="dashboard" href="./dashboard.html">Visão Geral</a>
-        <a class="tab" data-tab="reservas" href="./reservas.html">Reservas</a>
-        <a class="tab" data-tab="calendario" href="./calendario.html">Calendário</a>
-        <a class="tab" data-tab="fotos" href="./fotos.html">Fotos</a>
-        <a class="tab disabled" data-tab="avaliacoes" href="#">Avaliações</a>
-        <a class="tab" data-tab="configuracoes" href="./configuracoes.html">Configurações</a>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <a class="logo" href="./index.html">
+        <img src="./assets/logo.png" alt="Logo Fulô de Pequi" />
+      </a>
+
+      <nav class="menu">
+        <a href="./index.html">Início</a>
+        <a href="./servicos.html">Serviços</a>
+        <a href="./reservas.html" class="active">Reservas</a>
+        <a href="./politica.html">Política</a>
       </nav>
+    </div>
+  </header>
 
-      <section class="section">
-        <h2>Próximas Reservas</h2>
-        <p>Gerencie as reservas confirmadas e pendentes</p>
-        <div class="list" id="reservasList"></div>
-      </section>
-    </main>
+  <main class="container">
+    <section class="hero">
+      <h1>Faça sua Reserva</h1>
+      <p>Escolha as datas e envie sua solicitação. Nos finais de semana, a reserva deve incluir sexta e sábado juntos.</p>
+    </section>
 
-    <script src="./js/admin.js"></script>
-  </body>
-</html>
+    <section class="reserva-wrap">
+      <div class="form-card">
+        <h2>Dados do Hóspede</h2>
+
+        <form id="reservaForm">
+          <div class="grid">
+            <label>
+              Nome
+              <input id="nome" type="text" required />
+            </label>
+
+            <label>
+              Email
+              <input id="email" type="email" required />
+            </label>
+
+            <label>
+              Telefone
+              <input id="telefone" type="tel" required />
+            </label>
+
+            <label>
+              Datas (check-in / check-out)
+              <input id="datas" type="text" placeholder="Selecione as datas" required />
+            </label>
+
+            <label>
+              Hóspedes
+              <select id="hospedes">
+                <option value="1">1 hóspede</option>
+                <option value="2">2 hóspedes</option>
+                <option value="3">3 hóspedes</option>
+                <option value="4">4 hóspedes</option>
+                <option value="5">5 hóspedes</option>
+                <option value="6">6 hóspedes</option>
+                <option value="7">7 hóspedes</option>
+                <option value="8">8 hóspedes</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit">Enviar Solicitação</button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="summary-card">
+        <h2>Resumo</h2>
+        <div id="totalBox" class="total">Selecione as datas para ver o total.</div>
+        <div id="dadosHint" class="muted">O valor é calculado pela diária configurada no admin (local).</div>
+        <pre id="dadosReserva" class="dados"></pre>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© Chalé Fulô de Pequi</p>
+    </div>
+  </footer>
+
+<script>
+/* =========================
+   CONFIG/UTILS
+========================= */
+
+function getSettings(){
+  const raw = localStorage.getItem("adminSettings");
+  if(!raw) return { diaria: 350, minimoNoites: 2, maximoNoites: 30, capacidade: 8 };
+  try{
+    const parsed = JSON.parse(raw);
+    return {
+      diaria: Number(parsed?.diaria || 350),
+      minimoNoites: Number(parsed?.minimoNoites || 2),
+      maximoNoites: Number(parsed?.maximoNoites || 30),
+      capacidade: Number(parsed?.capacidade || 8),
+    };
+  }catch{
+    return { diaria: 350, minimoNoites: 2, maximoNoites: 30, capacidade: 8 };
+  }
+}
+
+const SETTINGS = getSettings();
+
+function formatBRL(n){
+  return `R$ ${Number(n||0).toFixed(2).replace(".", ",")}`;
+}
+
+function noites(inicio, fim){
+  return Math.round((fim - inicio) / (1000 * 60 * 60 * 24));
+}
+
+/* Regra: sexta + sábado juntos (e não sábado + domingo) */
+function fimDeSemanaOk(inicio, fim){
+  let sex=false, sab=false;
+  const cur = new Date(inicio);
+  const end = new Date(fim);
+  while(cur < end){
+    const d = cur.getDay(); // 0 dom ... 5 sex 6 sab
+    if(d === 5) sex = true;
+    if(d === 6) sab = true;
+    cur.setDate(cur.getDate()+1);
+  }
+
+  // Se pegou sábado, tem que ter pego sexta também
+  if(sab && !sex) return false;
+  return true;
+}
+
+/* =========================
+   BLOQUEIOS (ADMIN -> SITE)
+   Agora o site lê DIRETO do adminCalendar
+========================= */
+
+function getAdminCalendarMap(){
+  const raw = localStorage.getItem("adminCalendar");
+  if(!raw) return {};
+  try{
+    const parsed = JSON.parse(raw);
+    return (parsed && typeof parsed === "object") ? parsed : {};
+  }catch(err){
+    console.warn("Falha ao ler adminCalendar:", err);
+    return {};
+  }
+}
+
+function getBlockedDatesFromAdminCalendar(){
+  const map = getAdminCalendarMap();
+  // Bloqueia no calendário público tudo que NÃO for disponível
+  return Object.entries(map)
+    .filter(([_, status]) => status === "reservada" || status === "bloqueada")
+    .map(([date]) => date); // YYYY-MM-DD
+}
+
+const storedBlockedDates = getBlockedDatesFromAdminCalendar();
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const inputNome = document.getElementById("nome");
+const inputEmail = document.getElementById("email");
+const inputTelefone = document.getElementById("telefone");
+const inputDatas = document.getElementById("datas");
+const hospedesEl = document.getElementById("hospedes");
+const totalBox = document.getElementById("totalBox");
+const dadosReserva = document.getElementById("dadosReserva");
+const dadosHint = document.getElementById("dadosHint");
+
+/* =========================
+   RESUMO/TOTAL
+========================= */
+
+function calcularTotal(selectedDates){
+  if(selectedDates.length < 2) return { total: 0, noites: 0 };
+  const n = noites(selectedDates[0], selectedDates[1]);
+  const total = n * SETTINGS.diaria;
+  return { total, noites: n };
+}
+
+function atualizarResumo(selectedDates){
+  if(selectedDates.length < 2){
+    totalBox.textContent = "Selecione as datas para ver o total.";
+    dadosReserva.textContent = "";
+    return;
+  }
+
+  const { total, noites: n } = calcularTotal(selectedDates);
+
+  totalBox.textContent = `${n} noite(s) • ${formatBRL(total)}`;
+
+  const payload = {
+    nome: inputNome.value.trim(),
+    emai
